@@ -1,0 +1,163 @@
+/* @override http://tenar.home.faeriemud.org/rspec-formatter/textmate-rspec.css */
+
+/* 
+ * Textmate RSpec Outputter Stylesheet
+ * $Id$
+ * 
+ * Author: Michael Granger <ged@FaerieMUD.org>
+ * 
+ */
+
+body {
+	margin: 0;
+	padding: 0;
+	background: #999;
+	font-size: 80%;
+}
+
+#rspec-header {
+    padding-top: 20px;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 93px;
+    margin-left: -1px;
+    border-left: 1px solid rgb(102, 102, 102);
+    background-color: rgb(101, 111, 130);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.5)));
+    background-repeat: repeat-x;
+    background-position: bottom;
+    text-shadow: black 0 1px 3px;
+    white-space: nowrap;
+    color: white;
+    -webkit-background-size: 1px 6px;
+    -webkit-background-origin: padding;
+    -webkit-background-clip: padding;
+}
+
+#rspec-title-section {
+	position: absolute;
+	width: 260px;
+	top: 0;
+	text-align: right;
+}
+#rspec-title-section h1 {
+	margin-bottom: 0.2em;
+}
+#rspec-summary {
+	margin-left: 280px;
+}
+
+#rspec-summary-graph-legend {
+    margin-top: -10px;
+    padding-left: 15px;
+}
+
+.rspec-graph-legend-item {
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 15px;
+    vertical-align: top;
+}
+
+.rspec-graph-legend-item.total {
+    margin-left: 10px;
+}
+
+.rspec-graph-legend-label {
+    display: inline-block;
+    text-align: left;
+}
+
+.rspec-graph-legend-header {
+    font-size: 12px;
+}
+
+.rspec-graph-legend-value {
+    font-size: 10px;
+}
+
+.rspec-graph-legend-swatch {
+    vertical-align: top;
+    margin-top: 1px;
+    margin-right: 3px;
+}
+
+#rspec-details {
+	padding: 0.2em 3em;
+}
+
+.example-group {
+	background: white;
+	padding: 0;
+	margin: 1em 0;
+	-webkit-box-shadow: #333 0 2px 5px;
+	-webkit-border-radius: 5px;
+}
+
+.example-group dl dt {
+	padding: 0.2em 1em;
+	font-size: 1.2em;
+	text-shadow: #333 0 1px 2px;
+	border-bottom: 1px solid #999;
+}
+.example-group dl dd + dd {
+	border-top: 1px solid rgba(64,64,64,0.3);
+}
+.example-group dl dd.spec {
+	margin: 0;
+	padding: 0.3em 1.2em 0.3em 22px;
+	background: #ddd url(../images/clock.png) no-repeat 2px 2px;
+}
+.example-group dl dd.spec.passed {
+	background-color: #aacba3;
+	background-image: url(../images/tick_circle_frame.png);
+}
+.example-group dl dd.spec.pending {
+	background-color: #cac574;
+	background-image: url(../images/exclamation_frame.png);
+}
+.example-group dl dd.spec.failed {
+	background-color: #d39595;
+	background-image: url(../images/cross_circle_frame.png);
+}
+
+.failure {
+/*	display: none;*/
+}
+
+/* Ruby code, style similar to vibrant ink */
+.ruby {
+	font-size: 12px;
+	font-family: monospace;
+	color: white;
+	background-color: black;
+	padding: 0.1em 0 0.2em 0;
+}
+
+.ruby .keyword { color: #FF6600; }
+.ruby .constant { color: #339999; }
+.ruby .attribute { color: white; }
+.ruby .global { color: white; }
+.ruby .module { color: white; }
+.ruby .class { color: white; }
+.ruby .string { color: #66FF00; }
+.ruby .ident { color: white; }
+.ruby .method { color: #FFCC00; }
+.ruby .number { color: white; }
+.ruby .char { color: white; }
+.ruby .comment { color: #9933CC; }
+.ruby .symbol { color: white; }
+.ruby .regex { color: #44B4CC; }
+.ruby .punct { color: white; }
+.ruby .escape { color: white; }
+.ruby .interp { color: white; }
+.ruby .expr { color: white; }
+
+.ruby .offending { background-color: gray; }
+.ruby .linenum {
+	width: 75px;
+	padding: 0.1em 1em 0.2em 0;
+	color: #000000;
+	background-color: #FFFBD3;
+}

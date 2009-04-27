@@ -1,0 +1,19 @@
+<dd class="spec <%= status %>">
+	<span class="spec-name"><%= h(example.description) %></span>
+<% case status %>
+<%	 when 'pending' %>
+  <div class="pending-message"><%= message %></div>
+  <div class="pending-caller"><%= pending_caller %></div>
+<%   when 'failed', 'pending-fixed' %>
+  <div class="failure" id="failure-<%= counter %>">
+
+<%     unless failure.exception.nil? %>
+	<div class="message"><code><%= h( failure.exception.message ) %></code></div>
+	<div class="backtrace"><pre>
+<%= failure.exception.backtrace.map {|line| self.format_backtrace_line(line) }.join("\n") %>
+	</pre></div>
+	<%   end %>
+<%     unless extra == '' %><%= extra %><% end %>
+  </div>
+<% end %>
+</dd>

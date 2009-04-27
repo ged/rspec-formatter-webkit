@@ -1,0 +1,131 @@
+			<div class="example-group"> 
+				<dl> 
+					<dt id="example-group-1">Treequel::Filter</dt> 
+					<dd class="spec passed"><span class="spec-name">knows that it is promiscuous (will match any entry) if its component is promiscuous</span></dd> 
+					<dd class="spec passed"><span class="spec-name">knows that it isn't promiscuous if its component isn't promiscuous</span></dd> 
+					<dd class="spec passed"><span class="spec-name">defaults to selecting everything</span></dd> 
+					<dd class="spec passed"><span class="spec-name">can be created from a string literal</span></dd> 
+					<dd class="spec passed"><span class="spec-name">wraps string literal instances in parens if it requires them</span></dd> 
+					<dd class="spec passed"><span class="spec-name">parses a single Symbol argument as a presence filter</span></dd> 
+					<dd class="spec passed"><span class="spec-name">parses a single-element Array with a Symbol as a presence filter</span></dd> 
+					<dd class="spec passed"><span class="spec-name">parses a Symbol+value pair as a simple item equal filter</span></dd> 
+					<dd class="spec passed"><span class="spec-name">parses a Symbol+value pair in an Array as a simple item equal filter</span></dd> 
+					<dd class="spec passed"><span class="spec-name">parses an AND expression with only a single clause</span></dd> 
+					<dd class="spec passed"><span class="spec-name">parses an AND expression with multiple clauses</span></dd> 
+					<dd class="spec passed"><span class="spec-name">parses an OR expression with only a single clause</span></dd> 
+					<dd class="spec passed"><span class="spec-name">parses an OR expression with multiple clauses</span></dd> 
+					<dd class="spec passed"><span class="spec-name">parses an OR expression with String literal clauses</span></dd> 
+					<dd class="spec passed"><span class="spec-name">parses the hash form of OR expression</span></dd> 
+					<dd class="spec passed"><span class="spec-name">parses a NOT expression with only a single clause</span></dd> 
+					<dd class="spec passed"><span class="spec-name">raises an exception with a NOT expression that contains more than one clause</span></dd> 
+					<dd class="spec passed"><span class="spec-name">parses a Substring item from a filter that includes an asterisk</span></dd> 
+					<dd class="spec passed"><span class="spec-name">parses a Present item from a filter that is only an asterisk</span></dd> 
+					<dd class="spec passed"><span class="spec-name">raises an error when an extensible item filter is given</span></dd> 
+					<dd class="spec passed"><span class="spec-name">parses a complex nested expression</span></dd> 
+				</dl> 
+			</div> 
+			<div class="example-group"> 
+				<dl> 
+					<dt id="example-group-2">Treequel::Filter operator methods</dt> 
+					<dd class="spec passed"><span class="spec-name">compares as equal with another filter if their components are equal</span></dd> 
+					<dd class="spec passed"><span class="spec-name">creates a new AND filter out of two filters that are added together</span></dd> 
+					<dd class="spec passed"><span class="spec-name">creates a new AND filter out of two filters that are bitwise-ANDed together</span></dd> 
+					<dd class="spec passed"><span class="spec-name">doesn't include the left operand in an AND filter if it is promiscuous</span></dd> 
+					<dd class="spec passed"><span class="spec-name">doesn't include the right operand in an AND filter if it is promiscuous</span></dd> 
+				</dl> 
+			</div> 
+			<div class="example-group"> 
+				<dl> 
+					<dt id="example-group-3">Treequel::Filter components: Treequel::Filter::FilterList</dt> 
+					<dd class="spec passed"><span class="spec-name">stringifies by joining its stringified members</span></dd> 
+				</dl> 
+			</div> 
+			<div class="example-group"> 
+				<dl> 
+					<dt id="example-group-4">Treequel::Filter components: Treequel::Filter::Component</dt> 
+					<dd class="spec passed"><span class="spec-name">is an abstract class</span></dd> 
+					<dd class="spec passed"><span class="spec-name">is non-promiscuous by default</span></dd> 
+				</dl> 
+			</div> 
+			<div class="example-group"> 
+				<dl> 
+					<dt id="example-group-5">Treequel::Filter components: Treequel::Filter::SimpleItemComponent</dt> 
+					<dd class="spec passed"><span class="spec-name">can parse a component object from a string literal</span></dd> 
+					<dd class="spec passed"><span class="spec-name">raises an ExpressionError if it can't parse a string literal</span></dd> 
+					<dd class="spec passed"><span class="spec-name">uses the 'equal' operator if none is specified</span></dd> 
+					<dd class="spec passed"><span class="spec-name">knows what the appropriate operator is for its filtertype</span></dd> 
+					<dd class="spec passed"><span class="spec-name">knows what the appropriate operator is for its filtertype even if it's set to a string</span></dd> 
+					<dd class="spec passed"><span class="spec-name">stringifies as &lt;attribute&gt;&lt;operator&gt;&lt;value&gt;</span></dd> 
+					<dd class="spec passed"><span class="spec-name">uses the '~=' operator if its filtertype is 'approx'</span></dd> 
+					<dd class="spec passed"><span class="spec-name">uses the '&gt;=' operator if its filtertype is 'greater'</span></dd> 
+					<dd class="spec pending"><span class="spec-name">uses the '&lt;=' operator if its filtertype is 'less' (PENDING: Because I can)</span></dd> 
+					<dd class="spec passed"><span class="spec-name">raises an error if it's created with an unknown filtertype</span></dd> 
+				</dl> 
+			</div> 
+			<div class="example-group"> 
+				<dl> 
+					<dt id="example-group-6">Treequel::Filter components: Treequel::Filter::SubstringItemComponent</dt> 
+					<dd class="spec failed"> 
+						<span class="spec-name">can parse a component object from a string literal</span> 
+						<div class="failure" id="failure-1"> 
+							<div class="message"><code>undefined local variable or method `saadsdf' for #&lt;Spec::Example::ExampleGroup::Subclass_1::Subclass_2::Subclass_4:0x1b343d0&gt;</code></div> 
+							<div class="backtrace">
+								<code><a href="txmt://open?url=file:///Users/ged/source/ruby/Treequel/spec/treequel/filter_spec.rb&amp;line=296">/Users/ged/source/ruby/Treequel/spec/treequel/filter_spec.rb:296</a> -:3</code></div> 
+								<pre class="ruby"><code>
+<span class="linenum">294</span>				<span class="ident">comp</span><span class="punct">.</span><span class="ident">attribute</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="punct">'</span><span class="string">description</span><span class="punct">'</span> 
+<span class="linenum">295</span>				<span class="ident">comp</span><span class="punct">.</span><span class="ident">options</span><span class="punct">.</span><span class="ident">should</span>   <span class="punct">==</span> <span class="punct">'</span><span class="string"></span><span class="punct">'</span> 
+<span class="offending"><span class="linenum">296</span>				<span class="ident">saadsdf</span></span> 
+<span class="linenum">297</span>				<span class="ident">comp</span><span class="punct">.</span><span class="ident">pattern</span><span class="punct">.</span><span class="ident">should</span>   <span class="punct">==</span> <span class="punct">'</span><span class="string">*basecamp*</span><span class="punct">'</span> 
+<span class="linenum">298</span>			<span class="keyword">end</span>
+								</code></pre> 
+							</div> 
+						</dd> 
+						<dd class="spec passed"><span class="spec-name">can parse a component object from a string literal with attribute options</span></dd> 
+						<dd class="spec passed"><span class="spec-name">raises an ExpressionError if it can't parse a string literal</span></dd> 
+					</dl> 
+				</div> 
+				<div class="example-group"> 
+					<dl> 
+						<dt id="example-group-7">Treequel::Filter components: Treequel::Filter::AndComponent</dt> 
+						<dd class="spec passed"><span class="spec-name">stringifies as its filters ANDed together</span></dd> 
+						<dd class="spec passed"><span class="spec-name">allows a single filter</span></dd> 
+					</dl> 
+				</div> 
+				<div class="example-group"> 
+					<dl> 
+						<dt id="example-group-8">Treequel::Filter components: Treequel::Filter::OrComponent</dt> 
+						<dd class="spec passed"><span class="spec-name">stringifies as its filters ORed together</span></dd> 
+						<dd class="spec failed"> 
+							<span class="spec-name">allows a single filter</span> 
+							<div class="failure" id="failure-2"> 
+								<div class="message"><code>undefined local variable or method `sdsdf' for #&lt;Spec::Example::ExampleGroup::Subclass_1::Subclass_2::Subclass_6:0x1af8308&gt;</code></div> 
+								<div class="backtrace"><code><a href="txmt://open?url=file:///Users/ged/source/ruby/Treequel/spec/treequel/filter_spec.rb&amp;line=335">/Users/ged/source/ruby/Treequel/spec/treequel/filter_spec.rb:335</a> -:3</code></div> 
+								<pre class="ruby"><code>
+<span class="linenum">333</span> 
+<span class="linenum">334</span>			<span class="ident">it</span> <span class="punct">&quot;</span><span class="string">allows a single filter</span><span class="punct">&quot;</span> <span class="keyword">do</span> 
+<span class="offending"><span class="linenum">335</span>				<span class="ident">sdsdf</span></span> 
+<span class="linenum">336</span>				<span class="constant">Treequel</span><span class="punct">::</span><span class="constant">Filter</span><span class="punct">::</span><span class="constant">OrComponent</span><span class="punct">.</span><span class="ident">new</span><span class="punct">(</span> <span class="attribute">@filter1</span> <span class="punct">).</span><span class="ident">to_s</span><span class="punct">.</span> 
+<span class="linenum">337</span>					<span class="ident">should</span> <span class="punct">==</span> <span class="punct">'</span><span class="string">|(filter1)</span><span class="punct">'</span>
+								</code></pre> 
+							</div> 
+						</dd> 
+					</dl> 
+				</div> 
+				<div class="example-group"> 
+					<dl> 
+						<dt id="example-group-9">Treequel::Filter components: Treequel::Filter::NotComponent</dt> 
+						<dd class="spec passed"><span class="spec-name">stringifies as the negation of its filter</span></dd> 
+						<dd class="spec passed"><span class="spec-name">can't be created with multiple filters</span></dd> 
+					</dl> 
+				</div> 
+				<div class="example-group"> 
+					<dl> 
+						<dt id="example-group-10">Treequel::Filter support for Sequel expressions</dt> 
+						<dd class="spec passed"><span class="spec-name">supports the boolean expression syntax</span></dd> 
+					</dl> 
+				</div> 
+			</div> 
+		</div> 
+		
+	</body> 
+	</html>
