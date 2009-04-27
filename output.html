@@ -8,11 +8,13 @@
 	<meta http-equiv="Expires" content="-1" /> 
 	<meta http-equiv="Pragma" content="no-cache" /> 
 
-	<link rel="stylesheet" href="textmate-rspec.css" type="text/css" media="screen" 
+	<base href="file:///Users/mgranger/source/ruby/webkit-rspec-formatter/data/" />
+
+	<link rel="stylesheet" href="css/textmate-rspec.css" type="text/css" media="screen" 
 		title="no title" charset="utf-8" />
 
-	<script type="text/javascript" charset="utf-8" src="jquery-1.3.2.min.js"></script>
-	<script type="text/javascript" charset="utf-8" src="textmate-rspec.js"></script> 
+	<script type="text/javascript" charset="utf-8" src="js/jquery-1.3.2.min.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/textmate-rspec.js"></script> 
 </head> 
 <body> 
 	<div class="rspec-report"> 
@@ -20,7 +22,8 @@
 		<div id="rspec-header"> 
 			<div id="rspec-title-section">
 		    <h1>RSpec Results:</h1> 
-				<span id="rspec-summary-stats">Finished in 5.34255 seconds.</span>
+				<span id="rspec-summary-stats">Running (<span id="spec-count">267</span> 
+					examples)...</span>
 			</div>
 			
 		  <div id="rspec-summary"> 
@@ -30,134 +33,1189 @@
 		</div> 
 
 		<div id="rspec-details"> 
-			<div class="example-group"> 
-				<dl> 
-					<dt id="example-group-1">Treequel::Filter</dt> 
-					<dd class="spec passed"><span class="spec-name">knows that it is promiscuous (will match any entry) if its component is promiscuous</span></dd> 
-					<dd class="spec passed"><span class="spec-name">knows that it isn't promiscuous if its component isn't promiscuous</span></dd> 
-					<dd class="spec passed"><span class="spec-name">defaults to selecting everything</span></dd> 
-					<dd class="spec passed"><span class="spec-name">can be created from a string literal</span></dd> 
-					<dd class="spec passed"><span class="spec-name">wraps string literal instances in parens if it requires them</span></dd> 
-					<dd class="spec passed"><span class="spec-name">parses a single Symbol argument as a presence filter</span></dd> 
-					<dd class="spec passed"><span class="spec-name">parses a single-element Array with a Symbol as a presence filter</span></dd> 
-					<dd class="spec passed"><span class="spec-name">parses a Symbol+value pair as a simple item equal filter</span></dd> 
-					<dd class="spec passed"><span class="spec-name">parses a Symbol+value pair in an Array as a simple item equal filter</span></dd> 
-					<dd class="spec passed"><span class="spec-name">parses an AND expression with only a single clause</span></dd> 
-					<dd class="spec passed"><span class="spec-name">parses an AND expression with multiple clauses</span></dd> 
-					<dd class="spec passed"><span class="spec-name">parses an OR expression with only a single clause</span></dd> 
-					<dd class="spec passed"><span class="spec-name">parses an OR expression with multiple clauses</span></dd> 
-					<dd class="spec passed"><span class="spec-name">parses an OR expression with String literal clauses</span></dd> 
-					<dd class="spec passed"><span class="spec-name">parses the hash form of OR expression</span></dd> 
-					<dd class="spec passed"><span class="spec-name">parses a NOT expression with only a single clause</span></dd> 
-					<dd class="spec passed"><span class="spec-name">raises an exception with a NOT expression that contains more than one clause</span></dd> 
-					<dd class="spec passed"><span class="spec-name">parses a Substring item from a filter that includes an asterisk</span></dd> 
-					<dd class="spec passed"><span class="spec-name">parses a Present item from a filter that is only an asterisk</span></dd> 
-					<dd class="spec passed"><span class="spec-name">raises an error when an extensible item filter is given</span></dd> 
-					<dd class="spec passed"><span class="spec-name">parses a complex nested expression</span></dd> 
-				</dl> 
-			</div> 
-			<div class="example-group"> 
-				<dl> 
-					<dt id="example-group-2">Treequel::Filter operator methods</dt> 
-					<dd class="spec passed"><span class="spec-name">compares as equal with another filter if their components are equal</span></dd> 
-					<dd class="spec passed"><span class="spec-name">creates a new AND filter out of two filters that are added together</span></dd> 
-					<dd class="spec passed"><span class="spec-name">creates a new AND filter out of two filters that are bitwise-ANDed together</span></dd> 
-					<dd class="spec passed"><span class="spec-name">doesn't include the left operand in an AND filter if it is promiscuous</span></dd> 
-					<dd class="spec passed"><span class="spec-name">doesn't include the right operand in an AND filter if it is promiscuous</span></dd> 
-				</dl> 
-			</div> 
-			<div class="example-group"> 
-				<dl> 
-					<dt id="example-group-3">Treequel::Filter components: Treequel::Filter::FilterList</dt> 
-					<dd class="spec passed"><span class="spec-name">stringifies by joining its stringified members</span></dd> 
-				</dl> 
-			</div> 
-			<div class="example-group"> 
-				<dl> 
-					<dt id="example-group-4">Treequel::Filter components: Treequel::Filter::Component</dt> 
-					<dd class="spec passed"><span class="spec-name">is an abstract class</span></dd> 
-					<dd class="spec passed"><span class="spec-name">is non-promiscuous by default</span></dd> 
-				</dl> 
-			</div> 
-			<div class="example-group"> 
-				<dl> 
-					<dt id="example-group-5">Treequel::Filter components: Treequel::Filter::SimpleItemComponent</dt> 
-					<dd class="spec passed"><span class="spec-name">can parse a component object from a string literal</span></dd> 
-					<dd class="spec passed"><span class="spec-name">raises an ExpressionError if it can't parse a string literal</span></dd> 
-					<dd class="spec passed"><span class="spec-name">uses the 'equal' operator if none is specified</span></dd> 
-					<dd class="spec passed"><span class="spec-name">knows what the appropriate operator is for its filtertype</span></dd> 
-					<dd class="spec passed"><span class="spec-name">knows what the appropriate operator is for its filtertype even if it's set to a string</span></dd> 
-					<dd class="spec passed"><span class="spec-name">stringifies as &lt;attribute&gt;&lt;operator&gt;&lt;value&gt;</span></dd> 
-					<dd class="spec passed"><span class="spec-name">uses the '~=' operator if its filtertype is 'approx'</span></dd> 
-					<dd class="spec passed"><span class="spec-name">uses the '&gt;=' operator if its filtertype is 'greater'</span></dd> 
-					<dd class="spec pending"><span class="spec-name">uses the '&lt;=' operator if its filtertype is 'less' (PENDING: Because I can)</span></dd> 
-					<dd class="spec passed"><span class="spec-name">raises an error if it's created with an unknown filtertype</span></dd> 
-				</dl> 
-			</div> 
-			<div class="example-group"> 
-				<dl> 
-					<dt id="example-group-6">Treequel::Filter components: Treequel::Filter::SubstringItemComponent</dt> 
-					<dd class="spec failed"> 
-						<span class="spec-name">can parse a component object from a string literal</span> 
-						<div class="failure" id="failure-1"> 
-							<div class="message"><code>undefined local variable or method `saadsdf' for #&lt;Spec::Example::ExampleGroup::Subclass_1::Subclass_2::Subclass_4:0x1b343d0&gt;</code></div> 
-							<div class="backtrace">
-								<code><a href="txmt://open?url=file:///Users/ged/source/ruby/Treequel/spec/treequel/filter_spec.rb&amp;line=296">/Users/ged/source/ruby/Treequel/spec/treequel/filter_spec.rb:296</a> -:3</code></div> 
-								<pre class="ruby"><code>
-<span class="linenum">294</span>				<span class="ident">comp</span><span class="punct">.</span><span class="ident">attribute</span><span class="punct">.</span><span class="ident">should</span> <span class="punct">==</span> <span class="punct">'</span><span class="string">description</span><span class="punct">'</span> 
-<span class="linenum">295</span>				<span class="ident">comp</span><span class="punct">.</span><span class="ident">options</span><span class="punct">.</span><span class="ident">should</span>   <span class="punct">==</span> <span class="punct">'</span><span class="string"></span><span class="punct">'</span> 
-<span class="offending"><span class="linenum">296</span>				<span class="ident">saadsdf</span></span> 
-<span class="linenum">297</span>				<span class="ident">comp</span><span class="punct">.</span><span class="ident">pattern</span><span class="punct">.</span><span class="ident">should</span>   <span class="punct">==</span> <span class="punct">'</span><span class="string">*basecamp*</span><span class="punct">'</span> 
-<span class="linenum">298</span>			<span class="keyword">end</span>
-								</code></pre> 
-							</div> 
-						</dd> 
-						<dd class="spec passed"><span class="spec-name">can parse a component object from a string literal with attribute options</span></dd> 
-						<dd class="spec passed"><span class="spec-name">raises an ExpressionError if it can't parse a string literal</span></dd> 
-					</dl> 
-				</div> 
-				<div class="example-group"> 
-					<dl> 
-						<dt id="example-group-7">Treequel::Filter components: Treequel::Filter::AndComponent</dt> 
-						<dd class="spec passed"><span class="spec-name">stringifies as its filters ANDed together</span></dd> 
-						<dd class="spec passed"><span class="spec-name">allows a single filter</span></dd> 
-					</dl> 
-				</div> 
-				<div class="example-group"> 
-					<dl> 
-						<dt id="example-group-8">Treequel::Filter components: Treequel::Filter::OrComponent</dt> 
-						<dd class="spec passed"><span class="spec-name">stringifies as its filters ORed together</span></dd> 
-						<dd class="spec failed"> 
-							<span class="spec-name">allows a single filter</span> 
-							<div class="failure" id="failure-2"> 
-								<div class="message"><code>undefined local variable or method `sdsdf' for #&lt;Spec::Example::ExampleGroup::Subclass_1::Subclass_2::Subclass_6:0x1af8308&gt;</code></div> 
-								<div class="backtrace"><code><a href="txmt://open?url=file:///Users/ged/source/ruby/Treequel/spec/treequel/filter_spec.rb&amp;line=335">/Users/ged/source/ruby/Treequel/spec/treequel/filter_spec.rb:335</a> -:3</code></div> 
-								<pre class="ruby"><code>
-<span class="linenum">333</span> 
-<span class="linenum">334</span>			<span class="ident">it</span> <span class="punct">&quot;</span><span class="string">allows a single filter</span><span class="punct">&quot;</span> <span class="keyword">do</span> 
-<span class="offending"><span class="linenum">335</span>				<span class="ident">sdsdf</span></span> 
-<span class="linenum">336</span>				<span class="constant">Treequel</span><span class="punct">::</span><span class="constant">Filter</span><span class="punct">::</span><span class="constant">OrComponent</span><span class="punct">.</span><span class="ident">new</span><span class="punct">(</span> <span class="attribute">@filter1</span> <span class="punct">).</span><span class="ident">to_s</span><span class="punct">.</span> 
-<span class="linenum">337</span>					<span class="ident">should</span> <span class="punct">==</span> <span class="punct">'</span><span class="string">|(filter1)</span><span class="punct">'</span>
-								</code></pre> 
-							</div> 
-						</dd> 
-					</dl> 
-				</div> 
-				<div class="example-group"> 
-					<dl> 
-						<dt id="example-group-9">Treequel::Filter components: Treequel::Filter::NotComponent</dt> 
-						<dd class="spec passed"><span class="spec-name">stringifies as the negation of its filter</span></dd> 
-						<dd class="spec passed"><span class="spec-name">can't be created with multiple filters</span></dd> 
-					</dl> 
-				</div> 
-				<div class="example-group"> 
-					<dl> 
-						<dt id="example-group-10">Treequel::Filter support for Sequel expressions</dt> 
-						<dd class="spec passed"><span class="spec-name">supports the boolean expression syntax</span></dd> 
-					</dl> 
-				</div> 
-			</div> 
-		</div> 
-		
-	</body> 
-	</html>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-1">Redleaf::Archetypes</dt>
+<dd class="spec passed">
+	<span class="spec-name">adds the ::include_archetype declarative to including classes</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-2">Redleaf::Archetypes -enabled class</dt>
+<dd class="spec passed">
+	<span class="spec-name">can add an archetype to itself</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can add an archetype to itself as a string</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can add multiple archetypes to itself</span>
+</dd>
+<dd class="spec pending">
+	<span class="spec-name">can include superclasses when adding archetypes to itself</span>
+  <div class="pending-message">completion of the archetypes system</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/archetypes_spec.rb:103</div>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-3">Redleaf::Archetypes Redleaf::Archetypes::MixinFactory</dt>
+<dd class="spec passed">
+	<span class="spec-name">fetches the vocabulary from the store if the store has it</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-4">Redleaf core extensions</dt>
+<dd class="spec passed">
+	<span class="spec-name">doesn't extend core classes unless requested</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">adds extensions to core classes when install_core_extensions is called</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-5">Redleaf core extensions Redleaf::ArrayExtensions</dt>
+<dd class="spec passed">
+	<span class="spec-name">adds statement case-equality to Arrays by using the argument's #=== method if it is a statement</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-6">Redleaf core extensions Redleaf::StringExtensions</dt>
+<dd class="spec passed">
+	<span class="spec-name">adds a language-code setter to Strings</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">downcases the language-code part of the tag</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">ignores other parts of the language tag when comparing languages</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">provides an explicit getter for the whole language tag struct</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-7">Redleaf core extensions Redleaf::KernelExtensions</dt>
+<dd class="spec passed">
+	<span class="spec-name">adds a casting method for Redleaf::Namespace</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-8">Redleaf::Graph</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows what types of models the underlying Redland library supports</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can be created with an explicit Store</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">raises an error if created with anything other than a Store</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-9">Redleaf::Graph with no nodes</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows that it is empty</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">has the same store as duplicates of itself</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">assigns an anonymous bnode when given the special token :_ as a subject</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">considers bnodes to be equivalent when testing graph equality</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">produces tainted duplicates if it itself is tainted</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">is equivalent to another graph with no nodes</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">has a default store</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can have statements appended to it as Redleaf::Statements</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can have statements appended to it as simple triples</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can load URIs that point to RDF data</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can sync itself to the underlying store</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-10">Redleaf::Graph with some nodes</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows that it is not empty</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">is not equivalent to another graph with no nodes</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">is equivalent to another graph with the same nodes</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">is not equivalent to another graph with all the same nodes but one</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">is not equivalent to another graph with the same number of nodes but one different one</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">has a default store</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">provides a way to remove statements by passing a triple</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">provides a way to remove statements by passing a statement object</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">uses NULL nodes in the triple passed to #remove as wildcards</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">raises an error if you try to #remove anything but a statement or triple</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can find statements which contain nodes that match specified ones</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can iterate over its statements</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can find all subjects for a given predicate and object</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can find one subject for a given predicate and object</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can find all predicates for a given subject and object</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can find one predicate for a given subject and object</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can find all objects for a given subject and predicate</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can find one object for a given subject and predicate</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can find all predicates that are about a given subject</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can find all predicates that entail a given object</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows if it has the specified predicate about the given subject</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows if it has any statements with the given subject</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows if it has any statements with the given object</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows it includes a statement which has been added to it</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows it includes a valid triple which has been added to it</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows it doesn't include a statement which hasn't been added to it</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">raises a FeatureError if asked to serialize to a format that isn't supported</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can be serialized as RDF/XML</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can be serialized via a #to_&lt;format&gt; method</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can sync itself to the underlying store</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can swap out its store with another one and carry its triples with it</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-11">Redleaf::Graph query interface</dt>
+<dd class="spec passed">
+	<span class="spec-name">can be queried with a SELECT SPARQL statement</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can be queried with a CONSTRUCT SPARQL statement</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can be queried with an ASK SPARQL statement</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can be queried with a DESCRIBE SPARQL statement with no WHERE clause</span>
+</dd>
+<dd class="spec pending">
+	<span class="spec-name">can be queried with a DESCRIBE SPARQL statement</span>
+  <div class="pending-message">figuring out what the hell I'm doing wrong</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/graph_spec.rb:496</div>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-12">Redleaf::Graph tsort interface</dt>
+<dd class="spec passed">
+	<span class="spec-name">is topologically-sortable</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-13">Redleaf mixin Redleaf::Loggable mixed into a class</dt>
+<dd class="spec passed">
+	<span class="spec-name">is able to output to the log via its #log method</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">is able to output to the log via its #log_debug method</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-14">Redleaf mixin Redleaf::HashUtilities</dt>
+<dd class="spec passed">
+	<span class="spec-name">includes a function for stringifying Hash keys</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">includes a function for symbolifying Hash keys</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-15">Redleaf mixin Redleaf::ArrayUtilities</dt>
+<dd class="spec passed">
+	<span class="spec-name">includes a function for stringifying Array elements</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">includes a function for symbolifying Array elements</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-16">Redleaf::Namespace</dt>
+<dd class="spec passed">
+	<span class="spec-name">provides a shortcut constructor</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-17">Redleaf::Namespace for a directory-style namespace URI</dt>
+<dd class="spec passed">
+	<span class="spec-name">returns its stringified URI when stringified</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">returns terms qualified relative to the namespace</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">accepts Symbols as terms as well as Strings</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows it's not a fragment-style namespace</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-18">Redleaf::Namespace for a fragment-style namespace URI</dt>
+<dd class="spec passed">
+	<span class="spec-name">returns its stringified URI when stringified</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">returns terms qualified relative to the namespace</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">accepts Symbols as terms as well as Strings</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows it's a fragment-style namespace</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-19">Redleaf::GRDDLParser instance</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows which Redland backend it uses</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what an accept header for the kinds of content it accepts is</span>
+</dd>
+<dd class="spec pending">
+	<span class="spec-name">parses valid XHTML with an embedded GRDDL profile and returns a graph</span>
+  <div class="pending-message">Not Yet Implemented</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/parser/grddl_spec.rb:69</div>
+</dd>
+<dd class="spec pending">
+	<span class="spec-name">raises an error when asked to parse input that doesn't have an embedded profile</span>
+  <div class="pending-message">Not Yet Implemented</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/parser/grddl_spec.rb:70</div>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-20">Redleaf::NTriplesParser instance</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows which Redland backend it uses</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what an accept header for the kinds of content it accepts is</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">parses valid NTriples and returns a graph</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">raises an error when asked to parse invalid NTriples input</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-21">Redleaf::RDFaParser instance</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows which Redland backend it uses</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what an accept header for the kinds of content it accepts is</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">requires that #parse be called with a baseuri</span>
+</dd>
+<dd class="spec pending">
+	<span class="spec-name">raises an error when asked to parse input that isn't valid XHTML</span>
+  <div class="pending-message">Not Yet Implemented</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/parser/rdfa_spec.rb:76</div>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-22">Redleaf::RDFXMLParser instance</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows which Redland backend it uses</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what an accept header for the kinds of content it accepts is</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">parses valid RDF/XML and returns a graph</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">raises an error when asked to parse invalid RDF/XML input</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-23">Redleaf::RSSTagSoupParser instance</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows which Redland backend it uses</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what an accept header for the kinds of content it accepts is</span>
+</dd>
+<dd class="spec pending">
+	<span class="spec-name">parses sloppy RSS tag soup and returns a graph</span>
+  <div class="pending-message">Not Yet Implemented</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/parser/rsstagsoup_spec.rb:69</div>
+</dd>
+<dd class="spec pending">
+	<span class="spec-name">raises an error when asked to parse input that doesn't look like RSS of some kind</span>
+  <div class="pending-message">Not Yet Implemented</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/parser/rsstagsoup_spec.rb:70</div>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-24">Redleaf::TriGParser instance</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows which Redland backend it uses</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what an accept header for the kinds of content it accepts is</span>
+</dd>
+<dd class="spec pending">
+	<span class="spec-name">parses valid TriG content and returns a graph</span>
+  <div class="pending-message">Not Yet Implemented</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/parser/trig_spec.rb:69</div>
+</dd>
+<dd class="spec pending">
+	<span class="spec-name">raises an error when asked to parse invalid input</span>
+  <div class="pending-message">Not Yet Implemented</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/parser/trig_spec.rb:70</div>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-25">Redleaf::TurtleParser instance</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows which Redland backend it uses</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what an accept header for the kinds of content it accepts is</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">requires that #parse be called with a baseuri</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">parses valid Turtle content and returns a graph</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">raises an error when asked to parse invalid input</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-26">Redleaf::Parser</dt>
+<dd class="spec passed">
+	<span class="spec-name">uses the 'guess' parser</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">raises an appropriate exception if you try to create a parser type that isn't present in the local machine's Redland library</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what features the local installation has</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-27">Redleaf::Parser concrete subclass</dt>
+<dd class="spec passed">
+	<span class="spec-name">can set which Redland parser type to use declaratively</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-28">Redleaf::BindingQueryResult</dt>
+<dd class="spec passed">
+	<span class="spec-name">supports Enumerable</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can return an XML representation of itself</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can return a JSON representation of itself</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows which graph it's from</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows how many result rows it contains</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can iterate over its rows</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-29">Redleaf::BooleanQueryResult</dt>
+<dd class="spec passed">
+	<span class="spec-name">supports Enumerable</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can return an XML representation of itself</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can return a JSON representation of itself</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">is a boolean query result</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can return a true or false value</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-30">Redleaf::GraphQueryResult</dt>
+<dd class="spec passed">
+	<span class="spec-name">supports Enumerable</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can return an XML representation of itself</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can return a JSON representation of itself</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">is a graph query result</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can return a graph</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-31">Redleaf::QueryResult</dt>
+<dd class="spec passed">
+	<span class="spec-name">is an abtract class</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what result formatters the local installation supports</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-32">Redleaf::Statement created with no subject, predicate, or object</dt>
+<dd class="spec passed">
+	<span class="spec-name">allows its subject to be set to a URI</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its subject to be set to a named blank node</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its subject to be set to an anonymous blank node</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its subject to be set to a URI string</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its subject to be set to a Redleaf::Namespace</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">does not allow its subject to be set to a literal</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its subject to be cleared by setting it to nil</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its predicate to be set to a URI</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its predicate to be set to a URI string</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its subject to be set to a Redleaf::Namespace</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">does not allow its predicate to be set to a blank node</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">does not allow its predicate to be set to a literal</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its predicate to be cleared by setting it to nil</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its object to be set to a URI</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its object to be set to a named blank node</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its object to be set to an anonymous blank node</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its object to be set to a plain literal</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its object to be set to a Fixnum</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its object to be set to a Float</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its object to be set to true</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows its object to be set to false</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">isn't complete</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can be stringified</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-33">Redleaf::Statement that has been constructed with a subject, predicate, and object</dt>
+<dd class="spec passed">
+	<span class="spec-name">can be cleared</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">has its subject set</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">has its predicate set</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">has its object set</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">is complete</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can be stringified</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can be serialized</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">case-matches an Array with identical nodes</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">case-matches an Array with a placeholder subject</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">case-matches an Array with a placeholder predicate</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">case-matches an Array with a placeholder object</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-34">Redleaf::Statement instances that share the same subject, predicate, and object</dt>
+<dd class="spec passed">
+	<span class="spec-name">are == to each other</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">are .eql? to each other</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">hash to the same value</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">case-match each other</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">sort as equal</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-35">Redleaf::Statement instances with different URI subjects</dt>
+<dd class="spec passed">
+	<span class="spec-name">are not == to each other</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">are not .eql? to each other</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">do not case-match each other</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">sort on the subject</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-36">Redleaf::Statement instances with null subjects</dt>
+<dd class="spec passed">
+	<span class="spec-name">are not == to each other</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">are not .eql? to each other</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">case-match each other</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">sort on the subject</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-37">Redleaf::Statement instances, one with a null subject and one with a set subject</dt>
+<dd class="spec passed">
+	<span class="spec-name">are not == to each other</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">are not .eql? to each other</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">case-match each other</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">sort with the null subject first</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-38">Redleaf::Statement instances with the same typed literal object</dt>
+<dd class="spec passed">
+	<span class="spec-name">are == to each other</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-39">Redleaf::FileStore</dt>
+<dd class="spec passed">
+	<span class="spec-name">can be created with a name</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-40">Redleaf::FileStore instance</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows which Redland backend it uses</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows whether it is persistent or not</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what its associated graph is</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-41">Redleaf::FileStore instance without an associated Redleaf::Graph</dt>
+<dd class="spec passed">
+	<span class="spec-name">raises an error when checked for contexts</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-42">Redleaf::FileStore instance with an associated Redleaf::Graph</dt>
+<dd class="spec passed">
+	<span class="spec-name">allows the association of a new Graph</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">copies triples from a new associated graph into the store</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-43">Redleaf::HashesStore</dt>
+<dd class="spec passed">
+	<span class="spec-name">normalizes options without any arguments</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">normalizes options with a specified memory type</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">normalizes options with a name and a specified memory type</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">throws an exception when bdb type is specified and no name is given</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">normalizes options with a name and no additional options</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">normalizes options with an absolute name and no additional options</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">normalizes options with a name and a specified directory</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">normalizes options with a name and a specified directory</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-44">Redleaf::HashesStore instance</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows which Redland backend it uses</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows whether it is persistent or not</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what its associated graph is</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-45">Redleaf::HashesStore instance created with a name</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows which Redland backend it uses</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows whether it is persistent or not</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what its associated graph is</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-46">Redleaf::MemoryStore</dt>
+<dd class="spec passed">
+	<span class="spec-name">can be created with a name</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-47">Redleaf::MemoryStore instance</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows which Redland backend it uses</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows whether it is persistent or not</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what its associated graph is</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-48">Redleaf::MemoryStore instance without an associated Redleaf::Graph</dt>
+<dd class="spec passed">
+	<span class="spec-name">raises an error when checked for contexts</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-49">Redleaf::MemoryStore instance with an associated Redleaf::Graph</dt>
+<dd class="spec passed">
+	<span class="spec-name">allows the association of a new Graph</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">copies triples from a new associated graph into the store</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">has contexts enabled by default</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-50">Redleaf::MySQLStore</dt>
+<dd class="spec pending">
+	<span class="spec-name">can be created with a name</span>
+  <div class="pending-message">no mysql backend; will not test</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/store/mysql_spec.rb:47</div>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-51">Redleaf::MySQLStore instance</dt>
+<dd class="spec pending">
+	<span class="spec-name">knows which Redland backend it uses</span>
+  <div class="pending-message">no mysql backend; will not test</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/store/mysql_spec.rb:47</div>
+</dd>
+<dd class="spec pending">
+	<span class="spec-name">knows whether it is persistent or not</span>
+  <div class="pending-message">no mysql backend; will not test</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/store/mysql_spec.rb:47</div>
+</dd>
+<dd class="spec pending">
+	<span class="spec-name">knows what its associated graph is</span>
+  <div class="pending-message">no mysql backend; will not test</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/store/mysql_spec.rb:47</div>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-52">Redleaf::MySQLStore instance without an associated Redleaf::Graph</dt>
+<dd class="spec pending">
+	<span class="spec-name">raises an error when checked for contexts</span>
+  <div class="pending-message">no mysql backend; will not test</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/store/mysql_spec.rb:47</div>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-53">Redleaf::MySQLStore instance with an associated Redleaf::Graph</dt>
+<dd class="spec pending">
+	<span class="spec-name">allows the association of a new Graph</span>
+  <div class="pending-message">no mysql backend; will not test</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/store/mysql_spec.rb:47</div>
+</dd>
+<dd class="spec pending">
+	<span class="spec-name">copies triples from a new associated graph into the store</span>
+  <div class="pending-message">no mysql backend; will not test</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/store/mysql_spec.rb:47</div>
+</dd>
+<dd class="spec pending">
+	<span class="spec-name">has contexts enabled by default</span>
+  <div class="pending-message">no mysql backend; will not test</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf/store/mysql_spec.rb:47</div>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-54">Redleaf::PostgreSQLStore</dt>
+<dd class="spec passed">
+	<span class="spec-name">can be created with a name</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-55">Redleaf::PostgreSQLStore instance</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows which Redland backend it uses</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows whether it is persistent or not</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what its associated graph is</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-56">Redleaf::PostgreSQLStore instance without an associated Redleaf::Graph</dt>
+<dd class="spec passed">
+	<span class="spec-name">raises an error when checked for contexts</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-57">Redleaf::PostgreSQLStore instance with an associated Redleaf::Graph</dt>
+<dd class="spec passed">
+	<span class="spec-name">allows the association of a new Graph</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">copies triples from a new associated graph into the store</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">has contexts enabled by default</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-58">Redleaf::SQLiteStore</dt>
+<dd class="spec passed">
+	<span class="spec-name">can be created with a name</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-59">Redleaf::SQLiteStore instance</dt>
+<dd class="spec passed">
+	<span class="spec-name">knows which Redland backend it uses</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows whether it is persistent or not</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">knows what its associated graph is</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-60">Redleaf::SQLiteStore instance without an associated Redleaf::Graph</dt>
+<dd class="spec passed">
+	<span class="spec-name">raises an error when checked for contexts</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-61">Redleaf::SQLiteStore instance with an associated Redleaf::Graph</dt>
+<dd class="spec passed">
+	<span class="spec-name">allows the association of a new Graph</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">copies triples from a new associated graph into the store</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">has contexts enabled by default</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-62">Redleaf::Store</dt>
+<dd class="spec passed">
+	<span class="spec-name">is an abstract class</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">raises an appropriate exception if you try to create a store that isn't present in the local machine's Redland library</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can check for support for a specified backend</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can create its derivatives by name</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can load its derivatives by name</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-63">Redleaf::Store concrete subclass</dt>
+<dd class="spec passed">
+	<span class="spec-name">can set which Redland backend to use declaratively</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can check for support for the declared backend</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-64">Redleaf::NodeUtils with the default registry</dt>
+<dd class="spec passed">
+	<span class="spec-name">converts an xsd:string to a String</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">converts an xsd:float to a Float</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">converts an xsd:decimal to a BigDecimal</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">converts an xsd:integer to a Integer</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">converts an xsd:dateTime to a DateTime</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">converts an xsd:duration to a Duration</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">converts an xsd:duration with a negative sign to a negative Duration</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">converts an xsd:duration with a decimal seconds value to an equivalent Duration</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-65">Redleaf::NodeUtils custom type registry</dt>
+<dd class="spec passed">
+	<span class="spec-name">allows registration of new literal type-conversion Procs</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows registration of new literal type-conversion Hashes</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows registration of new class-conversions that use #to_s</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows registration of new class-conversions that use #[]</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">allows registration of new class-conversions with a specific conversion method</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">works end-to-end</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-66">Redleaf</dt>
+<dd class="spec passed">
+	<span class="spec-name">should know if its default logger is replaced</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">returns a version string if asked</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">returns a version string with a build number if asked</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can convert a Ruby String into its equivalent literal string</span>
+</dd>
+<dd class="spec pending">
+	<span class="spec-name">can convert a Ruby String with a language tag into its equivalent literal string</span>
+  <div class="pending-message">figuring out the language-tagging stuff, then making the literal function take that into account</div>
+  <div class="pending-caller">/Users/mgranger/source/ruby/Redleaf/spec/redleaf_spec.rb:72</div>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can convert a Ruby Integer into its equivalent literal string</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">can convert a Ruby Float into its equivalent literal string</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-67">Redleaf logging subsystem</dt>
+<dd class="spec passed">
+	<span class="spec-name">has the default logger instance after being reset</span>
+</dd>
+<dd class="spec passed">
+	<span class="spec-name">has the default log formatter instance after being reset</span>
+</dd>
+  </dl>
+</div>
+<div class="example-group">
+  <dl>
+  <dt id="example-group-68">Redleaf logging subsystem with new defaults</dt>
+<dd class="spec passed">
+	<span class="spec-name">uses the new defaults when the logging subsystem is reset</span>
+</dd>
+  </dl>
+</div>
+	</div> 
+
+	<div id="summary">
+		<p>267 examples run in 1.402717 seconds. 
+		0 failed, 18 are pending.</p>
+	</div>
+	
+</body> 
+</html>

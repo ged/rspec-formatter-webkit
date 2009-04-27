@@ -16,4 +16,9 @@
 <%     unless extra == '' %><%= extra %><% end %>
   </div>
 <% end %>
+<% unless log_messages.nil? || log_message.empty? %>
+  <div class="log-messages">
+<%= log_messages.join("\n") %>
+  </div>
+<% end %>
 </dd>

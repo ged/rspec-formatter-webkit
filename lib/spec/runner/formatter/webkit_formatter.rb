@@ -2,6 +2,7 @@
 
 require 'erb'
 require 'pathname'
+require 'logger'
 require 'spec/runner/formatter/base_text_formatter'
 require 'spec/runner/formatter/snippet_extractor'
 
@@ -23,12 +24,16 @@ class Spec::Runner::Formatter::WebKitFormatter < Spec::Runner::Formatter::BaseTe
 	FOOTER_TEMPLATE  = TEMPLATE_DIR + 'footer.rhtml'
 
 	
-	def initialize( options, output )
+	
+	### Initializer
+	def initialize( options, output ) # :notnew:
 		super
 		@example_group_number = 0
 		@example_number = 0
 		@snippet_extractor = Spec::Runner::Formatter::SnippetExtractor.new
 		@example_template = ERB.new( File.read(EXAMPLE_TEMPLATE), nil, '<>' ).freeze
+		
+		Thread.current['logger-output'] = []
 	end
 
 
@@ -48,9 +53,10 @@ class Spec::Runner::Formatter::WebKitFormatter < Spec::Runner::Formatter::BaseTe
 			@output.puts "</div>"
 		end
 
-		@output.puts "<div class=\"example-group\">"
-		@output.puts "  <dl>"
-		@output.puts "  <dt id=\"example-group-#{example_group_number}\">#{h(example_group.description)}</dt>"
+		@output.puts %{<div class="example-group">}
+		@output.puts %{  <dl>}
+		@output.puts %{  <dt id="example-group-%d\">%s</dt>} %
+			[ example_group_number, h(example_group.description) ]
 		@output.flush
 	end
 
@@ -60,8 +66,14 @@ class Spec::Runner::Formatter::WebKitFormatter < Spec::Runner::Formatter::BaseTe
 		@output.flush
 	end
 
+	def log_messages
+		return Thread.current[ 'logger-output' ] || []
+	end
+
 	def example_started( example )
 		@example_number += 1
+		Thread.current[ 'logger-output' ] ||= []
+		Thread.current[ 'logger-output' ].clear
 	end
 
 	def example_passed( example )

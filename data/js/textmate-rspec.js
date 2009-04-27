@@ -35,6 +35,8 @@
  * 
  */
 
+var polltimer = null;
+
 function _fadeOutRect( ctx, x, y, w, h, a1, a2 ) {
     ctx.save();
 
@@ -53,6 +55,7 @@ function _fadeOutRect( ctx, x, y, w, h, a1, a2 ) {
 
 function _drawSummaryGraph( selector, segments ) {
 	var graphElement = $(selector).get( 0 );
+	var i = 0;
 	
     if (!graphElement)
         return;
@@ -65,7 +68,7 @@ function _drawSummaryGraph( selector, segments ) {
 
     // Calculate the total of all segments.
     var total = 0;
-    for (var i = 0; i < segments.length; ++i)
+    for (i = 0; i < segments.length; ++i)
         total += segments[i].value;
 
     // Calculate the percentage of each segment, rounded to the nearest percent.
@@ -75,13 +78,13 @@ function _drawSummaryGraph( selector, segments ) {
 
     // Calculate the total percentage.
     var percentTotal = 0;
-    for (var i = 0; i < percents.length; ++i)
+    for (i = 0; i < percents.length; ++i)
         percentTotal += percents[i];
 
     // Make sure our percentage total is not greater-than 100, it can be greater
     // if we rounded up for a few segments.
     while (percentTotal > 100) {
-        for (var i = 0; i < percents.length && percentTotal > 100; ++i) {
+        for (i = 0; i < percents.length && percentTotal > 100; ++i) {
             if (percents[i] > 1) {
                 --percents[i];
                 --percentTotal;
@@ -92,7 +95,7 @@ function _drawSummaryGraph( selector, segments ) {
     // Make sure our percentage total is not less-than 100, it can be less
     // if we rounded down for a few segments.
     while (percentTotal < 100) {
-        for (var i = 0; i < percents.length && percentTotal < 100; ++i) {
+        for (i = 0; i < percents.length && percentTotal < 100; ++i) {
             ++percents[i];
             ++percentTotal;
         }
@@ -177,7 +180,7 @@ function _drawSummaryGraph( selector, segments ) {
 
         // Draw the segment divider lines.
         ctx.lineWidth = 1;
-        for (var i = 1; i < 20; ++i) {
+        for (i = 1; i < 20; ++i) {
             ctx.beginPath();
             ctx.moveTo(x + (i * Math.round(w / 20)) + 0.5, y);
             ctx.lineTo(x + (i * Math.round(w / 20)) + 0.5, y + h);
@@ -295,7 +298,6 @@ function _makeLegendElement( label, value, color ) {
     legendElement.appendChild(labelElement);
 
     var headerElement = document.createElement("div");
-    var headerElement = document.createElement("div");
     headerElement.className = "rspec-graph-legend-header";
     headerElement.textContent = label;
     labelElement.appendChild(headerElement);
@@ -310,10 +312,12 @@ function _makeLegendElement( label, value, color ) {
 
 
 function _updateSummaryGraph() {
+	var total = $('#spec-count').eq(0).text();
 	var graphInfo = {
 		passed: $('.spec.passed'),
 		pending: $('.spec.pending'),
-		failed: $('.spec.failed')
+		failed: $('.spec.failed'),
+		total: parseInt( total, 10 )
 	};
 
     var categoryOrder = ["passed", "pending", "failed"];
@@ -323,6 +327,7 @@ function _updateSummaryGraph() {
 		failed: {r: 192, g: 0, b: 0}		// #C00000
 	};
     var fillSegments = [];
+	var doneCount = 0;
 
 	var legendElement = $( '#rspec-summary-graph-legend' );
 	legendElement.empty();
@@ -331,6 +336,7 @@ function _updateSummaryGraph() {
         var category = categoryOrder[i];
         var size = graphInfo[ category ].length;
         if (!size) return true;
+		doneCount += size;
 
         var color = categoryColors[category];
         var colorString = "rgb(" + color.r + ", " + color.g + ", " + color.b + ")";
@@ -344,8 +350,13 @@ function _updateSummaryGraph() {
 
     if ( graphInfo.total ) {
         var totalLegendLabel = _makeLegendElement( "Total", graphInfo.total );
-        totalLegendLabel.addStyleClass( "total" );
+        // totalLegendLabel.addStyleClass( "total" );
         legendElement.append( totalLegendLabel );
+		if ( doneCount < graphInfo.total ) {
+			var fillSegment = { color: 'rgb(254,254,254)', value: graphInfo.total - doneCount };
+			console.log( "Adding segment for examples yet to run: " + fillSegment.toString() );
+			fillSegments.push( fillSegment );
+		}
     }
 
 	_drawSummaryGraph( '#rspec-summary-graph', fillSegments );
@@ -353,6 +364,12 @@ function _updateSummaryGraph() {
 
 $(document).ready(function() {
 	console.log( "Document is ready." );
+	clearInterval( polltimer );
+
+	$('#rspec-summary-stats').html( 'Finished in ' + $('#summary .duration').html() );
+	
 	_updateSummaryGraph();
 });
+
+polltimer = setInterval( _updateSummaryGraph, 500 );
 

@@ -161,3 +161,60 @@ body {
 	color: #000000;
 	background-color: #FFFBD3;
 }
+
+/* Style for log output */
+div.log-message {
+	background: #eee;
+	padding: 0 2em;
+	margin: 0.2em 1em;
+	border-bottom: 1px dotted #999;
+	border-top: 1px dotted #999;
+	text-indent: -1em;
+}
+
+/* Parts of the message */
+div.log-message .log-time {
+	font-weight: bold;
+}
+div.log-message .log-time:after {
+	content: ": ";
+}
+div.log-message .log-level {
+	font-variant: small-caps;
+	border: 1px solid #ccc;
+	padding: 1px 2px;
+}
+div.log-message .log-name {
+	font-size: 1.2em;
+	color: #1e51b2;
+}
+div.log-message .log-name:before { content: "«"; }
+div.log-message .log-name:after { content:  "»"; }
+
+div.log-message .log-message-text {
+	padding-left: 4px;
+	font-family: Monaco, "Andale Mono", "Vera Sans Mono", mono;
+}
+
+
+/* Distinguish levels */
+div.log-message.debug { color: #666; }
+div.log-message.info {}
+
+div.log-message.warn,
+div.log-message.error {
+	background: #ff9;
+}
+div.log-message.error .log-level,
+div.log-message.error .log-message-text {
+	color: #900;
+}
+div.log-message.fatal {
+	background: #900;
+	color: white;
+	font-weight: bold;
+	border: 0;
+}
+div.log-message.fatal .log-name {
+	color:  white;
+}
