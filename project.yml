@@ -1,0 +1,23 @@
+--- 
+rubyforge_project: webkit-rspec-formatter
+project_requirements: {}
+
+project_pubdir: /usr/local/www/public/code/
+project_description: |-
+  This is a formatter for RSpec that takes advantage of some of the advanced features of the webkit
+  HTML engine, like the one TextMate uses for its output.
+rubyforge_group: deveiate
+author_name: Michael Granger
+project_pubhost: deveiate
+project_homepage: http://deveiate.org/projects/WebKit-RSpec-Formatter
+project_dependencies: 
+  rspec: ">=1.2.2"
+project_summary: A webkit-aware pretty formatter for RSpec
+project_name: WebKit RSpec Formatter
+version_file: spec/runner/formatter/webkit_formatter.rb
+additional_pkgfiles: 
+- data/**/*
+dev_dependencies: {}
+
+author_email: ged@FaerieMUD.org
+post_install_message: ""
