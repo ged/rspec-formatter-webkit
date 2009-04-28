@@ -15,6 +15,10 @@ body {
 	font-size: 80%;
 }
 
+pre, code {
+	font: 0.8em "Vera Sans Mono", "Andale Mono", Monaco, mono;
+}
+
 #rspec-header {
     padding-top: 20px;
     top: 0;
@@ -24,15 +28,12 @@ body {
     margin-left: -1px;
     border-left: 1px solid rgb(102, 102, 102);
     background-color: rgb(101, 111, 130);
-    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.5)));
-    background-repeat: repeat-x;
-    background-position: bottom;
     text-shadow: black 0 1px 3px;
     white-space: nowrap;
     color: white;
-    -webkit-background-size: 1px 6px;
-    -webkit-background-origin: padding;
-    -webkit-background-clip: padding;
+    position: fixed;
+    -webkit-box-shadow: rgba(25,25,25,0.5) 0 3px 3px;
+    -moz-box-shadow: rgba(25,25,25,0.5) 0 3px 3px;
 }
 
 #rspec-title-section {
@@ -53,11 +54,28 @@ body {
     padding-left: 15px;
 }
 
+#rspec-details {
+	margin-top: 120px;
+}
+
+#summary {
+	margin: 0;
+	padding: 1em 3em;
+	background-color: rgb(101, 111, 130);
+	color: white;
+}
+#summary p {
+	margin: 0;
+}
+
 .rspec-graph-legend-item {
     display: inline-block;
     font-weight: bold;
     margin-right: 15px;
     vertical-align: top;
+}
+.rspec-graph-legend-item.hidden {
+	opacity: 0.5;
 }
 
 .rspec-graph-legend-item.total {
@@ -111,19 +129,39 @@ body {
 }
 .example-group dl dd.spec.passed {
 	background-color: #aacba3;
-	background-image: url(../images/tick_circle_frame.png);
+	background-image: url(../images/tick_shield.png);
 }
 .example-group dl dd.spec.pending {
 	background-color: #cac574;
-	background-image: url(../images/exclamation_frame.png);
+	background-image: url(../images/exclamation_shield.png);
+}
+.example-group dl dd.spec.pending-fixed {
+	background-color: #8a9dca;
+	background-image: url(../images/question_shield.png);
 }
 .example-group dl dd.spec.failed {
 	background-color: #d39595;
-	background-image: url(../images/cross_circle_frame.png);
+	background-image: url(../images/cross_shield.png);
+}
+.example-group dl dd.spec.logged .spec-name:after {
+	content: " *";
+}
+.example-group dl dd.spec.logged .spec-name {
+	cursor: pointer;
 }
 
 .failure {
-/*	display: none;*/
+	/*display: none;*/
+}
+.failure .message {
+	background: #dedede;
+	padding: 0.1em 1em;
+}
+.failure .message code {
+}
+
+.pending-message {
+	
 }
 
 /* Ruby code, style similar to vibrant ink */
@@ -163,12 +201,18 @@ body {
 }
 
 /* Style for log output */
+div.log-messages {
+	display: none;
+	margin: 0;
+	padding: 0;
+	background-color: #999;
+	font: 0.8em "Vera Sans Mono", "Andale Mono", Monaco, mono;
+}
 div.log-message {
 	background: #eee;
-	padding: 0 2em;
-	margin: 0.2em 1em;
-	border-bottom: 1px dotted #999;
-	border-top: 1px dotted #999;
+	padding: 0 1.2em;
+	margin: 0 1em;
+	border-top: 1px solid #999;
 	text-indent: -1em;
 }
 

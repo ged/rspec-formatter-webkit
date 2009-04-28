@@ -2,13 +2,13 @@
 	<span class="spec-name"><%= h(example.description) %></span>
 <% case status %>
 <%	 when 'pending' %>
-  <div class="pending-message"><%= message %></div>
-  <div class="pending-caller"><%= pending_caller %></div>
+  <span class="pending-message">(Pending <%= message %>)</span><br />
+  <span class="pending-caller"><%= self.format_backtrace_line(pending_caller) %></span>
 <%   when 'failed', 'pending-fixed' %>
   <div class="failure" id="failure-<%= counter %>">
 
 <%     unless failure.exception.nil? %>
-	<div class="message"><code><%= h( failure.exception.message ) %></code></div>
+	<div class="message"><code><%= h( failure.exception.message ).gsub(/\n/, '<br />') %></code></div>
 	<div class="backtrace"><pre>
 <%= failure.exception.backtrace.map {|line| self.format_backtrace_line(line) }.join("\n") %>
 	</pre></div>
@@ -16,7 +16,7 @@
 <%     unless extra == '' %><%= extra %><% end %>
   </div>
 <% end %>
-<% unless log_messages.nil? || log_message.empty? %>
+<% unless log_messages.nil? || log_messages.empty? %>
   <div class="log-messages">
 <%= log_messages.join("\n") %>
   </div>

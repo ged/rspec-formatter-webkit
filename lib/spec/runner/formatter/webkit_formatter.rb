@@ -3,6 +3,7 @@
 require 'erb'
 require 'pathname'
 require 'logger'
+require 'spec'
 require 'spec/runner/formatter/base_text_formatter'
 require 'spec/runner/formatter/snippet_extractor'
 
@@ -44,21 +45,23 @@ class Spec::Runner::Formatter::WebKitFormatter < Spec::Runner::Formatter::BaseTe
 		@output.flush
 	end
 
-	def add_example_group( example_group )
+	def example_group_started( example_group )
 		super
 		@example_group_number += 1
 
 		unless example_group_number == 1
-			@output.puts "  </dl>"
-			@output.puts "</div>"
+			@output.puts "  </dl>", "</div>"
 		end
 
-		@output.puts %{<div class="example-group">}
-		@output.puts %{  <dl>}
-		@output.puts %{  <dt id="example-group-%d\">%s</dt>} %
-			[ example_group_number, h(example_group.description) ]
+		@output.puts %{<div class="example-group">},
+			%{  <dl>},
+			%{  <dt id="example-group-%d">%s</dt>} % [
+			 	example_group_number,
+				h(example_group.description)
+			]
 		@output.flush
 	end
+	alias_method :add_example_group, :example_group_started
 
 	def start_dump
 		@output.puts "  </dl>"
@@ -98,7 +101,8 @@ class Spec::Runner::Formatter::WebKitFormatter < Spec::Runner::Formatter::BaseTe
 
 
 	def format_backtrace_line( line )
-		line.gsub( /([^:]*\.rb):(\d*)/ ) do
+		return '' if line =~ /textmate-command/i
+		return line.gsub( /([^:]*\.rb):(\d*)/ ) do
 			"<a href=\"txmt://open?url=file://#{File.expand_path($1)}&line=#{$2}\">#{$1}:#{$2}</a> "
 		end
 	end

@@ -37,7 +37,7 @@
 
 var polltimer = null;
 
-function _fadeOutRect( ctx, x, y, w, h, a1, a2 ) {
+function fade_out_rect( ctx, x, y, w, h, a1, a2 ) {
     ctx.save();
 
     var gradient = ctx.createLinearGradient(x, y, x, y + h);
@@ -53,7 +53,7 @@ function _fadeOutRect( ctx, x, y, w, h, a1, a2 ) {
     ctx.restore();
 }
 
-function _drawSummaryGraph( selector, segments ) {
+function draw_summary_graph( selector, segments ) {
 	var graphElement = $(selector).get( 0 );
 	var i = 0;
 	
@@ -232,14 +232,14 @@ function _drawSummaryGraph( selector, segments ) {
 
     ctx.restore();
 
-    _fadeOutRect(ctx, x, y + h + 1, w, h, 0.5, 0.0);
+    fade_out_rect(ctx, x, y + h + 1, w, h, 0.5, 0.0);
 }
 
 
-function _drawSwatch( canvas, color ) {
+function draw_swatch( canvas, color ) {
     var ctx = canvas.getContext("2d");
 
-    function drawSwatchSquare() {
+    function draw_swatch_square() {
         ctx.fillStyle = color;
         ctx.fillRect(0, 0, 13, 13);
 
@@ -263,24 +263,24 @@ function _drawSwatch( canvas, color ) {
 
     ctx.clearRect(0, 0, 13, 24);
 
-    drawSwatchSquare();
+    draw_swatch_square();
 
     ctx.save();
 
     ctx.translate(0, 25);
     ctx.scale(1, -1);
 
-    drawSwatchSquare();
+    draw_swatch_square();
 
     ctx.restore();
 
-    _fadeOutRect(ctx, 0, 13, 13, 13, 0.5, 0.0);
+    fade_out_rect(ctx, 0, 13, 13, 13, 0.5, 0.0);
 }
 
 
-function _makeLegendElement( label, value, color ) {
+function make_legend_element( label, value, color ) {
     var legendElement = document.createElement("label");
-    legendElement.className = "rspec-graph-legend-item";
+    legendElement.className = "rspec-graph-legend-item " + label.replace(/\W+/g, '-');
 
     if (color) {
         var swatch = document.createElement("canvas");
@@ -290,7 +290,7 @@ function _makeLegendElement( label, value, color ) {
 
         legendElement.appendChild(swatch);
 
-        _drawSwatch(swatch, color);
+        draw_swatch(swatch, color);
     }
 
     var labelElement = document.createElement("div");
@@ -311,20 +311,22 @@ function _makeLegendElement( label, value, color ) {
 }
 
 
-function _updateSummaryGraph() {
+function update_summary_graph() {
 	var total = $('#spec-count').eq(0).text();
 	var graphInfo = {
 		passed: $('.spec.passed'),
 		pending: $('.spec.pending'),
 		failed: $('.spec.failed'),
+		'pending:fixed': $('.spec.pending-fixed'),
 		total: parseInt( total, 10 )
 	};
 
-    var categoryOrder = ["passed", "pending", "failed"];
+    var categoryOrder = ["passed", "pending", "pending:fixed", "failed"];
 	var categoryColors = {
-		passed: {r: 0, g: 157, b: 37},		// #009D25
-		pending: {r: 227, g: 184, b: 0},	// #E3B800
-		failed: {r: 192, g: 0, b: 0}		// #C00000
+		passed: {r: 0, g: 157, b: 37},            // #009D25
+		pending: {r: 227, g: 184, b: 0},          // #E3B800
+		'pending:fixed': {r: 9, g: 60, b: 226},   // #093CE2
+		failed: {r: 192, g: 0, b: 0}              // #C00000
 	};
     var fillSegments = [];
 	var doneCount = 0;
@@ -344,12 +346,12 @@ function _updateSummaryGraph() {
         var fillSegment = {color: colorString, value: size};
         fillSegments.push(fillSegment);
 
-        var legendLabel = _makeLegendElement( category, size, colorString );
+        var legendLabel = make_legend_element( category, size, colorString );
         legendElement.append( legendLabel );
     });
 
     if ( graphInfo.total ) {
-        var totalLegendLabel = _makeLegendElement( "Total", graphInfo.total );
+        var totalLegendLabel = make_legend_element( "remaining", graphInfo.total - doneCount );
         // totalLegendLabel.addStyleClass( "total" );
         legendElement.append( totalLegendLabel );
 		if ( doneCount < graphInfo.total ) {
@@ -359,7 +361,29 @@ function _updateSummaryGraph() {
 		}
     }
 
-	_drawSummaryGraph( '#rspec-summary-graph', fillSegments );
+	draw_summary_graph( '#rspec-summary-graph', fillSegments );
+}
+
+function toggle_spec_status() {
+	var status = $(this).attr( 'class' ).match( /(passed|pending(?:-fixed)?|failed)/ )[0];
+	console.log( "Looking for specs with class '" + status + "'." );
+	$(this).toggleClass( 'hidden' );
+	$( '.spec.' + status ).toggle('fast');
+}
+
+function hook_legend_clickables() {
+	$('label.passed').click( toggle_spec_status );
+	$('label.pending').click( toggle_spec_status );
+	$('label.pending-fixed').click( toggle_spec_status );
+	$('label.failed').click( toggle_spec_status );
+}
+
+function hook_log_clickables() {
+	$('.spec:has(div.log-messages)').each( function() {
+		$(this).addClass( 'logged' );
+	}).click( function(e) {
+		$(this).find('div.log-messages').toggle();
+	});
 }
 
 $(document).ready(function() {
@@ -368,8 +392,10 @@ $(document).ready(function() {
 
 	$('#rspec-summary-stats').html( 'Finished in ' + $('#summary .duration').html() );
 	
-	_updateSummaryGraph();
+	update_summary_graph();
+	hook_legend_clickables();
+	hook_log_clickables();
 });
 
-polltimer = setInterval( _updateSummaryGraph, 500 );
+polltimer = setInterval( update_summary_graph, 250 );
 
