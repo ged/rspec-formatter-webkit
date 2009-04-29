@@ -13,7 +13,7 @@ project_homepage: http://deveiate.org/projects/WebKit-RSpec-Formatter
 project_dependencies: 
   rspec: ">=1.2.2"
 project_summary: A webkit-aware pretty formatter for RSpec
-project_name: WebKit RSpec Formatter
+project_name: WebKit-RSpec-Formatter
 version_file: spec/runner/formatter/webkit_formatter.rb
 additional_pkgfiles: 
 - data/**/*

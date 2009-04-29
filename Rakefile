@@ -1,6 +1,6 @@
 #!rake
 #
-# WebKit RSpec Formatter rakefile
+# WebKit-RSpec-Formatter rakefile
 #
 # Based on various other Rakefiles, especially one by Ben Bleything
 #
@@ -40,7 +40,7 @@ DOCSDIR       = BASEDIR + 'docs'
 PKGDIR        = BASEDIR + 'pkg'
 DATADIR       = BASEDIR + 'data'
 
-PROJECT_NAME  = 'WebKit RSpec Formatter'
+PROJECT_NAME  = 'WebKit-RSpec-Formatter'
 PKG_NAME      = PROJECT_NAME.downcase
 PKG_SUMMARY   = 'A webkit-aware pretty formatter for RSpec'
 
