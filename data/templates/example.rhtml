@@ -3,7 +3,7 @@
 <% case status %>
 <%	 when 'pending' %>
   <span class="pending-message">(Pending <%= message %>)</span><br />
-  <span class="pending-caller"><%= self.format_backtrace_line(pending_caller) %></span>
+  <span class="pending-caller"><%= self.format_backtrace_line(example.location) %></span>
 <%   when 'failed', 'pending-fixed' %>
   <div class="failure" id="failure-<%= counter %>">
 

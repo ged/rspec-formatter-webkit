@@ -93,7 +93,7 @@ class Spec::Runner::Formatter::WebKitFormatter < Spec::Runner::Formatter::BaseTe
 		@output.flush
 	end
 
-	def example_pending( example, message, pending_caller )
+	def example_pending( example, message )
 		status = 'pending'
 		@output.puts( @example_template.result(binding()) )
 		@output.flush
