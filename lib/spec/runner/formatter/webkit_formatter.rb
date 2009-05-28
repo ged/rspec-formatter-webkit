@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'rubygems'
 require 'erb'
 require 'pathname'
 require 'logger'
@@ -15,7 +16,11 @@ class Spec::Runner::Formatter::WebKitFormatter < Spec::Runner::Formatter::BaseTe
 	Spec::Runner::Options::EXAMPLE_FORMATTERS['webkit'] =
 	 	['spec/runner/formatter/webkit_formatter', self.name ]
 
-	BASE_PATH        = Pathname( __FILE__ ).dirname.parent.parent.parent.parent + 'data'
+	if dir = Gem.datadir('webkit-rspec-formatter')
+		BASE_PATH = Pathname( dir ).parent
+	else
+		BASE_PATH    = Pathname( __FILE__ ).dirname.parent.parent.parent.parent + 'data'
+	end
 	BASE_HREF        = "file://#{BASE_PATH}/"
 
 	TEMPLATE_DIR     = BASE_PATH + 'templates'
@@ -24,7 +29,6 @@ class Spec::Runner::Formatter::WebKitFormatter < Spec::Runner::Formatter::BaseTe
 	EXAMPLE_TEMPLATE = TEMPLATE_DIR + 'example.rhtml'
 	FOOTER_TEMPLATE  = TEMPLATE_DIR + 'footer.rhtml'
 
-	
 	
 	### Initializer
 	def initialize( options, output ) # :notnew:
