@@ -382,7 +382,7 @@ function hook_log_clickables() {
 	$('.spec:has(div.log-messages)').each( function() {
 		$(this).addClass( 'logged' );
 	}).find( '.spec-name' ).click( function(e) {
-		$(this).find('div.log-messages').toggle();
+		$(this).parent().find('div.log-messages').toggle();
 	});
 }
 
