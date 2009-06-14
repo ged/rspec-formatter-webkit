@@ -11,7 +11,7 @@ require 'spec/runner/formatter/snippet_extractor'
 class Spec::Runner::Formatter::WebKitFormatter < Spec::Runner::Formatter::BaseTextFormatter
 	include ERB::Util
 
-	VERSION = '0.0.1'
+	VERSION = '0.0.2'
 
 	Spec::Runner::Options::EXAMPLE_FORMATTERS['webkit'] =
 	 	['spec/runner/formatter/webkit_formatter', self.name ]
