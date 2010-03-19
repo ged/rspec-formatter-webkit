@@ -8,13 +8,13 @@ require 'spec'
 require 'spec/runner/formatter/base_text_formatter'
 require 'spec/runner/formatter/snippet_extractor'
 
-class Spec::Runner::Formatter::WebKitFormatter < Spec::Runner::Formatter::BaseTextFormatter
+class Spec::Runner::Formatter::WebKit < Spec::Runner::Formatter::BaseTextFormatter
 	include ERB::Util
 
-	VERSION = '0.0.2'
+	VERSION = '0.0.3'
 
 	Spec::Runner::Options::EXAMPLE_FORMATTERS['webkit'] =
-	 	['spec/runner/formatter/webkit_formatter', self.name ]
+	 	['spec/runner/formatter/webkit', self.name ]
 
 	if dir = Gem.datadir('webkit-rspec-formatter')
 		BASE_PATH = Pathname( dir ).parent
@@ -29,7 +29,7 @@ class Spec::Runner::Formatter::WebKitFormatter < Spec::Runner::Formatter::BaseTe
 	EXAMPLE_TEMPLATE = TEMPLATE_DIR + 'example.rhtml'
 	FOOTER_TEMPLATE  = TEMPLATE_DIR + 'footer.rhtml'
 
-	
+
 	### Initializer
 	def initialize( options, output ) # :notnew:
 		super
@@ -37,7 +37,7 @@ class Spec::Runner::Formatter::WebKitFormatter < Spec::Runner::Formatter::BaseTe
 		@example_number = 0
 		@snippet_extractor = Spec::Runner::Formatter::SnippetExtractor.new
 		@example_template = ERB.new( File.read(EXAMPLE_TEMPLATE), nil, '<>' ).freeze
-		
+
 		Thread.current['logger-output'] = []
 	end
 

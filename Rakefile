@@ -1,10 +1,10 @@
-#!rake
+#!rake -*- ruby -*-
 #
 # WebKit-RSpec-Formatter rakefile
 #
 # Based on various other Rakefiles, especially one by Ben Bleything
 #
-# Copyright (c) 2007-2009 The FaerieMUD Consortium
+# Copyright (c) 2007-2010 The FaerieMUD Consortium
 #
 # Authors:
 #  * Michael Granger <ged@FaerieMUD.org>
@@ -21,13 +21,31 @@ BEGIN {
 	$LOAD_PATH.unshift( extdir.to_s ) unless $LOAD_PATH.include?( extdir.to_s )
 }
 
+begin
+	require 'readline'
+	include Readline
+rescue LoadError
+	# Fall back to a plain prompt
+	def readline( text )
+		$stderr.print( text.chomp )
+		return $stdin.gets
+	end
+end
+
+begin
+	require 'rubygems'
+rescue LoadError
+	module Gem
+		class Specification; end
+	end
+end
+
 require 'rbconfig'
 require 'rake'
-require 'rake/rdoctask'
 require 'rake/testtask'
 require 'rake/packagetask'
 require 'rake/clean'
-require 'rake/191_compat.rb'
+# require 'rake/191_compat.rb'
 
 $dryrun = false
 
@@ -40,6 +58,8 @@ DOCSDIR       = BASEDIR + 'docs'
 PKGDIR        = BASEDIR + 'pkg'
 DATADIR       = BASEDIR + 'data'
 
+MANUALDIR     = DOCSDIR + 'manual'
+
 PROJECT_NAME  = 'WebKit-RSpec-Formatter'
 PKG_NAME      = PROJECT_NAME.downcase
 PKG_SUMMARY   = 'A webkit-aware pretty formatter for RSpec'
@@ -48,43 +68,52 @@ PKG_SUMMARY   = 'A webkit-aware pretty formatter for RSpec'
 CC_BUILD_LABEL     = ENV['CC_BUILD_LABEL']
 CC_BUILD_ARTIFACTS = ENV['CC_BUILD_ARTIFACTS'] || 'artifacts'
 
-VERSION_FILE  = LIBDIR + 'spec/runner/formatter/webkit_formatter.rb'
+VERSION_FILE  = LIBDIR + 'spec/runner/formatter/webkit.rb'
 if VERSION_FILE.exist? && buildrev = ENV['CC_BUILD_LABEL']
 	PKG_VERSION = VERSION_FILE.read[ /VERSION\s*=\s*['"](\d+\.\d+\.\d+)['"]/, 1 ] + '.' + buildrev
 elsif VERSION_FILE.exist?
 	PKG_VERSION = VERSION_FILE.read[ /VERSION\s*=\s*['"](\d+\.\d+\.\d+)['"]/, 1 ]
-else
-	PKG_VERSION = '0.0.0'
 end
+
+PKG_VERSION ||= '0.0.0'
 
 PKG_FILE_NAME = "#{PKG_NAME.downcase}-#{PKG_VERSION}"
 GEM_FILE_NAME = "#{PKG_FILE_NAME}.gem"
+
+# Universal VCS constants
+DEFAULT_EDITOR  = 'vi'
+COMMIT_MSG_FILE = 'commit-msg.txt'
+FILE_INDENT     = " " * 12
+LOG_INDENT      = " " * 3
 
 EXTCONF       = EXTDIR + 'extconf.rb'
 
 ARTIFACTS_DIR = Pathname.new( CC_BUILD_ARTIFACTS )
 
 TEXT_FILES    = Rake::FileList.new( %w[Rakefile ChangeLog README LICENSE] )
-BIN_FILES     = Rake::FileList.new( "#{BINDIR}/*" ).exclude( /\.svn/ )
-LIB_FILES     = Rake::FileList.new( "#{LIBDIR}/**/*.rb" ).exclude( /\.svn/ )
-EXT_FILES     = Rake::FileList.new( "#{EXTDIR}/**/*.{c,h,rb}" ).exclude( /\.svn/ )
-DATA_FILES    = Rake::FileList.new( "#{DATADIR}/**/*" ).exclude( /\.svn/ )
+BIN_FILES     = Rake::FileList.new( "#{BINDIR}/*" )
+LIB_FILES     = Rake::FileList.new( "#{LIBDIR}/**/*.rb" )
+EXT_FILES     = Rake::FileList.new( "#{EXTDIR}/**/*.{c,h,rb}" )
+DATA_FILES    = Rake::FileList.new( "#{DATADIR}/**/*" )
 
 SPECDIR       = BASEDIR + 'spec'
 SPECLIBDIR    = SPECDIR + 'lib'
 SPEC_FILES    = Rake::FileList.new( "#{SPECDIR}/**/*_spec.rb", "#{SPECLIBDIR}/**/*.rb" )
 
 TESTDIR       = BASEDIR + 'tests'
-TEST_FILES    = Rake::FileList.new( "#{TESTDIR}/**/*.tests.rb" ).exclude( /\.svn/ )
+TEST_FILES    = Rake::FileList.new( "#{TESTDIR}/**/*.tests.rb" )
 
 RAKE_TASKDIR  = BASEDIR + 'rake'
 RAKE_TASKLIBS = Rake::FileList.new( "#{RAKE_TASKDIR}/*.rb" )
+PKG_TASKLIBS  = Rake::FileList.new( "#{RAKE_TASKDIR}/{191_compat,helpers,packaging,rdoc,testing}.rb" )
+PKG_TASKLIBS.include( "#{RAKE_TASKDIR}/manual.rb" ) if MANUALDIR.exist?
+
+RAKE_TASKLIBS_URL = 'http://repo.deveiate.org/rake-tasklibs'
 
 LOCAL_RAKEFILE = BASEDIR + 'Rakefile.local'
 
 EXTRA_PKGFILES = Rake::FileList.new
-EXTRA_PKGFILES.include "#{BASEDIR}/data/**/*"
-EXTRA_PKGFILES.exclude( /\.svn/ )
+EXTRA_PKGFILES.include( "#{BASEDIR}/data/**/*" )
 
 RELEASE_FILES = TEXT_FILES + 
 	SPEC_FILES + 
@@ -96,7 +125,12 @@ RELEASE_FILES = TEXT_FILES +
 	RAKE_TASKLIBS +
 	EXTRA_PKGFILES
 
+
 RELEASE_FILES << LOCAL_RAKEFILE.to_s if LOCAL_RAKEFILE.exist?
+
+RELEASE_ANNOUNCE_ADDRESSES = [
+	"Ruby-Talk List <ruby-talk@ruby-lang.org>",
+]
 
 COVERAGE_MINIMUM = ENV['COVERAGE_MINIMUM'] ? Float( ENV['COVERAGE_MINIMUM'] ) : 85.0
 RCOV_EXCLUDES = 'spec,tests,/Library/Ruby,/var/lib,/usr/local/lib'
@@ -109,23 +143,35 @@ RCOV_OPTS = [
   ]
 
 
-# Subversion constants -- directory names for releases and tags
-SVN_TRUNK_DIR    = 'trunk'
-SVN_RELEASES_DIR = 'releases'
-SVN_BRANCHES_DIR = 'branches'
-SVN_TAGS_DIR     = 'tags'
-
-SVN_DOTDIR       = BASEDIR + '.svn'
-SVN_ENTRIES      = SVN_DOTDIR + 'entries'
-
-
 ### Load some task libraries that need to be loaded early
-require RAKE_TASKDIR + 'helpers.rb'
-require RAKE_TASKDIR + 'svn.rb'
-require RAKE_TASKDIR + 'verifytask.rb'
+if !RAKE_TASKDIR.exist?
+	$stderr.puts "It seems you don't have the build task directory. Shall I fetch it "
+	ans = readline( "for you? [y]" )
+	ans = 'y' if !ans.nil? && ans.empty?
 
-# Define some constants that depend on the 'svn' tasklib
-PKG_BUILD = get_svn_rev( BASEDIR ) || 0
+	if ans =~ /^y/i
+		$stderr.puts "Okay, fetching #{RAKE_TASKLIBS_URL} into #{RAKE_TASKDIR}..."
+		system 'hg', 'clone', RAKE_TASKLIBS_URL, "./#{RAKE_TASKDIR}"
+		if ! $?.success?
+			fail "Damn. That didn't work. Giving up; maybe try manually fetching?"
+		end
+	else
+		$stderr.puts "Then I'm afraid I can't continue. Best of luck."
+		fail "Rake tasklibs not present."
+	end
+
+	RAKE_TASKLIBS.include( "#{RAKE_TASKDIR}/*.rb" )
+end
+
+require RAKE_TASKDIR + 'helpers.rb'
+
+# Set the build ID if the mercurial executable is available
+if hg = which( 'hg' )
+	id = IO.read('|-') or exec hg.to_s, 'id', '-n'
+	PKG_BUILD = 'pre' + (id.chomp[ /^[[:xdigit:]]+/ ] || '1')
+else
+	PKG_BUILD = 'pre0'
+end
 SNAPSHOT_PKG_NAME = "#{PKG_FILE_NAME}.#{PKG_BUILD}"
 SNAPSHOT_GEM_NAME = "#{SNAPSHOT_PKG_NAME}.gem"
 
@@ -137,11 +183,11 @@ RDOC_OPTIONS = [
 	'-i', '.',
 	'-m', 'README',
 	'-t', PKG_NAME,
-	'-W', 'http://deveiate.org/projects/WebKit-RSpec-Formatter/browser/trunk/'
+	'-W', 'http://deveiate.org/projects/WebKit-RSpec-Formatter/browser/'
   ]
 
 # Release constants
-SMTP_HOST = 'mail.faeriemud.org'
+SMTP_HOST = "mail.faeriemud.org"
 SMTP_PORT = 465 # SMTP + SSL
 
 # Project constants
@@ -151,10 +197,6 @@ PROJECT_DOCDIR = "#{PROJECT_PUBDIR}/#{PKG_NAME}"
 PROJECT_SCPPUBURL = "#{PROJECT_HOST}:#{PROJECT_PUBDIR}"
 PROJECT_SCPDOCURL = "#{PROJECT_HOST}:#{PROJECT_DOCDIR}"
 
-# Rubyforge stuff
-RUBYFORGE_GROUP = 'deveiate'
-RUBYFORGE_PROJECT = 'webkit-rspec-formatter'
-
 # Gem dependencies: gemname => version
 DEPENDENCIES = {
 	'rspec' => '>=1.2.2',
@@ -162,18 +204,16 @@ DEPENDENCIES = {
 
 # Developer Gem dependencies: gemname => version
 DEVELOPMENT_DEPENDENCIES = {
-	'amatch'      => '>= 0.2.3',
-	'rake'        => '>= 0.8.1',
+	'rake'        => '>= 0.8.7',
 	'rcodetools'  => '>= 0.7.0.0',
-	'rcov'        => '>= 0',
+	'rcov'        => '>= 0.8.1.2.0',
+	'rdoc'        => '>= 2.4.3',
 	'RedCloth'    => '>= 4.0.3',
-	'rspec'       => '>= 0',
-	'rubyforge'   => '>= 0',
+	'rspec'       => '>= 1.2.6',
 	'termios'     => '>= 0',
 	'text-format' => '>= 1.0.0',
 	'tmail'       => '>= 1.2.3.1',
-	'ultraviolet' => '>= 0.10.2',
-	'libxml-ruby' => '>= 0.8.3',
+	'diff-lcs'    => '>= 1.1.2',
 }
 
 # Non-gem requirements: packagename => version
@@ -190,18 +230,33 @@ GEMSPEC   = Gem::Specification.new do |gem|
 		"This is a formatter for RSpec that takes advantage of some of the advanced features of the webkit",
 		"HTML engine, like the one TextMate uses for its output.",
   	  ].join( "\n" )
+	gem.post_install_message = [
+		"You'll need to change your RSpec bundle commands to use this gem instead of the",
+		"the one in the Bundle's Support directory to use this formatter (at least until",
+		"the bundle supports custom formatters, anyway):",
+		" ",
+		"Replace the line:",
+		"  require ENV['TM_BUNDLE_SUPPORT'] + \"/lib/spec_mate\"",
+		" ",
+		"with:",
+		"  require 'rubygems'",
+		"  gem 'webkit-rspec-formatter'",
+		"  require 'spec/mate'",
+		" ",
+	  ].join( "\n" )
 
 	gem.authors           = "Michael Granger"
-	gem.email             = "ged@FaerieMUD.org"
+	gem.email             = ["ged@FaerieMUD.org"]
 	gem.homepage          = 'http://deveiate.org/projects/WebKit-RSpec-Formatter'
-	gem.rubyforge_project = RUBYFORGE_PROJECT
 
 	gem.has_rdoc          = true
 	gem.rdoc_options      = RDOC_OPTIONS
 	gem.extra_rdoc_files  = %w[ChangeLog README LICENSE]
 
 	gem.bindir            = BINDIR.relative_path_from(BASEDIR).to_s
-	gem.executables       = BIN_FILES.select {|pn| File.executable?(pn) }
+	gem.executables       = BIN_FILES.select {|pn| File.executable?(pn) }.
+	                            collect {|pn| File.basename(pn) }
+	gem.require_paths << EXTDIR.relative_path_from( BASEDIR ).to_s if EXTDIR.exist?
 
 	if EXTCONF.exist?
 		gem.extensions << EXTCONF.relative_path_from( BASEDIR ).to_s
@@ -209,38 +264,27 @@ GEMSPEC   = Gem::Specification.new do |gem|
 
 	gem.files             = RELEASE_FILES
 	gem.test_files        = SPEC_FILES
-		
+
 	DEPENDENCIES.each do |name, version|
 		version = '>= 0' if version.length.zero?
 		gem.add_runtime_dependency( name, version )
 	end
-	
-	# Developmental dependencies don't work as of RubyGems 1.2.0
-	unless Gem::Version.new( Gem::RubyGemsVersion ) <= Gem::Version.new( "1.2.0" )
-		DEVELOPMENT_DEPENDENCIES.each do |name, version|
-			version = '>= 0' if version.length.zero?
-			gem.add_development_dependency( name, version )
-		end
-	end
-	
+
 	REQUIREMENTS.each do |name, version|
 		gem.requirements << [ name, version ].compact.join(' ')
 	end
 end
 
-# Manual-generation config
-MANUALDIR = DOCSDIR + 'manual'
-
 $trace = Rake.application.options.trace ? true : false
 $dryrun = Rake.application.options.dryrun ? true : false
-
+$include_dev_dependencies = false
 
 # Load any remaining task libraries
 RAKE_TASKLIBS.each do |tasklib|
-	next if tasklib.to_s =~ %r{/(helpers|svn|verifytask)\.rb$}
+	next if tasklib.to_s =~ %r{/helpers\.rb$}
 	begin
 		trace "  loading tasklib %s" % [ tasklib ]
-		require tasklib
+		import tasklib
 	rescue ScriptError => err
 		fail "Task library '%s' failed to load: %s: %s" %
 			[ tasklib, err.class.name, err.message ]
@@ -266,19 +310,15 @@ task :default  => [:clean, :local, :spec, :rdoc, :package]
 ### Task the local Rakefile can append to -- no-op by default
 task :local
 
-
 ### Task: clean
-CLEAN.include 'coverage'
-CLOBBER.include 'artifacts', 'coverage.info', PKGDIR
-
-# Target to hinge on ChangeLog updates
-file SVN_ENTRIES
+CLEAN.include 'coverage', '**/*.orig', '**/*.rej'
+CLOBBER.include 'artifacts', 'coverage.info', 'ChangeLog', PKGDIR
 
 ### Task: changelog
-file 'ChangeLog' => SVN_ENTRIES.to_s do |task|
+file 'ChangeLog' do |task|
 	log "Updating #{task.name}"
 
-	changelog = make_svn_changelog()
+	changelog = make_changelog()
 	File.open( task.name, 'w' ) do |fh|
 		fh.print( changelog )
 	end
@@ -291,13 +331,13 @@ task :cruise => [:clean, 'spec:quiet', :package] do |task|
 	raise "Artifacts dir not set." if ARTIFACTS_DIR.to_s.empty?
 	artifact_dir = ARTIFACTS_DIR.cleanpath + (CC_BUILD_LABEL || Time.now.strftime('%Y%m%d-%T'))
 	artifact_dir.mkpath
-	
+
 	coverage = BASEDIR + 'coverage'
 	if coverage.exist? && coverage.directory?
 		$stderr.puts "Copying coverage stats..."
 		FileUtils.cp_r( 'coverage', artifact_dir )
 	end
-	
+
 	$stderr.puts "Copying packages..."
 	FileUtils.cp_r( FileList['pkg/*'].to_a, artifact_dir )
 end
@@ -306,7 +346,7 @@ end
 desc "Update the build system to the latest version"
 task :update_build do
 	log "Updating the build system"
-	sh 'svn', 'up', RAKE_TASKDIR
+	run 'hg', '-R', RAKE_TASKDIR, 'pull', '-u'
 	log "Updating the Rakefile"
 	sh 'rake', '-f', RAKE_TASKDIR + 'Metarakefile'
 end
