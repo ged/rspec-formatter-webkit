@@ -12,7 +12,7 @@ end
 
 begin
 	require 'spec'
-	require 'spec/runner'
+	require 'spec/runner/formatter/webkit'
 rescue LoadError => err
 	unless Object.const_defined?( :Gem )
 		require 'rubygems'
@@ -41,7 +41,7 @@ class SpecMate
 	end
 
 	def run(stdout, options)
-		formatter = ENV['TM_RSPEC_FORMATTER'] || 'Spec::Runner::Formatter::TextMateFormatter'
+		formatter = ENV['TM_RSPEC_FORMATTER'] || 'Spec::Runner::Formatter::WebKit'
 
 		argv = []
 		argv += ENV['TM_RSPEC_OPTS'].split(" ") if ENV['TM_RSPEC_OPTS']

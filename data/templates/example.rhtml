@@ -10,7 +10,7 @@
 <%     unless failure.exception.nil? %>
 	<div class="message"><code><%= h( failure.exception.message ).gsub(/\n/, '<br />') %></code></div>
 	<div class="backtrace"><pre>
-<%= failure.exception.backtrace.map {|line| self.format_backtrace_line(line) }.join("\n") %>
+<%= failure.exception.backtrace.map {|line| self.format_backtrace_line(line) }.compact.join("\n") %>
 	</pre></div>
 	<%   end %>
 <%     unless extra == '' %><%= extra %><% end %>
