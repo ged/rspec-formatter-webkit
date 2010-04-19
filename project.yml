@@ -10,11 +10,12 @@ release_smtphost: mail.faeriemud.org
 project_description: |-
   This is a formatter for RSpec that takes advantage of some of the advanced features of the webkit
   HTML engine, like the one TextMate uses for its output.
-release_mailto: Ruby-Talk List <ruby-talk@ruby-lang.org>
+release_mailto: 
+- Ruby-Talk List <ruby-talk@ruby-lang.org>
 project_dependencies: 
   rspec: ">=1.2.2"
 project_summary: A webkit-aware pretty formatter for RSpec
-version_file: spec/mate/formatter/webkit.rb
+version_file: spec/runner/formatter/webkit.rb
 additional_pkgfiles: 
 - data/**/*
 dev_dependencies: {}

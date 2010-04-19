@@ -11,11 +11,12 @@
 #
 
 BEGIN {
+	require 'rbconfig'
 	require 'pathname'
 	basedir = Pathname.new( __FILE__ ).dirname
 
 	libdir = basedir + "lib"
-	extdir = basedir + "ext"
+	extdir = libdir + Config::CONFIG['sitearch']
 
 	$LOAD_PATH.unshift( libdir.to_s ) unless $LOAD_PATH.include?( libdir.to_s )
 	$LOAD_PATH.unshift( extdir.to_s ) unless $LOAD_PATH.include?( extdir.to_s )
@@ -75,7 +76,7 @@ elsif VERSION_FILE.exist?
 	PKG_VERSION = VERSION_FILE.read[ /VERSION\s*=\s*['"](\d+\.\d+\.\d+)['"]/, 1 ]
 end
 
-PKG_VERSION ||= '0.0.0'
+PKG_VERSION = '0.0.0' unless defined?( PKG_VERSION )
 
 PKG_FILE_NAME = "#{PKG_NAME.downcase}-#{PKG_VERSION}"
 GEM_FILE_NAME = "#{PKG_FILE_NAME}.gem"
@@ -164,26 +165,36 @@ if !RAKE_TASKDIR.exist?
 end
 
 require RAKE_TASKDIR + 'helpers.rb'
+include RakefileHelpers
 
 # Set the build ID if the mercurial executable is available
 if hg = which( 'hg' )
 	id = IO.read('|-') or exec hg.to_s, 'id', '-n'
-	PKG_BUILD = 'pre' + (id.chomp[ /^[[:xdigit:]]+/ ] || '1')
+	PKG_BUILD = "pre%03d" % [(id.chomp[ /^[[:xdigit:]]+/ ] || '1')]
 else
-	PKG_BUILD = 'pre0'
+	PKG_BUILD = 'pre000'
 end
 SNAPSHOT_PKG_NAME = "#{PKG_FILE_NAME}.#{PKG_BUILD}"
 SNAPSHOT_GEM_NAME = "#{SNAPSHOT_PKG_NAME}.gem"
 
 # Documentation constants
-RDOCDIR = DOCSDIR + 'api'
+API_DOCSDIR = DOCSDIR + 'api'
 RDOC_OPTIONS = [
-	'-w', '4',
-	'-HN',
-	'-i', '.',
-	'-m', 'README',
-	'-t', PKG_NAME,
-	'-W', 'http://deveiate.org/projects/WebKit-RSpec-Formatter/browser/'
+	'--tab-width=4',
+	'--show-hash',
+	'--include', BASEDIR.to_s,
+	'--main=README',
+	"--title=#{PKG_NAME}",
+  ]
+YARD_OPTIONS = [
+	'--use-cache',
+	'--no-private',
+	'--protected',
+	'-r', 'README',
+	'--exclude', 'extconf\\.rb',
+	'--files', 'ChangeLog,LICENSE',
+	'--output-dir', API_DOCSDIR.to_s,
+	'--title', "#{PKG_NAME} #{PKG_VERSION}",
   ]
 
 # Release constants
@@ -305,7 +316,7 @@ import LOCAL_RAKEFILE if LOCAL_RAKEFILE.exist?
 #####################################################################
 
 ### Default task
-task :default  => [:clean, :local, :spec, :rdoc, :package]
+task :default  => [:clean, :local, :spec, :apidocs, :package]
 
 ### Task the local Rakefile can append to -- no-op by default
 task :local
