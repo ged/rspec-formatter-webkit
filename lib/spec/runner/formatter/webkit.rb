@@ -1,9 +1,8 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
+require 'rbconfig'
 require 'erb'
 require 'pathname'
-require 'logger'
 require 'spec'
 require 'spec/runner/formatter/base_text_formatter'
 require 'spec/runner/formatter/snippet_extractor'
@@ -11,16 +10,16 @@ require 'spec/runner/formatter/snippet_extractor'
 class Spec::Runner::Formatter::WebKit < Spec::Runner::Formatter::BaseTextFormatter
 	include ERB::Util
 
-	VERSION = '0.0.3'
+	VERSION = '0.0.4'
 
 	Spec::Runner::Options::EXAMPLE_FORMATTERS['webkit'] =
 	 	['spec/runner/formatter/webkit', self.name ]
 
-	# Look up the datadir either via Rubygems' mechanism, or by relative path
-	if dir = Gem.datadir('webkit-rspec-formatter')
+	# Look up the datadir falling back to a relative path (mostly for prerelease testing)
+	if dir = RbConfig.datadir( 'webkit-rspec-formatter' )
 		BASE_PATH = Pathname( dir ).parent
 	else
-		BASE_PATH    = Pathname( __FILE__ ).dirname.parent.parent.parent.parent + 'data'
+		BASE_PATH = Pathname( __FILE__ ).dirname.parent.parent.parent.parent + 'data'
 	end
 
 	# The base HREF used in the header to map stuff to the datadir
