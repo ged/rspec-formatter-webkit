@@ -3,23 +3,24 @@
 require 'rbconfig'
 require 'erb'
 require 'pathname'
-require 'spec'
-require 'spec/runner/formatter/base_text_formatter'
-require 'spec/runner/formatter/snippet_extractor'
 
-class Spec::Runner::Formatter::WebKit < Spec::Runner::Formatter::BaseTextFormatter
+require 'rspec'
+require 'rspec/core/formatters/base_text_formatter'
+require 'rspec/core/formatters/snippet_extractor'
+
+class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatter
 	include ERB::Util
 
-	VERSION = '0.0.4'
-
-	Spec::Runner::Options::EXAMPLE_FORMATTERS['webkit'] =
-	 	['spec/runner/formatter/webkit', self.name ]
+	# Version constant
+	VERSION = '1.0.0'
 
 	# Look up the datadir falling back to a relative path (mostly for prerelease testing)
-	if dir = RbConfig.datadir( 'webkit-rspec-formatter' )
-		BASE_PATH = Pathname( dir ).parent
+	DEFAULT_DATADIR = Pathname( Config.datadir('webkit-rspec-formatter') )
+	if DEFAULT_DATADIR.exist?
+		BASE_PATH = DEFAULT_DATADIR
 	else
-		BASE_PATH = Pathname( __FILE__ ).dirname.parent.parent.parent.parent + 'data'
+		BASE_PATH = Pathname( __FILE__ ).dirname.parent.parent.parent.parent +
+		 	'data/webkit-rspec-formatter'
 	end
 
 	# The base HREF used in the header to map stuff to the datadir
@@ -35,11 +36,12 @@ class Spec::Runner::Formatter::WebKit < Spec::Runner::Formatter::BaseTextFormatt
 
 
 	### Create a new formatter
-	def initialize( options, output ) # :notnew:
+	def initialize( output ) # :notnew:
 		super
 		@example_group_number = 0
 		@example_number = 0
-		@snippet_extractor = Spec::Runner::Formatter::SnippetExtractor.new
+		@failcounter = 0
+		@snippet_extractor = RSpec::Core::Formatters::SnippetExtractor.new
 		@example_template = ERB.new( File.read(EXAMPLE_TEMPLATE), nil, '<>' ).freeze
 
 		Thread.current['logger-output'] = []
@@ -52,6 +54,10 @@ class Spec::Runner::Formatter::WebKit < Spec::Runner::Formatter::BaseTextFormatt
 
 	# Attributes made readable for ERb
 	attr_reader :example_group_number, :example_number, :example_count
+
+	# The counter for failed example IDs
+	attr_accessor :failcounter
+
 
 	### Start the page by rendering the header.
 	def start( example_count )
@@ -112,9 +118,15 @@ class Spec::Runner::Formatter::WebKit < Spec::Runner::Formatter::BaseTextFormatt
 
 
 	### Callback -- called when an example is exited with a failure.
-	def example_failed( example, counter, failure )
-		extra = self.extra_failure_content( failure )
-		status = failure.pending_fixed? ? 'pending-fixed' : 'failed'
+	def example_failed( example )
+		super
+		counter = self.failcounter += 1
+		exception = example.metadata[:execution_result][:exception_encountered]
+		extra = self.extra_failure_content( exception )
+		status = if exception.is_a?( RSpec::Core::PendingExampleFixedError )
+			then 'pending-fixed'
+			else 'failed'
+			end
 
 		@output.puts( @example_template.result(binding()) )
 		@output.flush
@@ -122,7 +134,7 @@ class Spec::Runner::Formatter::WebKit < Spec::Runner::Formatter::BaseTextFormatt
 
 
 	### Callback -- called when an example is exited via a 'pending'.
-	def example_pending( example, message )
+	def example_pending( example )
 		status = 'pending'
 		@output.puts( @example_template.result(binding()) )
 		@output.flush
@@ -131,7 +143,7 @@ class Spec::Runner::Formatter::WebKit < Spec::Runner::Formatter::BaseTextFormatt
 
 	### Format backtrace lines to include a textmate link to the file/line in question.
 	def format_backtrace_line( line )
-		return nil if line =~ /webkit-rspec-formatter/i
+		return nil if line =~ /\brspec\b/i
 		return line.gsub( /([^:]*\.rb):(\d*)/ ) do
 			"<a href=\"txmt://open?url=file://#{File.expand_path($1)}&line=#{$2}\">#{$1}:#{$2}</a> "
 		end
@@ -141,7 +153,8 @@ class Spec::Runner::Formatter::WebKit < Spec::Runner::Formatter::BaseTextFormatt
 	### Return any stuff that should be appended to the current example
 	### because it's failed. Returns a snippet of the source around the
 	### failure.
-	def extra_failure_content(failure)
+	def extra_failure_content( failure )
+		return '' if failure.is_a?( RSpec::Core::PendingExampleFixedError )
 		snippet = @snippet_extractor.snippet( failure.exception )
 		return "    <pre class=\"ruby\"><code>#{snippet}</code></pre>"
 	end
@@ -149,7 +162,7 @@ class Spec::Runner::Formatter::WebKit < Spec::Runner::Formatter::BaseTextFormatt
 
 	### Returns content to be output when a failure occurs during the run; overridden to
 	### do nothing, as failures are handled by #example_failed.
-	def dump_failure( counter, failure )
+	def dump_failures( *unused )
 	end
 
 
@@ -173,4 +186,4 @@ class Spec::Runner::Formatter::WebKit < Spec::Runner::Formatter::BaseTextFormatt
 		return template.result( binding() )
 	end
 
-end # class Spec::Runner::Formatter::WebKitFormatter
+end # class RSpec::Core::Formatter::WebKitFormatter

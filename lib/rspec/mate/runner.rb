@@ -41,7 +41,7 @@ class SpecMate
 	end
 
 	def run(stdout, options)
-		formatter = ENV['TM_RSPEC_FORMATTER'] || 'Spec::Runner::Formatter::WebKit'
+		formatter = ENV['TM_RSPEC_FORMATTER'] || 'RSpec::Core::Formatter::WebKit'
 
 		argv = []
 		argv += ENV['TM_RSPEC_OPTS'].split(" ") if ENV['TM_RSPEC_OPTS']
@@ -50,7 +50,7 @@ class SpecMate
 		argv << '--line' << options[:line] if options[:line]
 
 		Dir.chdir(ENV['TM_PROJECT_DIRECTORY']) do
-			::Spec::Runner::CommandLine.run(Spec::Runner::OptionParser.parse(argv, STDERR, stdout))
+			::RSpec::Core::CommandLine.run(RSpec::Core::OptionParser.parse(argv, STDERR, stdout))
 		end
 	end
 
