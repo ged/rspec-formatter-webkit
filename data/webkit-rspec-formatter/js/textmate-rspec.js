@@ -2,7 +2,8 @@
  * RSpec WebKit Formatter javascript
  * $Id$
  * 
- * Most of these functions were converted from Safari's Web Inspector, which is licensed under the following terms:
+ * Most of these functions were converted from Safari's Web Inspector, which is licensed 
+ * under the following terms:
  * 
  *   Copyright (C) 2007 Apple Inc.  All rights reserved.
  *   

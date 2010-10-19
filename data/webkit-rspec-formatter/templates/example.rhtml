@@ -1,16 +1,21 @@
+<%
+exception = example.metadata[:execution_result][:exception_encountered]
+%>
+
 <dd class="spec <%= status %>">
 	<span class="spec-name"><%= h(example.description) %></span>
 <% case status %>
 <%	 when 'pending' %>
-  <span class="pending-message">(Pending <%= message %>)</span><br />
-  <span class="pending-caller"><%= self.format_backtrace_line(example.location) %></span>
+  <span class="pending-message">(Pending 
+		<%= example.execution_result[:pending_message] %>)</span><br />
 <%   when 'failed', 'pending-fixed' %>
   <div class="failure" id="failure-<%= counter %>">
 
-<%     unless failure.exception.nil? %>
-	<div class="message"><code><%= h( failure.exception.message ).gsub(/\n/, '<br />') %></code></div>
+<%     unless exception.nil? %>
+	<div class="message"><code><%= h( exception.message ).gsub(/\n/, '<br />') %></code></div>
 	<div class="backtrace"><pre>
-<%= failure.exception.backtrace.map {|line| self.format_backtrace_line(line) }.compact.join("\n") %>
+		<%= exception.backtrace.
+					map( &self.method(:format_backtrace_line) ).compact.join("\n") %>
 	</pre></div>
 	<%   end %>
 <%     unless extra == '' %><%= extra %><% end %>
