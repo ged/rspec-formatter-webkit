@@ -70,7 +70,7 @@ PKG_SUMMARY   = 'A webkit-aware pretty formatter for RSpec'
 CC_BUILD_LABEL     = ENV['CC_BUILD_LABEL']
 CC_BUILD_ARTIFACTS = ENV['CC_BUILD_ARTIFACTS'] || 'artifacts'
 
-VERSION_FILE  = LIBDIR + 'spec/runner/formatter/webkit.rb'
+VERSION_FILE  = LIBDIR + 'rspec/core/formatters/webkit.rb'
 if VERSION_FILE.exist? && buildrev = ENV['CC_BUILD_LABEL']
 	PKG_VERSION = VERSION_FILE.read[ /VERSION\s*=\s*['"](\d+\.\d+\.\d+)['"]/, 1 ] + '.' + buildrev
 elsif VERSION_FILE.exist?
@@ -210,9 +210,11 @@ PROJECT_DOCDIR = "#{PROJECT_PUBDIR}/#{PKG_NAME}"
 PROJECT_SCPPUBURL = "#{PROJECT_HOST}:#{PROJECT_PUBDIR}"
 PROJECT_SCPDOCURL = "#{PROJECT_HOST}:#{PROJECT_DOCDIR}"
 
+GEM_PUBHOST = 'rubygems.org'
+
 # Gem dependencies: gemname => version
 DEPENDENCIES = {
-	'rspec' => '>=1.2.2',
+	'rspec-core' => '>=2.0.0',
 }
 
 # Developer Gem dependencies: gemname => version
@@ -231,6 +233,8 @@ DEVELOPMENT_DEPENDENCIES = {
 
 # Non-gem requirements: packagename => version
 REQUIREMENTS = {
+	'Textmate' => '>=0',
+	'Rspec-Bundle' => '>=0',
 }
 
 # RubyGem specification
@@ -277,6 +281,10 @@ GEMSPEC   = Gem::Specification.new do |gem|
 
 	gem.files             = RELEASE_FILES
 	gem.test_files        = SPEC_FILES
+
+	# signing key and certificate chain
+	gem.signing_key       = '/Volumes/Keys/ged-private_gem_key.pem'
+	gem.cert_chain        = [File.expand_path('~/.gem/ged-public_gem_cert.pem')]
 
 	DEPENDENCIES.each do |name, version|
 		version = '>= 0' if version.length.zero?
