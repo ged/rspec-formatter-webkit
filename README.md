@@ -6,7 +6,7 @@ engine, like the one TextMate uses for its output.
 
 You can check out the current development source with Mercurial from the [main repo](http://repo.deveiate.org/webkit-rspec-formatter "mercurial repo"), or if you prefer Git, via [the Github project](http://github.com/ged/webkit-rspec-formatter "ged's webkit-rspec-formatter at master - GitHub").
 
-The [project page](http://deveiate.org/projects/WebKit-RSpec-Formatter) is 
+The [project page](http://deveiate.org/webkit-rspec-formatter.html) is 
 also likely to have more details. 
 
 ## License
