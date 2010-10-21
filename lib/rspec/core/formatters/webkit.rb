@@ -4,7 +4,7 @@ require 'rbconfig'
 require 'erb'
 require 'pathname'
 
-require 'rspec'
+require 'rspec' 
 require 'rspec/core/formatters/base_text_formatter'
 require 'rspec/core/formatters/snippet_extractor'
 
@@ -42,7 +42,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 		@example_number = 0
 		@failcounter = 0
 		@snippet_extractor = RSpec::Core::Formatters::SnippetExtractor.new
-		@example_template = ERB.new( File.read(EXAMPLE_TEMPLATE), nil, '<>' ).freeze
+		@example_template = ERB.new( File.read(EXAMPLE_TEMPLATE), nil, '%<>' ).freeze
 
 		Thread.current['logger-output'] = []
 	end
@@ -142,8 +142,9 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 
 
 	### Format backtrace lines to include a textmate link to the file/line in question.
-	def format_backtrace_line( line )
-		return nil if line =~ /\brspec\b/i
+	def backtrace_line( line )
+		return nil unless line = super
+		return nil if line =~ %r{rspec/mate|textmate-command}
 		return line.gsub( /([^:]*\.rb):(\d*)/ ) do
 			"<a href=\"txmt://open?url=file://#{File.expand_path($1)}&line=#{$2}\">#{$1}:#{$2}</a> "
 		end

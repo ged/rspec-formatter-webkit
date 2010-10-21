@@ -1,29 +1,52 @@
-<%
-exception = example.metadata[:execution_result][:exception_encountered]
-%>
+% exception = example.metadata[:execution_result][:exception_encountered]
 
 <dd class="spec <%= status %>">
 	<span class="spec-name"><%= h(example.description) %></span>
-<% case status %>
-<%	 when 'pending' %>
+% case status
+% when 'pending'
   <span class="pending-message">(Pending 
 		<%= example.execution_result[:pending_message] %>)</span><br />
-<%   when 'failed', 'pending-fixed' %>
+% when 'failed', 'pending-fixed'
   <div class="failure" id="failure-<%= counter %>">
 
-<%     unless exception.nil? %>
-	<div class="message"><code><%= h( exception.message ).gsub(/\n/, '<br />') %></code></div>
+%    if exception.is_a?(RSpec::Core::PendingExampleFixedError)
+    <div class="message">Expected pending 
+        <code><%= h(example.metadata[:execution_result][:pending_message]) %></code>
+        to fail. No Error was raised.
+    </div>
+%    else
+    <div class="message">Failure/Error: 
+        <code><%= h read_failed_line(exception, example).strip.gsub(/\n/, '<br />') %><br />
+%        exception.message.split("\n").each do |line|
+        <%= line %><br />
+%        end
+%        example.example_group.ancestors.push(example.example_group).each do |group|
+%          if group.metadata[:shared_group_name]
+            Shared Example Group: "<%= h group.metadata[:shared_group_name] %>" called from 
+                        "<%= h backtrace_line(group.metadata[:example_group][:location]) %>
+%            break
+%          end
+%        end
+    </code></div>
+%    end
+
+%   unless exception.nil?
 	<div class="backtrace"><pre>
-		<%= exception.backtrace.
-					map( &self.method(:format_backtrace_line) ).compact.join("\n") %>
+%     format_backtrace(exception.backtrace, example).each do |backtrace_info|
+        <%= backtrace_info %>
+%     end
 	</pre></div>
-	<%   end %>
-<%     unless extra == '' %><%= extra %><% end %>
+%   end
+%   unless extra == ''
+    <%= extra %>
+%   end
   </div>
-<% end %>
-<% unless log_messages.nil? || log_messages.empty? %>
+% end
+
+% unless log_messages.nil? || log_messages.empty?
   <div class="log-messages">
 <%= log_messages.join("\n") %>
   </div>
-<% end %>
+% end
 </dd>
+

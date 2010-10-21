@@ -1,31 +1,36 @@
 --- 
-project_name: WebKit-RSpec-Formatter
+excluded_pkgfiles: []
+
+project_pubdir: /usr/local/www/public/code/
+project_pubhost: deveiate
 project_homepage: http://deveiate.org/projects/WebKit-RSpec-Formatter
-project_summary: A webkit-aware pretty formatter for RSpec
+gem_pubhost: rubygems.org
+project_requirements: 
+  Rspec-Bundle: ">=0"
+  Textmate: ">=0"
+release_smtphost: mail.faeriemud.org
 project_description: |-
   This is a formatter for RSpec that takes advantage of some of the advanced features of the webkit
   HTML engine, like the one TextMate uses for its output.
-project_pubhost: deveiate
-project_pubdir: /usr/local/www/public/code/
-gem_pubhost: rubygems.org
 release_mailto: Ruby-Talk List <ruby-talk@ruby-lang.org>
-release_smtphost: mail.faeriemud.org
-post_install_message: "You'll need to change your RSpec bundle commands to use this gem instead of the\n\
-  the one in the Bundle's Support directory to use this formatter (at least until\n\
-  the bundle supports custom formatters, anyway):\n \n\
-  Replace the line:\n  require ENV['TM_BUNDLE_SUPPORT'] + \"/lib/spec_mate\"\n \n\
-  with:\n  require 'rubygems'\n  gem 'webkit-rspec-formatter'\n  require 'spec/mate'\n "
-authors: 
-  Michael Granger: ged@FaerieMUD.org
 project_dependencies: 
-  rspec-core: ">=2.0.0"
-dev_dependencies: {}
-
-project_requirements: 
-  Textmate: ">=0"
-  Rspec-Bundle: ">=0"
+  rspec-core: ">=2.0.1"
+project_summary: A webkit-aware pretty formatter for RSpec
+version_file: rspec/core/formatters/webkit.rb
 additional_pkgfiles: 
 - data/**/*
-excluded_pkgfiles: []
+dev_dependencies: {}
 
-version_file: rspec/core/formatters/webkit.rb
+authors: 
+  Michael Granger: ged@FaerieMUD.org
+post_install_message: |-
+  
+  You can use this formatter from TextMate (if you're using RSpec 2.0.0 
+  or later) bysetting the TM_RSPEC_OPTS shell variable (in the 
+  'Advanced' preference pane) to:
+  
+      --format RSpec::Core::Formatters::WebKit
+  
+  Have fun!
+
+project_name: WebKit-RSpec-Formatter

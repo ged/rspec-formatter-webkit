@@ -171,9 +171,9 @@ include RakefileHelpers
 # Set the build ID if the mercurial executable is available
 if hg = which( 'hg' )
 	id = `#{hg} id -n`.chomp
-	PKG_BUILD = "pre%03d" % [(id.chomp[ /^[[:xdigit:]]+/ ] || '1')]
+	PKG_BUILD = (id.chomp[ /^[[:xdigit:]]+/ ] || '1')
 else
-	PKG_BUILD = 'pre000'
+	PKG_BUILD = '0'
 end
 SNAPSHOT_PKG_NAME = "#{PKG_FILE_NAME}.#{PKG_BUILD}"
 SNAPSHOT_GEM_NAME = "#{SNAPSHOT_PKG_NAME}.gem"
@@ -214,7 +214,7 @@ GEM_PUBHOST = 'rubygems.org'
 
 # Gem dependencies: gemname => version
 DEPENDENCIES = {
-	'rspec-core' => '>=2.0.0',
+	'rspec-core' => '>=2.0.1',
 }
 
 # Developer Gem dependencies: gemname => version
@@ -233,8 +233,8 @@ DEVELOPMENT_DEPENDENCIES = {
 
 # Non-gem requirements: packagename => version
 REQUIREMENTS = {
-	'Textmate' => '>=0',
 	'Rspec-Bundle' => '>=0',
+	'Textmate' => '>=0',
 }
 
 # RubyGem specification
@@ -248,18 +248,14 @@ GEMSPEC   = Gem::Specification.new do |gem|
 		"HTML engine, like the one TextMate uses for its output.",
   	  ].join( "\n" )
 	gem.post_install_message = [
-		"You'll need to change your RSpec bundle commands to use this gem instead of the",
-		"the one in the Bundle's Support directory to use this formatter (at least until",
-		"the bundle supports custom formatters, anyway):",
-		" ",
-		"Replace the line:",
-		"  require ENV['TM_BUNDLE_SUPPORT'] + \"/lib/spec_mate\"",
-		" ",
-		"with:",
-		"  require 'rubygems'",
-		"  gem 'webkit-rspec-formatter'",
-		"  require 'spec/mate'",
-		" ",
+		"",
+		"You can use this formatter from TextMate (if you're using RSpec 2.0.0 ",
+		"or later) bysetting the TM_RSPEC_OPTS shell variable (in the ",
+		"'Advanced' preference pane) to:",
+		"",
+		"    --format RSpec::Core::Formatters::WebKit",
+		"",
+		"Have fun!",
 	  ].join( "\n" )
 
 	gem.authors           = "Michael Granger"

@@ -1,4 +1,4 @@
-= WebKit RSpec Formatter
+# WebKit RSpec Formatter
 
 WebKit RSpec Formatter is a webkit-aware pretty formatter for RSpec. It was
 written to take advantage of some of the advanced features of the webkit HTML
@@ -8,11 +8,16 @@ You can check out the current development source with Mercurial from the
 following URL:
 
     http://repo.deveiate.org/webkit-rspec-formatter
+    
+or via the Github project:
+
+    
 
 The project page is also likely to have more details:
 
     http://deveiate.org/projects/WebKit-RSpec-Formatter
 
-== License
+## License
 
-See the LICENSE file in the same directory for licensing details.
+See the LICENSE file for licensing details.
+
