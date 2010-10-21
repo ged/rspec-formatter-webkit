@@ -1,0 +1,14 @@
+
+<dd class="spec pending">
+	<span class="spec-name"><%= h(example.description) %></span>
+  <span class="pending-message">
+		(Pending <%= example.execution_result[:pending_message] %>)
+	</span>
+
+% unless log_messages.nil? || log_messages.empty?
+  <div class="log-messages">
+<%= log_messages.join("\n") %>
+  </div>
+% end
+</dd>
+

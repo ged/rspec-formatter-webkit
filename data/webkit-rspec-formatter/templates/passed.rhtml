@@ -1,0 +1,10 @@
+<dd class="spec passed">
+	<span class="spec-name"><%= h(example.description) %></span>
+
+% unless log_messages.nil? || log_messages.empty?
+  <div class="log-messages">
+<%= log_messages.join("\n") %>
+  </div>
+% end
+</dd>
+

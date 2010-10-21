@@ -1,20 +1,8 @@
-% exception = example.metadata[:execution_result][:exception_encountered]
 
-<dd class="spec <%= status %>">
+<dd class="spec failed">
 	<span class="spec-name"><%= h(example.description) %></span>
-% case status
-% when 'pending'
-  <span class="pending-message">(Pending 
-		<%= example.execution_result[:pending_message] %>)</span><br />
-% when 'failed', 'pending-fixed'
   <div class="failure" id="failure-<%= counter %>">
 
-%    if exception.is_a?(RSpec::Core::PendingExampleFixedError)
-    <div class="message">Expected pending 
-        <code><%= h(example.metadata[:execution_result][:pending_message]) %></code>
-        to fail. No Error was raised.
-    </div>
-%    else
     <div class="message">Failure/Error: 
         <code><%= h read_failed_line(exception, example).strip.gsub(/\n/, '<br />') %><br />
 %        exception.message.split("\n").each do |line|
@@ -27,21 +15,16 @@
 %            break
 %          end
 %        end
-    </code></div>
-%    end
+    		</code>
+		</div>
 
-%   unless exception.nil?
-	<div class="backtrace"><pre>
+	<div class="backtrace"><p><code>
 %     format_backtrace(exception.backtrace, example).each do |backtrace_info|
-        <%= backtrace_info %>
+        <span class="backtrace-frame"><%= backtrace_info %></span><br />
 %     end
-	</pre></div>
-%   end
-%   unless extra == ''
-    <%= extra %>
-%   end
+	</code></p></div>
+  <%= extra %>
   </div>
-% end
 
 % unless log_messages.nil? || log_messages.empty?
   <div class="log-messages">
