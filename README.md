@@ -11,7 +11,7 @@ following URL:
     
 or via the Github project:
 
-    
+    http://github.com/ged/webkit-rspec-formatter
 
 The project page is also likely to have more details:
 
