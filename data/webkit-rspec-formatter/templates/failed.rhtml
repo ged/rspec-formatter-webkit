@@ -6,7 +6,7 @@
     <div class="message">Failure/Error: 
         <code><%= h read_failed_line(exception, example).strip.gsub(/\n/, '<br />') %><br />
 %        exception.message.split("\n").each do |line|
-        <%= line %><br />
+        <%= h line %><br />
 %        end
 %        example.example_group.ancestors.push(example.example_group).each do |group|
 %          if group.metadata[:shared_group_name]
