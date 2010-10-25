@@ -4,7 +4,7 @@ This is a formatter for RSpec 2 that takes advantage of features in [WebKit](htt
 
 Test output looks like this:
 
-![Example Output](docs/tmrspec-example.png)
+![Example Output](http://deveiate.org/images/tmrspec-example.png)
 
 ## Installation
 
@@ -14,7 +14,7 @@ To get started, install the `webkit-rspec-formatter` gem:
 
 If you're running specs in Textmate via [the RSpec bundle](http://github.com/rspec/rspec-tmbundle), you can use the webkit formatter by opening Textmate's 'Advanced' Preferences and adding a `TM_RSPEC_OPTS` Shell Variable with the value `--format RSpec::Core::Formatters::WebKit`:
 
-![Setting TM_RSPEC_OPTS](docs/tmrspecopts-shellvar.png)
+![Setting TM_RSPEC_OPTS](http://deveiate.org/images/tmrspecopts-shellvar.png)
 
 That's it!
 
