@@ -1,15 +1,26 @@
-# WebKit RSpec Formatter
+# A WebKit RSpec Formatter
 
-WebKit RSpec Formatter is a webkit-aware pretty formatter for RSpec. It was
-written to take advantage of some of the advanced features of the webkit HTML
-engine, like the one TextMate uses for its output.
+This is a formatter for RSpec 2 that takes advantage of features in [WebKit](http://webkit.org/) to make the output from RSpec in Textmate more fun.
 
-You can check out the current development source with Mercurial from the [main repo](http://repo.deveiate.org/webkit-rspec-formatter "mercurial repo"), or if you prefer Git, via [the Github project](http://github.com/ged/webkit-rspec-formatter "ged's webkit-rspec-formatter at master - GitHub").
+Test output looks like this:
 
-The [project page](http://deveiate.org/webkit-rspec-formatter.html) is 
-also likely to have more details. 
+![Example Output](docs/tmrspec-example.png)
 
-## License
+## Installation
 
-See the LICENSE file for licensing details.
+To get started, install the `webkit-rspec-formatter` gem:
+
+    $ gem install webkit-rspec-formatter
+
+If you're running specs in Textmate via [the RSpec bundle](http://github.com/rspec/rspec-tmbundle), you can use the webkit formatter by opening Textmate's 'Advanced' Preferences and adding a `TM_RSPEC_OPTS` Shell Variable with the value `--format RSpec::Core::Formatters::WebKit`:
+
+![Setting TM_RSPEC_OPTS](docs/tmrspecopts-shellvar.png)
+
+That's it!
+
+## Miscellaneous
+
+It's also usable anywhere else the standard HTML formatter is, of course. Also, while it's specifically intended to be used under the Textmate HTML viewer that the RSpec bundle uses, the output should work fine under recent Gecko/Firefox-based viewers, as well. 
+
+Patches/suggestions welcomed.
 
