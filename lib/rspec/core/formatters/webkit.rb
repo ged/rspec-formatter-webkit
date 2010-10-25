@@ -149,11 +149,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 		counter   = self.failcounter += 1
 		exception = example.metadata[:execution_result][:exception_encountered]
 		extra     = self.extra_failure_content( exception )
-		status    = if exception.is_a?( RSpec::Core::PendingExampleFixedError )
-			then 'pending-fixed'
-			else 'failed'
-			end
-		template  = if status == 'pending-fixed'
+		template  = if exception.is_a?( RSpec::Core::PendingExampleFixedError )
 			then @example_templates[:pending_fixed]
 			else @example_templates[:failed]
 			end
@@ -184,9 +180,8 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	### Return any stuff that should be appended to the current example
 	### because it's failed. Returns a snippet of the source around the
 	### failure.
-	def extra_failure_content( failure )
-		return '' if failure.is_a?( RSpec::Core::PendingExampleFixedError )
-		snippet = @snippet_extractor.snippet( failure.exception )
+	def extra_failure_content( exception )
+		snippet = @snippet_extractor.snippet( exception )
 		return "    <pre class=\"ruby\"><code>#{snippet}</code></pre>"
 	end
 
