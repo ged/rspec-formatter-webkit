@@ -3,7 +3,7 @@ excluded_pkgfiles: []
 
 project_pubdir: /usr/local/www/public/code/
 project_pubhost: deveiate
-project_homepage: http://deveiate.org/projects/WebKit-RSpec-Formatter
+project_homepage: http://deveiate.org/webkit-rspec-formatter.html
 gem_pubhost: rubygems.org
 project_requirements: 
   Rspec-Bundle: ">=0"
@@ -19,6 +19,7 @@ project_summary: A webkit-aware pretty formatter for RSpec
 version_file: rspec/core/formatters/webkit.rb
 additional_pkgfiles: 
 - data/**/*
+required_ruby_version: ""
 dev_dependencies: {}
 
 authors: 
@@ -32,5 +33,4 @@ post_install_message: |-
       --format RSpec::Core::Formatters::WebKit
   
   Have fun!
-
 project_name: WebKit-RSpec-Formatter
