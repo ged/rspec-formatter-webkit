@@ -260,7 +260,7 @@ GEMSPEC   = Gem::Specification.new do |gem|
 
 	gem.authors           = "Michael Granger"
 	gem.email             = ["ged@FaerieMUD.org"]
-	gem.homepage          = 'http://deveiate.org/projects/WebKit-RSpec-Formatter'
+	gem.homepage          = 'http://deveiate.org/webkit-rspec-formatter.html'
 
 	gem.has_rdoc          = true
 	gem.rdoc_options      = RDOC_OPTIONS
@@ -281,6 +281,7 @@ GEMSPEC   = Gem::Specification.new do |gem|
 	# signing key and certificate chain
 	gem.signing_key       = '/Volumes/Keys/ged-private_gem_key.pem'
 	gem.cert_chain        = [File.expand_path('~/.gem/ged-public_gem_cert.pem')]
+
 
 	DEPENDENCIES.each do |name, version|
 		version = '>= 0' if version.length.zero?
