@@ -1,0 +1,25 @@
+
+<dd class="spec pending-fixed">
+	<span class="spec-name"><%= h(example.description) %></span>
+  <div class="failure" id="failure-<%= counter %>">
+
+    <div class="message">Expected pending 
+        <code><%= h(example.metadata[:execution_result][:pending_message]) %></code>
+        to fail. No Error was raised.
+    </div>
+
+		<div class="backtrace"><p><code>
+%     format_backtrace(exception.backtrace, example).each do |backtrace_info|
+	        <span class="backtrace-frame"><%= backtrace_info %></span><br />
+%     end
+		</code></p></div>
+    <%= extra %>
+	</div>
+
+% unless log_messages.nil? || log_messages.empty?
+  <div class="log-messages">
+<%= log_messages.join("\n") %>
+  </div>
+% end
+</dd>
+

@@ -2,7 +2,7 @@
 
 /* 
  * Textmate RSpec Outputter Stylesheet
- * $Id$
+ * $Id: textmate-rspec.css,v 406646ae0941 2010/10/21 23:25:09 ged $
  * 
  * Author: Michael Granger <ged@FaerieMUD.org>
  * 
@@ -12,11 +12,11 @@ body {
 	margin: 0;
 	padding: 0;
 	background: #999;
-	font-size: 80%;
+	font: 80% "Lucida Sans", "Lucida Grande", sans-serif;
 }
 
 pre, code {
-	font: 0.8em "Vera Sans Mono", "Andale Mono", Monaco, mono;
+	font: 0.8em Menlo, Monaco, mono;
 }
 
 #rspec-header {
@@ -34,6 +34,20 @@ pre, code {
     position: fixed;
     -webkit-box-shadow: rgba(25,25,25,0.5) 0 3px 3px;
     -moz-box-shadow: rgba(25,25,25,0.5) 0 3px 3px;
+	background-image: -webkit-gradient(
+	    linear,
+	    left top,
+	    left bottom,
+	    color-stop(0, rgb(101,110,130)),
+	    color-stop(0.2, rgb(144,152,168)),
+	    color-stop(1, rgb(101,110,130))
+	);
+	background-image: -moz-linear-gradient(
+	    center top,
+	    rgb(101,110,130) 0%,
+	    rgb(144,152,168) 20%,
+	    rgb(101,110,130) 100%
+	);
 }
 
 #rspec-title-section {
@@ -107,18 +121,31 @@ pre, code {
 
 .example-group {
 	background: white;
-	padding: 0;
+	padding: 0 0 0.5em;
 	margin: 1em 0;
-  -webkit-box-shadow: 0 2px 5px #333;
-  -webkit-border-radius: 5px;
-  -moz-box-shadow: 0 2px 5px #333;
-  -moz-border-radius: 5px;
+	-webkit-box-shadow: 0 2px 5px #333;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 0 2px 5px #333;
+	-moz-border-radius: 5px;
+background-image: -webkit-gradient(
+    linear,
+    left top,
+    left bottom,
+    color-stop(0, rgb(214,211,214)),
+    color-stop(0.25, rgb(189,189,189)),
+    color-stop(1, rgb(214,211,214))
+);
+background-image: -moz-linear-gradient(
+    center top,
+    rgb(214,211,214) 0%,
+    rgb(189,189,189) 25%,
+    rgb(214,211,214) 100%
+);
 }
 
 .example-group dl dt {
-	padding: 0.2em 1em;
-	font-size: 1.2em;
-	text-shadow: #333 0 1px 2px;
+	padding: 0.2em 0.4em;
+	font-size: 18px;
 	border-bottom: 1px solid #999;
 }
 .example-group dl dd + dd {
@@ -152,24 +179,63 @@ pre, code {
 	cursor: pointer;
 }
 
+dd.nested-group  {
+	margin: 0;
+}
+dd.nested-group dl {
+	margin: 0;
+}
+dd.nested-group dl dt {
+	font-size: 14px;
+}
+dd.nested-group dl dt:before {
+	content: "…";
+}
+dd.nested-group section.example-group {
+	margin: 0;
+	padding: 0 1em;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	-webkit-border-radius: 0;
+	-moz-border-radius: none;
+	background-image: -webkit-gradient(
+	    linear,
+	    left bottom,
+	    left top,
+	    color-stop(0, rgb(219,219,219)),
+	    color-stop(1, rgb(240,240,240))
+	);
+	background-image: -moz-linear-gradient(
+	    center bottom,
+	    rgb(219,219,219) 0%,
+	    rgb(240,240,240) 100%
+	);
+}
+
+
 .failure {
 	/*display: none;*/
 }
 .failure .message {
+	margin-top: 0.2em;
 	background: #dedede;
-	padding: 0.1em 1em;
+	padding: 0.2em 1em;
 }
-.failure .message code {
+.failure .backtrace {
+	overflow: auto;
 }
-
-.pending-message {
-	
+.failure .backtrace p {
+	margin: 0;
+	line-height: 135%;
+}
+.failure .backtrace .backtrace-frame {
+	white-space: pre;
 }
 
 /* Ruby code, style similar to vibrant ink */
 .ruby {
 	font-size: 12px;
-	font-family: monospace;
+	font-family: Menlo, Monaco, monospace;
 	color: white;
 	background-color: black;
 	padding: 0.1em 0 0.2em 0;
@@ -194,7 +260,7 @@ pre, code {
 .ruby .interp { color: white; }
 .ruby .expr { color: white; }
 
-.ruby .offending { background-color: gray; }
+.ruby .offending { background-color: rgba(255,55,55,0.35); }
 .ruby .linenum {
 	width: 75px;
 	padding: 0.1em 1em 0.2em 0;

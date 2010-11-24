@@ -1,3 +1,5 @@
 ^pkg/
 ^docs/api
 ^ChangeLog
+^\.yardoc/
+^release\.(ann|notes)
