@@ -1,5 +1,9 @@
 # A WebKit RSpec Formatter
 
+http://deveiate.org/webkit-rspec-formatter.html
+
+## Description
+
 This is a formatter for RSpec 2 that takes advantage of features in [WebKit](http://webkit.org/) to make the output from RSpec in Textmate more fun.
 
 Test output looks like this:
@@ -8,9 +12,9 @@ Test output looks like this:
 
 ## Installation
 
-To get started, install the `webkit-rspec-formatter` gem:
+To get started, install the `rspec-formatter-webkit` gem:
 
-    $ gem install webkit-rspec-formatter
+    $ gem install rspec-formatter-webkit
 
 If you're running specs in Textmate via [the RSpec bundle](http://github.com/rspec/rspec-tmbundle), you can use the webkit formatter by opening Textmate's 'Advanced' Preferences and adding a `TM_RSPEC_OPTS` Shell Variable with the value `--format RSpec::Core::Formatters::WebKit`:
 
