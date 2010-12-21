@@ -14,7 +14,7 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 	self.developer 'Michael Granger', 'ged@FaerieMUD.org'
 
 	self.extra_deps <<
-		['rspec', '~> 2.2.0']
+		['rspec', '~> 2.3.0']
 
 	self.spec_extras[:licenses] = ["BSD"]
 	self.spec_extras[:post_install_message] = %{
