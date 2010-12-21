@@ -3,3 +3,4 @@
 ^ChangeLog
 ^\.yardoc/
 ^release\.(ann|notes)
+legacy/pkg/
