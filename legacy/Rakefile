@@ -11,7 +11,7 @@ Hoe.plugins.delete :rubyforge
 hoespec = Hoe.spec 'webkit-rspec-formatter' do
 	self.readme_file = 'README.md'
 	self.developer 'Michael Granger', 'ged@FaerieMUD.org'
-	self.extra_deps << ['rspec-formatter-webkit', '>= 2.2.0']
+	self.extra_deps << ['rspec-formatter-webkit', '>= 2.1.0']
 	self.spec_extras[:signing_key] = '/Volumes/Keys/ged-private_gem_key.pem'
 	self.version = '2.0.2'
 
@@ -22,5 +22,4 @@ hoespec = Hoe.spec 'webkit-rspec-formatter' do
 		self.respond_to?( :yard_opts )
 
 end
-
 
