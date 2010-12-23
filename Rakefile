@@ -41,4 +41,11 @@ end
 
 ENV['VERSION'] ||= hoespec.spec.version.to_s
 
+task :legacy_gem do
+	Dir.chdir( 'legacy' ) do
+		sh 'rake gem'
+	end
+end
+CLEAN.include( 'legacy/pkg' )
+
 
