@@ -5,7 +5,7 @@ require 'rbconfig'
 require 'erb'
 require 'pathname'
 
-require 'rspec' 
+require 'rspec'
 require 'rspec/core/formatters/base_text_formatter'
 require 'rspec/core/formatters/snippet_extractor'
 
@@ -13,7 +13,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	include ERB::Util
 
 	# Version constant
-	VERSION = '2.1.0'
+	VERSION = '2.1.1'
 
 	# Look up the datadir falling back to a relative path (mostly for prerelease testing)
 	DEFAULT_DATADIR = Pathname( Config.datadir('rspec-formatter-webkit') )

@@ -2,7 +2,7 @@
 
 require 'hoe'
 
-Hoe.plugin :hg
+Hoe.plugin :mercurial
 Hoe.plugin :yard
 Hoe.plugin :signing
 
