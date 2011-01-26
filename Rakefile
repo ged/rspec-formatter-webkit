@@ -1,8 +1,14 @@
 #!/usr/bin/env rake
 
-require 'hoe'
+begin
+	require 'hoe'
+rescue LoadError
+	abort "This Rakefile requires 'hoe' (gem install hoe)"
+end
 
-Hoe.plugin :hg
+require 'rake/clean'
+
+Hoe.plugin :mercurial
 Hoe.plugin :yard
 Hoe.plugin :signing
 
@@ -13,13 +19,14 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 
 	self.developer 'Michael Granger', 'ged@FaerieMUD.org'
 
-	self.extra_deps <<
-		['rspec', '~> 2.3.0']
+	self.extra_deps.push *{
+		'rspec' => '~> 2.3',
+	}
 
 	self.spec_extras[:licenses] = ["BSD"]
 	self.spec_extras[:post_install_message] = %{
 
-		You can use this formatter from TextMate (if you're using RSpec 2.0.0 
+		You can use this formatter from TextMate (if you're using RSpec 2.3.0 
 		or later) bysetting the TM_RSPEC_OPTS shell variable (in the 
 		'Advanced' preference pane) to:
 
@@ -40,6 +47,7 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 end
 
 ENV['VERSION'] ||= hoespec.spec.version.to_s
+
 
 task :legacy_gem do
 	Dir.chdir( 'legacy' ) do
