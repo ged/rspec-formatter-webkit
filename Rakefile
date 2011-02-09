@@ -16,11 +16,12 @@ Hoe.plugins.delete :rubyforge
 
 hoespec = Hoe.spec 'rspec-formatter-webkit' do
 	self.readme_file = 'README.md'
+	self.history_file = 'History.md'
 
 	self.developer 'Michael Granger', 'ged@FaerieMUD.org'
 
 	self.extra_deps.push *{
-		'rspec' => '~> 2.3',
+		'rspec' => '~> 2.5',
 	}
 
 	self.spec_extras[:licenses] = ["BSD"]
@@ -40,8 +41,6 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 	self.require_ruby_version( '>=1.8.7' )
 
 	self.hg_sign_tags = true if self.respond_to?( :hg_sign_tags )
-	self.yard_opts = [ '--use-cache', '--protected', '--verbose' ] if
-		self.respond_to?( :yard_opts )
 
 	self.rdoc_locations << "deveiate:/usr/local/www/public/code/#{remote_rdoc_dir}"
 end
