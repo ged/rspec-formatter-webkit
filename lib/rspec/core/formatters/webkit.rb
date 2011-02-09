@@ -13,7 +13,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	include ERB::Util
 
 	# Version constant
-	VERSION = '2.1.1'
+	VERSION = '2.1.2'
 
 	# Look up the datadir falling back to a relative path (mostly for prerelease testing)
 	DEFAULT_DATADIR = Pathname( Config.datadir('rspec-formatter-webkit') )
