@@ -1,3 +1,8 @@
+## 2.1.3 [2011-02-16] Michael Granger <ged@FaerieMUD.org>
+
+Remove use of deprecated Config.datadir.
+
+
 ## 2.1.2 [2011-02-09] Michael Granger <ged@FaerieMUD.org>
 
 Trying the dependency fix again.
