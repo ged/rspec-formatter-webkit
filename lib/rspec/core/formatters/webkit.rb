@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'pp'
-require 'rbconfig'
 require 'erb'
 require 'pathname'
 
