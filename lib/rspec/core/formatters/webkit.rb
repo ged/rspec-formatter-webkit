@@ -12,7 +12,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	include ERB::Util
 
 	# Version constant
-	VERSION = '2.1.3'
+	VERSION = '2.1.4'
 
 	# Look up the datadir falling back to a relative path (mostly for prerelease testing)
 	DATADIR = begin
@@ -217,7 +217,6 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 
 
 	### Load the ERB template at +templatepath+ and return it.
-	### @param [Pathname] templatepath  the fully-qualified path to the template file
 	def load_template( templatepath )
 		return ERB.new( templatepath.read, nil, '%<>' ).freeze
 	end

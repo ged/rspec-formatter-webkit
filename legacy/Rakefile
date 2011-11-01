@@ -3,23 +3,19 @@
 require 'hoe'
 
 Hoe.plugin :mercurial
-Hoe.plugin :yard
 Hoe.plugin :signing
 
 Hoe.plugins.delete :rubyforge
 
 hoespec = Hoe.spec 'webkit-rspec-formatter' do
-	self.readme_file = 'README.md'
+	self.readme_file = 'README.rdoc'
 	self.developer 'Michael Granger', 'ged@FaerieMUD.org'
-	self.extra_deps << ['rspec-formatter-webkit', '>= 2.1.0']
-	self.spec_extras[:signing_key] = '/Volumes/Keys/ged-private_gem_key.pem'
+	self.extra_deps << ['rspec-formatter-webkit', '~> 2.1']
 	self.version = '2.0.2'
 
 	self.spec_extras[:post_install_message] = self.paragraphs_of( 'README.md', 3..5 ).join( "\n\n" )
 
 	self.hg_sign_tags = false if self.respond_to?( :hg_sign_tags )
-	self.yard_opts = [ '--use-cache', '--protected', '--verbose' ] if
-		self.respond_to?( :yard_opts )
 
 end
 

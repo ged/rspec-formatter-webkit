@@ -1,5 +1,7 @@
+History.rdoc
 LICENSE
-README.md
+Manifest.txt
+README.rdoc
 Rakefile
 data/rspec-formatter-webkit/css/textmate-rspec.css
 data/rspec-formatter-webkit/images/clock.png

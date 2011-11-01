@@ -9,14 +9,14 @@ end
 require 'rake/clean'
 
 Hoe.plugin :mercurial
-Hoe.plugin :yard
 Hoe.plugin :signing
 
 Hoe.plugins.delete :rubyforge
 
 hoespec = Hoe.spec 'rspec-formatter-webkit' do
-	self.readme_file = 'README.md'
-	self.history_file = 'History.md'
+	self.readme_file = 'README.rdoc'
+	self.history_file = 'History.rdoc'
+	self.extra_rdoc_files = Rake::FileList[ '*.rdoc' ]
 
 	self.developer 'Michael Granger', 'ged@FaerieMUD.org'
 
@@ -25,9 +25,8 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 	self.spec_extras[:licenses] = ["BSD"]
 	self.spec_extras[:post_install_message] = %{
 
-		You can use this formatter from TextMate (if you're using RSpec 2.3.0 
-		or later) by setting the TM_RSPEC_OPTS shell variable (in the 
-		'Advanced' preference pane) to:
+		You can use this formatter from TextMate by setting the TM_RSPEC_OPTS 
+		shell variable (in the 'Advanced' preference pane) to:
 
 		    --format RSpec::Core::Formatters::WebKit
 
@@ -42,8 +41,8 @@ end
 
 ENV['VERSION'] ||= hoespec.spec.version.to_s
 
-# Ensure the manifest and history are updated before checking in
-task 'hg:precheckin' => [ :check_history, :check_manifest ]
+# Ensure history is updated before checking in
+task 'hg:precheckin' => [ :check_history ]
 
 task :legacy_gem do
 	Dir.chdir( 'legacy' ) do
