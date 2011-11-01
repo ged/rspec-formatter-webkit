@@ -4,3 +4,4 @@
 ^\.yardoc/
 ^release\.(ann|notes)
 legacy/pkg/
+doc/
