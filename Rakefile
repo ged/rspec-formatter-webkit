@@ -20,15 +20,13 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 
 	self.developer 'Michael Granger', 'ged@FaerieMUD.org'
 
-	self.extra_deps.push *{
-		'rspec' => '~> 2.5',
-	}
+	self.dependency 'rspec-core', '~> 2.7'
 
 	self.spec_extras[:licenses] = ["BSD"]
 	self.spec_extras[:post_install_message] = %{
 
 		You can use this formatter from TextMate (if you're using RSpec 2.3.0 
-		or later) bysetting the TM_RSPEC_OPTS shell variable (in the 
+		or later) by setting the TM_RSPEC_OPTS shell variable (in the 
 		'Advanced' preference pane) to:
 
 		    --format RSpec::Core::Formatters::WebKit
@@ -36,17 +34,16 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 		Have fun!
 
 	}.gsub( /^\t+/m, '' )
-	self.spec_extras[:signing_key] = '/Volumes/Keys/ged-private_gem_key.pem'
 
 	self.require_ruby_version( '>=1.8.7' )
-
 	self.hg_sign_tags = true if self.respond_to?( :hg_sign_tags )
-
 	self.rdoc_locations << "deveiate:/usr/local/www/public/code/#{remote_rdoc_dir}"
 end
 
 ENV['VERSION'] ||= hoespec.spec.version.to_s
 
+# Ensure the manifest and history are updated before checking in
+task 'hg:precheckin' => [ :check_history, :check_manifest ]
 
 task :legacy_gem do
 	Dir.chdir( 'legacy' ) do

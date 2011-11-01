@@ -15,19 +15,18 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	VERSION = '2.1.3'
 
 	# Look up the datadir falling back to a relative path (mostly for prerelease testing)
-	DEFAULT_DATADIR = Pathname( Gem.datadir('rspec-formatter-webkit') )
-	if DEFAULT_DATADIR.exist?
-		BASE_PATH = DEFAULT_DATADIR
-	else
-		BASE_PATH = Pathname( __FILE__ ).dirname.parent.parent.parent.parent +
-		 	'data/rspec-formatter-webkit'
+	DATADIR = begin
+		dir = Gem.datadir('rspec-formatter-webkit') ||
+		      Pathname( __FILE__ ).dirname.parent.parent.parent.parent +
+		           'data/rspec-formatter-webkit'
+		Pathname( dir )
 	end
 
 	# The base HREF used in the header to map stuff to the datadir
-	BASE_HREF        = "file://#{BASE_PATH}/"
+	BASE_HREF        = "file://#{DATADIR}/"
 
 	# The directory to grab ERb templates out of
-	TEMPLATE_DIR     = BASE_PATH + 'templates'
+	TEMPLATE_DIR     = DATADIR + 'templates'
 
 	# The page part templates
 	HEADER_TEMPLATE          = TEMPLATE_DIR + 'header.rhtml'
@@ -37,6 +36,8 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	PENDFIX_EXAMPLE_TEMPLATE = TEMPLATE_DIR + 'pending-fixed.rhtml'
 	FOOTER_TEMPLATE          = TEMPLATE_DIR + 'footer.rhtml'
 
+	# Pattern to match for excluding lines from backtraces
+	BACKTRACE_EXCLUDE_PATTERN = %r{spec/mate|textmate-command|rspec(-(core|expectations|mocks))?/}
 
 	### Create a new formatter
 	def initialize( output ) # :notnew:
@@ -169,7 +170,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	### Format backtrace lines to include a textmate link to the file/line in question.
 	def backtrace_line( line )
 		return nil unless line = super
-		return nil if line =~ %r{r?spec/mate|textmate-command}
+		return nil if line =~ BACKTRACE_EXCLUDE_PATTERN
 		return h( line.strip ).gsub( /([^:]*\.rb):(\d*)/ ) do
 			"<a href=\"txmt://open?url=file://#{File.expand_path($1)}&amp;line=#{$2}\">#{$1}:#{$2}</a> "
 		end
@@ -181,7 +182,9 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	### failure.
 	def extra_failure_content( exception )
 		return '' unless exception
-		snippet = @snippet_extractor.snippet( exception )
+		backtrace = exception.backtrace.find {|line| line !~ BACKTRACE_EXCLUDE_PATTERN }
+		# $stderr.puts "Using backtrace line %p to extract snippet" % [ backtrace ]
+		snippet = @snippet_extractor.snippet([ backtrace ])
 		return "    <pre class=\"ruby\"><code>#{snippet}</code></pre>"
 	end
 
