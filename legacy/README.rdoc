@@ -1,8 +1,8 @@
-# Placeholder Gem for rspec-formatter-webkit
+= Placeholder Gem for rspec-formatter-webkit
 
 http://deveiate.org/webkit-rspec-formatter.html
 
-## Description
+== Description
 
 This is a placeholder gem for the WebKit Formatter for RSpec.
 
