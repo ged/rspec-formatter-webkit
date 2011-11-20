@@ -171,8 +171,8 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	def backtrace_line( line )
 		return nil unless line = super
 		return nil if line =~ BACKTRACE_EXCLUDE_PATTERN
-		return h( line.strip ).gsub( /([^:]*\.rb):(\d*)/ ) do
-			"<a href=\"txmt://open?url=file://#{File.expand_path($1)}&amp;line=#{$2}\">#{$1}:#{$2}</a> "
+		return h( line.strip ).match( /([^:]*\.rb):(\d*)/ ) do |md|
+			"<a href=\"txmt://open?url=file://#{File.expand_path(md[1])}&amp;line=#{md[2]}\">#{md[1]}:#{md[2]}</a> "
 		end
 	end
 
