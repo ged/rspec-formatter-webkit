@@ -98,6 +98,8 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 		else
 			@output.puts %{<dd class="nested-group"><section class="example-group">}
 		end
+    anchor_name = example_group.description.downcase.gsub(/[^a-z0-9]+/, ' ').gsub(/ /,'_')
+    @output.puts %{<a name="#{anchor_name}"/>}
 
 		@output.puts %{  <dl>},
 			%{  <dt id="%s">%s</dt>} % [
