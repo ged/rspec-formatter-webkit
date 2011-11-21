@@ -8,13 +8,9 @@
 	<meta http-equiv="Expires" content="-1" /> 
 	<meta http-equiv="Pragma" content="no-cache" /> 
 
-	<base href="<%= BASE_HREF %>" />
-
-	<link rel="stylesheet" href="css/textmate-rspec.css" type="text/css" media="screen" 
-		title="no title" charset="utf-8" />
-
-	<script type="text/javascript" charset="utf-8" src="js/jquery-1.4.2.min.js"></script>
-	<script type="text/javascript" charset="utf-8" src="js/textmate-rspec.js"></script> 
+  <style><%= render_css('textmate-rspec.css')  %></style>
+  <script><%= render_js('jquery-1.4.2.min.js') %></script>
+  <script><%= render_js('textmate-rspec.js') %></script>
 </head> 
 <body> 
 	<div class="rspec-report"> 

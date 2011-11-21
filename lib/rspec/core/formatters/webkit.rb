@@ -3,6 +3,7 @@
 require 'pp'
 require 'erb'
 require 'pathname'
+require 'base64'
 
 require 'rspec'
 require 'rspec/core/formatters/base_text_formatter'
@@ -221,4 +222,30 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 		return ERB.new( templatepath.read, nil, '%<>' ).freeze
 	end
 
+  # View helpers to inline assets
+  def compress_css(css_string)
+    css_string.gsub(/\/\*.*?\*\//m,'').gsub(/^ *$\n/,'')
+  end
+
+  def render_data_urls(css_string)
+    css_string.gsub(/url\((.*?)\)/) do |match|
+      filename  = $1
+      mime_type = "image/#{filename.split(/\./).last}"
+      path      = File.join(DATADIR, 'css', filename)
+      data      = File.read(path)
+      base64    = Base64.encode64(data).split(/\n/).join
+      "url(data:#{mime_type};base64,#{base64})"
+    end
+  end
+
+  def render_css( filename )
+    compress_css( render_data_urls( File.read(File.join(DATADIR, 'css', filename)) ))
+  end
+
+  def render_js( filename )
+    o = ["\n//<![CDATA[\n"]
+    o << File.read(File.join(DATADIR, 'js', filename))
+    o << "\n//]]>"
+    o.join
+  end
 end # class RSpec::Core::Formatter::WebKitFormatter
