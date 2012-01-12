@@ -152,7 +152,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 		counter   = self.failcounter += 1
 		exception = example.metadata[:execution_result][:exception]
 		extra     = self.extra_failure_content( exception )
-		template  = if exception.is_a?( RSpec::Core::PendingExampleFixedError )
+		template  = if exception.is_a?( RSpec::Core::Pending::PendingExampleFixedError )
 			then @example_templates[:pending_fixed]
 			else @example_templates[:failed]
 			end
