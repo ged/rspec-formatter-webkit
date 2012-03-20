@@ -1,3 +1,8 @@
+== v2.1.5 [2012-01-07] Michael Granger <ged@FaerieMUD.org>
+
+Updates for RSpec 2.8.0.
+
+
 == v2.1.4 [2011-11-01] Michael Granger <ged@FaerieMUD.org>
 
 Updates for Ruby 1.9.3-p0 and RSpec 2.7.x.

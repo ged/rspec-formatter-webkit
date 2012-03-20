@@ -8,12 +8,14 @@ require 'base64'
 require 'rspec'
 require 'rspec/core/formatters/base_text_formatter'
 require 'rspec/core/formatters/snippet_extractor'
+require 'rspec/core/pending'
+
 
 class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatter
 	include ERB::Util
 
 	# Version constant
-	VERSION = '2.1.4'
+	VERSION = '2.1.5'
 
 	# Look up the datadir falling back to a relative path (mostly for prerelease testing)
 	DATADIR = begin
@@ -39,6 +41,14 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 
 	# Pattern to match for excluding lines from backtraces
 	BACKTRACE_EXCLUDE_PATTERN = %r{spec/mate|textmate-command|rspec(-(core|expectations|mocks))?/}
+
+	# Figure out which class pending-example-fixed errors are (2.8 change)
+	PENDING_FIXED_EXCEPTION = if defined?( RSpec::Core::Pending::PendingExampleFixedError )
+		RSpec::Core::Pending::PendingExampleFixedError
+	else
+		RSpec::Core::PendingExampleFixedError
+	end
+
 
 	### Create a new formatter
 	def initialize( output ) # :notnew:
@@ -152,7 +162,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 		counter   = self.failcounter += 1
 		exception = example.metadata[:execution_result][:exception]
 		extra     = self.extra_failure_content( exception )
-		template  = if exception.is_a?( RSpec::Core::Pending::PendingExampleFixedError )
+		template  = if exception.is_a?( PENDING_FIXED_EXCEPTION )
 			then @example_templates[:pending_fixed]
 			else @example_templates[:failed]
 			end
