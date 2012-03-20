@@ -450,6 +450,23 @@ function hook_log_clickables() {
   });
 }
 
+function update_timings(){
+  $('#right-hand .example-group').each(function(ix,eg){
+    var allTime = 0;
+    $(eg).find(".spec").each(function(ind, spec){
+      allTime += parseFloat($(spec).data('time'));
+    });
+    var title = $(eg).find("dt:first");
+    if(allTime > 60.0) {
+      title.html(title.html() + " (" + (allTime / 60).toFixed(2) + " m)");
+    } else if(allTime > 1.0) {
+      title.html(title.html() + " (" + allTime.toFixed(2) + " s)");
+    } else {
+      title.html(title.html() + " (" + (allTime*1000).toFixed(2) + " ms)");
+    }
+  });
+}
+
 $(document).ready(function() {
   console.log( "Document is ready." );
   clearInterval( polltimer );
@@ -460,6 +477,7 @@ $(document).ready(function() {
   hook_legend_clickables();
   hook_log_clickables();
   hook_navigation_clickables();
+  update_timings();
 });
 
 

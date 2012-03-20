@@ -1,5 +1,5 @@
-<dd class="spec passed">
-	<span class="spec-name"><%= h(example.description) %></span>
+<dd class="spec passed" data-time="<%= time.to_f %>">
+  <span class="spec-name"><%= h(example.description) %> <%= elapsed %></span>
 
 % unless log_messages.nil? || log_messages.empty?
   <div class="log-messages">

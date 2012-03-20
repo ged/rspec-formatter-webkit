@@ -81,6 +81,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 
 	### Start the page by rendering the header.
 	def start( example_count )
+    @timers ||= []
 		@output.puts self.render_header( example_count )
 		@output.flush
 	end
@@ -142,6 +143,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	### Callback -- called when an example is entered
 	def example_started( example )
 		@example_number += 1
+    @timers << Time.now
 		Thread.current[ 'logger-output' ] ||= []
 		Thread.current[ 'logger-output' ].clear
 	end
@@ -150,6 +152,9 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	### Callback -- called when an example is exited with no failures.
 	def example_passed( example )
 		status = 'passed'
+
+    time = Time.now - @timers.pop
+    elapsed = ENV['NO_RUNTIME'] ? "" : run_time(time)
 		@output.puts( @example_templates[:passed].result(binding()) )
 		@output.flush
 	end
@@ -167,6 +172,8 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 			else @example_templates[:failed]
 			end
 
+    time = Time.now - @timers.pop
+    elapsed = ENV['NO_RUNTIME'] ? "" : run_time(time)
 		@output.puts( template.result(binding()) )
 		@output.flush
 	end
@@ -175,6 +182,9 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	### Callback -- called when an example is exited via a 'pending'.
 	def example_pending( example )
 		status = 'pending'
+
+    time = Time.now - @timers.pop
+    elapsed = ENV['NO_RUNTIME'] ? "" : run_time(time)
 		@output.puts( @example_templates[:pending].result(binding()) )
 		@output.flush
 	end
@@ -239,6 +249,23 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	end
 
   # View helpers to inline assets
+  def run_time(time)
+    o = ['(']
+    time = time.to_f
+    if time > 60.0
+      o << ((time / 60.0) * 100).round / 100.0 # I'd rather use .round(2) but I'm being friendly to ruby 1.8 for now.
+      o << ' ms'
+    elsif time > 1.0
+      o << (time * 100).round / 100.0
+      o << ' s'
+    else
+      o << (time * 100000).round / 100.0
+      o << ' ms'
+    end
+    o << ')'
+    o.join
+  end
+
   def compress_css(css_string)
     css_string.gsub(/\/\*.*?\*\//m,'').gsub(/^ *$\n/,'')
   end
