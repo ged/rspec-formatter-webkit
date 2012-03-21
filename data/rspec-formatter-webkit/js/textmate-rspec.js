@@ -55,9 +55,9 @@ function fade_out_rect( ctx, x, y, w, h, a1, a2 ) {
 }
 
 function draw_summary_graph( selector, segments ) {
-	var graphElement = $(selector).get( 0 );
-	var i = 0;
-	
+  var graphElement = $(selector).get( 0 );
+  var i = 0;
+  
     if (!graphElement)
         return;
 
@@ -74,8 +74,8 @@ function draw_summary_graph( selector, segments ) {
 
     // Calculate the percentage of each segment, rounded to the nearest percent.
     var percents = segments.map(function(s) {
-		return Math.max(Math.round(100 * s.value / total), 1);
-	});
+    return Math.max(Math.round(100 * s.value / total), 1);
+  });
 
     // Calculate the total percentage.
     var percentTotal = 0;
@@ -313,33 +313,33 @@ function make_legend_element( label, value, color ) {
 
 
 function update_summary_graph() {
-	var total = $('#spec-count').eq(0).text();
-	var graphInfo = {
-		passed: $('.spec.passed'),
-		pending: $('.spec.pending'),
-		failed: $('.spec.failed'),
-		'pending:fixed': $('.spec.pending-fixed'),
-		total: parseInt( total, 10 )
-	};
+  var total = $('#spec-count').eq(0).text();
+  var graphInfo = {
+    passed: $('.spec.passed'),
+    pending: $('.spec.pending'),
+    failed: $('.spec.failed'),
+    'pending:fixed': $('.spec.pending-fixed'),
+    total: parseInt( total, 10 )
+  };
 
     var categoryOrder = ["passed", "pending", "pending:fixed", "failed"];
-	var categoryColors = {
-		passed: {r: 0, g: 157, b: 37},            // #009D25
-		pending: {r: 227, g: 184, b: 0},          // #E3B800
-		'pending:fixed': {r: 9, g: 60, b: 226},   // #093CE2
-		failed: {r: 192, g: 0, b: 0}              // #C00000
-	};
+  var categoryColors = {
+    passed: {r: 0, g: 157, b: 37},            // #009D25
+    pending: {r: 227, g: 184, b: 0},          // #E3B800
+    'pending:fixed': {r: 9, g: 60, b: 226},   // #093CE2
+    failed: {r: 192, g: 0, b: 0}              // #C00000
+  };
     var fillSegments = [];
-	var doneCount = 0;
+  var doneCount = 0;
 
-	var legendElement = $( '#rspec-summary-graph-legend' );
-	legendElement.empty();
+  var legendElement = $( '#rspec-summary-graph-legend' );
+  legendElement.empty();
 
-	jQuery.each( categoryOrder, function(i, val) {
+  jQuery.each( categoryOrder, function(i, val) {
         var category = categoryOrder[i];
         var size = graphInfo[ category ].length;
         if (!size) return true;
-		doneCount += size;
+    doneCount += size;
 
         var color = categoryColors[category];
         var colorString = "rgb(" + color.r + ", " + color.g + ", " + color.b + ")";
@@ -355,48 +355,153 @@ function update_summary_graph() {
         var totalLegendLabel = make_legend_element( "remaining", graphInfo.total - doneCount );
         // totalLegendLabel.addStyleClass( "total" );
         legendElement.append( totalLegendLabel );
-		if ( doneCount < graphInfo.total ) {
-			var fillSegment = { color: 'rgb(254,254,254)', value: graphInfo.total - doneCount };
-			console.log( "Adding segment for examples yet to run: " + fillSegment.toString() );
-			fillSegments.push( fillSegment );
-		}
+    if ( doneCount < graphInfo.total ) {
+      var fillSegment = { color: 'rgb(254,254,254)', value: graphInfo.total - doneCount };
+      console.log( "Adding segment for examples yet to run: " + fillSegment.toString() );
+      fillSegments.push( fillSegment );
+    }
     }
 
-	draw_summary_graph( '#rspec-summary-graph', fillSegments );
+  draw_summary_graph( '#rspec-summary-graph', fillSegments );
+  updateNavigation();
+}
+
+function updateNavigation(){
+  var target = $('#navigation-elements');
+  $('#right-hand .example-group').each(function(i, eg){
+    eg = $(eg)
+    var all     = eg.find('.spec').length;
+    var passing = eg.find('.spec.passed').length;
+    var failed  = eg.find('.spec.failed').length;
+    //var pending = eg.find('.spec.pending').length;
+
+    var disposition = 'pending';
+    if(passing == all){
+      disposition = 'passed';
+    }else if(failed > 0){
+      disposition = 'failed';
+    }
+
+    var heading = eg.find('dl dt:first').text();
+    var depth   = eg.parents('dd').length;
+    //console.log(eg.find('.example-group dl dt'));
+    var e = $(document.createElement('li'));
+    e.append("<a href=\"#"+eg.find('a:first').attr('name')+"\">" + heading + "</a>")
+    e.addClass(disposition)
+    if(depth > 0){
+      e.addClass("subsection").css({'padding-left': (10*depth)});
+    }
+    var h = $('#rspec-header').height();
+    e.click(function(){
+      setTimeout(function(){
+        var tp = eg.position().top;
+        var t = tp - (h + 29);
+        scrollTo(0, t);
+        scrollSidebar();
+      }, 0);
+    });
+    target.append(e);
+  });
+  nav_height = $('#navigation-block').height();
+}
+
+var nav_hidden = false;
+var nav_height = 0;
+function hook_navigation_clickables(){
+  $('#navigation-block .hide-nav').click(function(){
+    if(nav_hidden){
+      $('#left-hand').css({float: 'left'});
+      $('#right-hand').css({float: 'right', 'width': '84%'});
+      $(this).text('(hide)');
+      $('#navigation-block').animate({height: nav_height + "px"}, {queue:false, complete: function(){
+        nav_hidden = !nav_hidden;
+      }});
+    } else {
+      $(this).text('(show)');
+      $('#navigation-block').animate({height: '22px'}, {queue: false, complete: function(){
+        $('#left-hand').css({'padding-top': '0px'});
+        $('#left-hand').css({float: 'none'});
+        $('#right-hand').css({float: 'none', 'width': '100%'});
+        nav_hidden = !nav_hidden;
+      }});
+    }
+  });
 }
 
 function toggle_spec_status() {
-	var status = $(this).attr( 'class' ).match( /(passed|pending(?:-fixed)?|failed)/ )[0];
-	console.log( "Looking for specs with class '" + status + "'." );
-	$(this).toggleClass( 'hidden' );
-	$( '.spec.' + status ).toggle('fast');
+  var status = $(this).attr( 'class' ).match( /(passed|pending(?:-fixed)?|failed)/ )[0];
+  console.log( "Looking for specs with class '" + status + "'." );
+  $(this).toggleClass( 'hidden' );
+  $( '.spec.' + status ).toggle('fast');
 }
 
 function hook_legend_clickables() {
-	$('label.passed').click( toggle_spec_status );
-	$('label.pending').click( toggle_spec_status );
-	$('label.pending-fixed').click( toggle_spec_status );
-	$('label.failed').click( toggle_spec_status );
+  $('label.passed').click( toggle_spec_status );
+  $('label.pending').click( toggle_spec_status );
+  $('label.pending-fixed').click( toggle_spec_status );
+  $('label.failed').click( toggle_spec_status );
 }
 
 function hook_log_clickables() {
-	$('.spec:has(div.log-messages)').each( function() {
-		$(this).addClass( 'logged' );
-	}).find( '.spec-name' ).click( function(e) {
-		$(this).parent().find('div.log-messages').toggle();
-	});
+  $('.spec:has(div.log-messages)').each( function() {
+    $(this).addClass( 'logged' );
+  }).find( '.spec-name' ).click( function(e) {
+    $(this).parent().find('div.log-messages').toggle();
+  });
+}
+
+function update_timings(){
+  $('#right-hand .example-group').each(function(ix,eg){
+    var allTime = 0;
+    $(eg).find(".spec").each(function(ind, spec){
+      allTime += parseFloat($(spec).data('time'));
+    });
+    var title = $(eg).find("dt:first");
+    if(allTime > 60.0) {
+      title.html(title.html() + " (" + (allTime / 60).toFixed(2) + " m)");
+    } else if(allTime > 1.0) {
+      title.html(title.html() + " (" + allTime.toFixed(2) + " s)");
+    } else {
+      title.html(title.html() + " (" + (allTime*1000).toFixed(2) + " ms)");
+    }
+  });
 }
 
 $(document).ready(function() {
-	console.log( "Document is ready." );
-	clearInterval( polltimer );
+  console.log( "Document is ready." );
+  clearInterval( polltimer );
 
-	$('#rspec-summary-stats').html( 'Finished in ' + $('#summary .duration').html() );
-	
-	update_summary_graph();
-	hook_legend_clickables();
-	hook_log_clickables();
+  $('#rspec-summary-stats').html( 'Finished in ' + $('#summary .duration').html() );
+  
+  update_summary_graph();
+  hook_legend_clickables();
+  hook_log_clickables();
+  hook_navigation_clickables();
+  update_timings();
+});
+
+
+function scrollSidebar(){
+  $('#left-hand').animate({'padding-top': $(window).scrollTop() + 'px'}, {queue: false, duration: 600});
+}
+(function($) {
+  $.inviewport = function(element, settings) {
+    return !$.belowthefold(element, {threshold: settings.bottomThreshold}) && !$.abovethetop(element, {threshold: settings.topThreshold});
+  };
+  $.extend($.expr[':'], {
+    "in-viewport": function(a, i, m) {
+      var buffer = 70;
+      return $.inviewport(a, {topThreshold : (93+buffer), bottomThreshold: (-1 * buffer)});
+    }
+  });
+})(jQuery);
+$(document).scroll(function(){
+  if(!nav_hidden){
+    var inside = ($('#navigation-block:in-viewport').length > 0);
+    if(!inside){
+      scrollSidebar();
+    }
+  }
 });
 
 polltimer = setInterval( update_summary_graph, 250 );
-

@@ -77,9 +77,80 @@ pre, code {
 	padding: 1em 3em;
 	background-color: rgb(101, 111, 130);
 	color: white;
+  clear: both;
 }
 #summary p {
 	margin: 0;
+}
+
+#left-hand {
+  float: left;
+  width: 15%;
+}
+#right-hand {
+  float: right;
+  width: 84%;
+}
+#navigation-block {
+	overflow: hidden;
+}
+#navigation-block .hide-nav {
+	float: right;
+	font-size: 10px;
+	padding-top: 0.4em;
+	cursor: pointer;
+}
+#navigation-block a {
+	text-decoration: none;
+	color: #000;
+}
+#navigation-block dl {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+#navigation-block ul {
+  background: white;
+  padding: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
+}
+#navigation-block ul li {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  list-style-type: none;
+  white-space: nowrap;
+  list-style-type: none;
+  padding: 0.5em 0 0.5em 1.5em;
+  margin: 0;
+  font-size: 14px;
+	background: #ddd url(../images/clock.png) no-repeat 3px 6px;
+}
+#navigation-block ul li + li {
+	border-top: 1px solid rgba(64,64,64,0.3);
+}
+#navigation-block ul li.subsection {
+	border-top: 0;
+  background-position-x: -9999px;
+  font-size: 10px;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+}
+#navigation-block ul li.passed {
+  background-color: #aacba3;
+	background-image: url(../images/tick_shield.png);
+}
+#navigation-block ul li.failed {
+  background-color: #d39595;
+	background-image: url(../images/cross_shield.png);
+}
+#navigation-block ul li.pending {
+  background-color: #cac574;
+	background-image: url(../images/exclamation_shield.png);
+}
+#navigation-block ul li.pending-fixed {
+	background-color: #8a9dca;
+	background-image: url(../images/question_shield.png);
 }
 
 .rspec-graph-legend-item {

@@ -1,6 +1,6 @@
 
-<dd class="spec pending">
-	<span class="spec-name"><%= h(example.description) %></span>
+<dd class="spec pending" data-time="<%= time.to_f %>">
+  <span class="spec-name"><%= h(example.description) %> <%= elapsed %></span>
   <span class="pending-message">
 		(Pending <%= example.execution_result[:pending_message] %>)
 	</span>

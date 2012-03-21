@@ -1,6 +1,6 @@
 
-<dd class="spec failed">
-	<span class="spec-name"><%= h(example.description) %></span>
+<dd class="spec failed" data-time="<%= time.to_f %>">
+  <span class="spec-name"><%= h(example.description) %> <%= elapsed %></span>
   <div class="failure" id="failure-<%= counter %>">
 
     <div class="message">Failure/Error: 

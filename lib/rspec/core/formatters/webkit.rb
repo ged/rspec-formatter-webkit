@@ -3,6 +3,7 @@
 require 'pp'
 require 'erb'
 require 'pathname'
+require 'base64'
 
 require 'rspec'
 require 'rspec/core/formatters/base_text_formatter'
@@ -80,6 +81,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 
 	### Start the page by rendering the header.
 	def start( example_count )
+    @timers ||= []
 		@output.puts self.render_header( example_count )
 		@output.flush
 	end
@@ -107,6 +109,8 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 		else
 			@output.puts %{<dd class="nested-group"><section class="example-group">}
 		end
+    anchor_name = example_group.description.downcase.gsub(/[^a-z0-9]+/, ' ').gsub(/ /,'_')
+    @output.puts %{<a name="#{anchor_name}"/>}
 
 		@output.puts %{  <dl>},
 			%{  <dt id="%s">%s</dt>} % [
@@ -139,6 +143,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	### Callback -- called when an example is entered
 	def example_started( example )
 		@example_number += 1
+    @timers << Time.now
 		Thread.current[ 'logger-output' ] ||= []
 		Thread.current[ 'logger-output' ].clear
 	end
@@ -147,6 +152,9 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	### Callback -- called when an example is exited with no failures.
 	def example_passed( example )
 		status = 'passed'
+
+    time = Time.now - @timers.pop
+    elapsed = ENV['NO_RUNTIME'] ? "" : run_time(time)
 		@output.puts( @example_templates[:passed].result(binding()) )
 		@output.flush
 	end
@@ -164,6 +172,8 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 			else @example_templates[:failed]
 			end
 
+    time = Time.now - @timers.pop
+    elapsed = ENV['NO_RUNTIME'] ? "" : run_time(time)
 		@output.puts( template.result(binding()) )
 		@output.flush
 	end
@@ -172,6 +182,9 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	### Callback -- called when an example is exited via a 'pending'.
 	def example_pending( example )
 		status = 'pending'
+
+    time = Time.now - @timers.pop
+    elapsed = ENV['NO_RUNTIME'] ? "" : run_time(time)
 		@output.puts( @example_templates[:pending].result(binding()) )
 		@output.flush
 	end
@@ -182,7 +195,11 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 		return nil unless line = super
 		return nil if line =~ BACKTRACE_EXCLUDE_PATTERN
 		return h( line.strip ).gsub( /([^:]*\.rb):(\d*)/ ) do
-			"<a href=\"txmt://open?url=file://#{File.expand_path($1)}&amp;line=#{$2}\">#{$1}:#{$2}</a> "
+      if $1.nil?
+        "#{$1}:#{$2} "
+      else
+        "<a href=\"txmt://open?url=file://#{File.expand_path($1)}&amp;line=#{$2}\">#{$1}:#{$2}</a> "
+      end
 		end
 	end
 
@@ -231,4 +248,47 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 		return ERB.new( templatepath.read, nil, '%<>' ).freeze
 	end
 
+  # View helpers to inline assets
+  def run_time(time)
+    o = ['(']
+    time = time.to_f
+    if time > 60.0
+      o << ((time / 60.0) * 100).round / 100.0 # I'd rather use .round(2) but I'm being friendly to ruby 1.8 for now.
+      o << ' m'
+    elsif time > 1.0
+      o << (time * 100).round / 100.0
+      o << ' s'
+    else
+      o << (time * 100000).round / 100.0
+      o << ' ms'
+    end
+    o << ')'
+    o.join
+  end
+
+  def compress_css(css_string)
+    css_string.gsub(/\/\*.*?\*\//m,'').gsub(/^ *$\n/,'')
+  end
+
+  def render_data_urls(css_string)
+    css_string.gsub(/url\((.*?)\)/) do |match|
+      filename  = $1
+      mime_type = "image/#{filename.split(/\./).last}"
+      path      = File.join(DATADIR, 'css', filename)
+      data      = File.read(path)
+      base64    = Base64.encode64(data).split(/\n/).join
+      "url(data:#{mime_type};base64,#{base64})"
+    end
+  end
+
+  def render_css( filename )
+    compress_css( render_data_urls( File.read(File.join(DATADIR, 'css', filename)) ))
+  end
+
+  def render_js( filename )
+    o = ["\n//<![CDATA[\n"]
+    o << File.read(File.join(DATADIR, 'js', filename))
+    o << "\n//]]>"
+    o.join
+  end
 end # class RSpec::Core::Formatter::WebKitFormatter
