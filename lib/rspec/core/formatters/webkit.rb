@@ -254,7 +254,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
     time = time.to_f
     if time > 60.0
       o << ((time / 60.0) * 100).round / 100.0 # I'd rather use .round(2) but I'm being friendly to ruby 1.8 for now.
-      o << ' ms'
+      o << ' m'
     elsif time > 1.0
       o << (time * 100).round / 100.0
       o << ' s'
