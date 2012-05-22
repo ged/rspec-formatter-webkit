@@ -310,23 +310,31 @@ div.log-message .log-message-text {
 
 
 /* Distinguish levels */
-div.log-message.debug { color: #666; }
-div.log-message.info {}
+div.log-message.debug,
+div.debug-log-message { color: #666; }
+div.log-message.info,
+div.info-log-message {}
 
 div.log-message.warn,
-div.log-message.error {
+div.warn-log-message,
+div.log-message.error,
+div.error-log-message {
 	background: #ff9;
 }
 div.log-message.error .log-level,
-div.log-message.error .log-message-text {
+div.error-log-message .log-level,
+div.log-message.error .log-message-text,
+div.error-log-message .log-message-text {
 	color: #900;
 }
-div.log-message.fatal {
+div.log-message.fatal,
+div.fatal-log-message {
 	background: #900;
 	color: white;
 	font-weight: bold;
 	border: 0;
 }
-div.log-message.fatal .log-name {
+div.log-message.fatal .log-name,
+div.fatal-log-message .log-name {
 	color:  white;
 }
