@@ -1,3 +1,8 @@
+== v2.2.0 [2012-05-30] Michael Granger <ged@FaerieMUD.org>
+
+Added CSS classes for Loggability support.
+
+
 == v2.1.5 [2012-01-07] Michael Granger <ged@FaerieMUD.org>
 
 Updates for RSpec 2.8.0.
