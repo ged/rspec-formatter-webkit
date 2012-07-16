@@ -110,7 +110,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 
 		@output.puts %{  <dl>},
 			%{  <dt id="%s">%s</dt>} % [
-			 	example_group.name.gsub(/[\W_]+/, '-').downcase,
+				example_group.name.gsub(/[\W_]+/, '-').downcase,
 				h(example_group.description)
 			]
 		@output.flush
