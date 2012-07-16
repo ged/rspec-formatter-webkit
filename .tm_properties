@@ -7,7 +7,3 @@ excludeInFileChooser = "{$exclude,.hg}"
 softTabs         = false
 tabSize          = 4
 
-[ "**/*_spec.rb" ]
-fileType = 'text.ruby.rspec'
-
-
