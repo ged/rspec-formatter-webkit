@@ -182,7 +182,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 		return nil unless line = super
 		return nil if line =~ BACKTRACE_EXCLUDE_PATTERN
 		return h( line.strip ).gsub( /([^:]*\.rb):(\d*)/ ) do
-			"<a href=\"txmt://open?url=file://#{File.expand_path($1)}&amp;line=#{$2}\">#{$1}:#{$2}</a> "
+			"<a href=\"txmt://open?url=file://#{File.expand_path($1.to_s)}&amp;line=#{$2}\">#{$1}:#{$2}</a> "
 		end
 	end
 
