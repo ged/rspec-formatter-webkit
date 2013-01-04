@@ -8,15 +8,12 @@
 %        exception.message.split("\n").each do |line|
         <%= h line %><br />
 %        end
-%        example.example_group.ancestors.push(example.example_group).each do |group|
-%          if group.metadata[:shared_group_name]
+%        if group = find_shared_group( example )
             Shared Example Group: "<%= h group.metadata[:shared_group_name] %>" called from 
                         "<%= backtrace_line(group.metadata[:example_group][:location]) %>
-%            break
-%          end
 %        end
-    		</code>
-		</div>
+        </code>
+    </div>
 
 	<div class="backtrace"><p><code>
 %     format_backtrace(exception.backtrace, example).each do |backtrace_info|
