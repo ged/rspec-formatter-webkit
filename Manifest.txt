@@ -1,3 +1,4 @@
+ChangeLog
 History.rdoc
 LICENSE
 Manifest.txt
