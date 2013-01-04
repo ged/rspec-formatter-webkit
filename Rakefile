@@ -20,7 +20,7 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 
 	self.developer 'Michael Granger', 'ged@FaerieMUD.org'
 
-	self.dependency 'rspec-core', '~> 2.7'
+	self.dependency 'rspec-core', '~> 2.12'
 
 	self.spec_extras[:licenses] = ["BSD"]
 	self.spec_extras[:post_install_message] = %{
