@@ -16,7 +16,7 @@ body {
 }
 
 pre, code {
-	font: 0.8em Menlo, Monaco, mono;
+	font: 0.8em Menlo, Monaco, monospace;
 }
 
 #rspec-header {
@@ -274,7 +274,7 @@ div.log-messages {
 	margin: 0;
 	padding: 0;
 	background-color: #999;
-	font: 0.8em "Vera Sans Mono", "Andale Mono", Monaco, mono;
+	font: 0.8em Menlo, Monaco, monospace;
 }
 div.log-message {
 	background: #eee;
@@ -305,7 +305,7 @@ div.log-message .log-name:after { content:  "\00BB"; }
 
 div.log-message .log-message-text {
 	padding-left: 4px;
-	font-family: Monaco, "Andale Mono", "Vera Sans Mono", mono;
+	font-family: Menlo, Monaco, monospace;
 }
 
 
