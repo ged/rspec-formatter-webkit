@@ -16,7 +16,7 @@ body {
 }
 
 pre, code {
-	font: 0.8em Menlo, Monaco, mono;
+	font: 0.8em Menlo, Monaco, monospace;
 }
 
 #rspec-header {
@@ -189,7 +189,7 @@ dd.nested-group dl dt {
 	font-size: 14px;
 }
 dd.nested-group dl dt:before {
-	content: "…";
+	content: "\2026";
 }
 dd.nested-group section.example-group {
 	margin: 0;
@@ -274,7 +274,7 @@ div.log-messages {
 	margin: 0;
 	padding: 0;
 	background-color: #999;
-	font: 0.8em "Vera Sans Mono", "Andale Mono", Monaco, mono;
+	font: 0.8em Menlo, Monaco, monospace;
 }
 div.log-message {
 	background: #eee;
@@ -300,12 +300,12 @@ div.log-message .log-name {
 	font-size: 1.2em;
 	color: #1e51b2;
 }
-div.log-message .log-name:before { content: "«"; }
-div.log-message .log-name:after { content:  "»"; }
+div.log-message .log-name:before { content: "\00AB"; }
+div.log-message .log-name:after { content:  "\00BB"; }
 
 div.log-message .log-message-text {
 	padding-left: 4px;
-	font-family: Monaco, "Andale Mono", "Vera Sans Mono", mono;
+	font-family: Menlo, Monaco, monospace;
 }
 
 
