@@ -90,7 +90,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 		super
 		nesting_depth = example_group.ancestors.length
 
-		# Close the previous example groups if this one isn't a 
+		# Close the previous example groups if this one isn't a
 		# descendent of the previous one
 		if @previous_nesting_depth.nonzero? && @previous_nesting_depth >= nesting_depth
 			( @previous_nesting_depth - nesting_depth + 1 ).times do
