@@ -10,6 +10,7 @@ require 'rake/clean'
 
 Hoe.plugin :mercurial
 Hoe.plugin :signing
+Hoe.plugin :bundler
 
 Hoe.plugins.delete :rubyforge
 
@@ -19,10 +20,10 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 	self.extra_rdoc_files = Rake::FileList[ '*.rdoc' ]
 
 	self.developer 'Michael Granger', 'ged@FaerieMUD.org'
+	self.license 'Ruby'
 
-	self.dependency 'rspec-core', '~> 2.12'
+	self.dependency 'hoe-bundler', '~> 1.2', :development
 
-	self.spec_extras[:licenses] = ["BSD"]
 	self.spec_extras[:post_install_message] = %{
 
 		You can use this formatter from TextMate by setting the TM_RSPEC_OPTS 
@@ -34,7 +35,7 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 
 	}.gsub( /^\t+/m, '' )
 
-	self.require_ruby_version( '>=1.8.7' )
+	self.require_ruby_version( '>=1.9.3' )
 	self.hg_sign_tags = true if self.respond_to?( :hg_sign_tags )
 	self.rdoc_locations << "deveiate:/usr/local/www/public/code/#{remote_rdoc_dir}"
 end
@@ -42,7 +43,7 @@ end
 ENV['VERSION'] ||= hoespec.spec.version.to_s
 
 # Ensure history is updated before checking in
-task 'hg:precheckin' => [ :check_history ]
+task 'hg:precheckin' => [ :check_history, 'Gemfile' ]
 
 task :legacy_gem do
 	Dir.chdir( 'legacy' ) do
@@ -50,5 +51,9 @@ task :legacy_gem do
 	end
 end
 CLEAN.include( 'legacy/pkg' )
+
+
+file 'Gemfile'
+task 'Gemfile' => ['bundler:gemfile']
 
 

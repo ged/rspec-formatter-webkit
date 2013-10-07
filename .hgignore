@@ -5,3 +5,4 @@
 ^release\.(ann|notes)
 legacy/pkg/
 doc/
+\.lock$
