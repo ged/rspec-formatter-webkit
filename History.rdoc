@@ -1,3 +1,10 @@
+== v2.3.0 [2013-10-07] Michael Granger <ged@FaerieMUD.org>
+
+Clean up the stylesheet (thanks to JasonM23)
+- Monospace fonts consistency
+- Updated textmate-rspec.css to use unicode in place of literals
+
+
 == v2.2.1 [2013-01-04] Michael Granger <ged@FaerieMUD.org>
 
 - Fix shared-group formatting for RSpec 2.12.2.
