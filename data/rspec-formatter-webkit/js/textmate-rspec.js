@@ -368,8 +368,11 @@ function update_summary_graph() {
 function toggle_spec_status() {
 	var status = $(this).attr( 'class' ).match( /(passed|pending(?:-fixed)?|failed)/ )[0];
 	console.log( "Looking for specs with class '" + status + "'." );
-	$(this).toggleClass( 'hidden' );
-	$( '.spec.' + status ).toggle('fast');
+
+	$( this ).removeClass( 'hidden' );
+	$( 'label' ).not( this ).toggleClass( 'hidden' );
+	$( '.spec.' + status ).show('fast');
+	$( '.spec' ).not( '.' + status ).toggle('fast');
 }
 
 function hook_legend_clickables() {
