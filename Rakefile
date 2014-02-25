@@ -6,6 +6,8 @@ rescue LoadError
 	abort "This Rakefile requires 'hoe' (gem install hoe)"
 end
 
+GEMSPEC = 'rspec-formatter-webkit.gemspec'
+
 require 'rake/clean'
 
 Hoe.plugin :mercurial
@@ -22,6 +24,7 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 	self.developer 'Michael Granger', 'ged@FaerieMUD.org'
 	self.license 'Ruby'
 
+	self.dependency 'rspec-core', '~> 2.14'
 	self.dependency 'hoe-bundler', '~> 1.2', :development
 
 	self.spec_extras[:post_install_message] = %{
@@ -55,5 +58,19 @@ CLEAN.include( 'legacy/pkg' )
 
 file 'Gemfile'
 task 'Gemfile' => ['bundler:gemfile']
+
+
+task :gemspec => GEMSPEC
+
+desc "generate a gemspec from your Hoe.spec"
+file GEMSPEC => 'Rakefile' do |task|
+	spec = hoespec.spec.dup
+	spec.files.delete( '.gemtest' )
+	spec.signing_key = nil
+	spec.version = "#{spec.version}.pre.#{Time.now.strftime("%Y%m%d%H%M%S")}"
+	File.open( task.name, 'w' ) do |fh|
+		fh.write( spec.to_ruby )
+	end
+end
 
 
