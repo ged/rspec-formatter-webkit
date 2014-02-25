@@ -178,6 +178,11 @@ background-image: -moz-linear-gradient(
 .example-group dl dd.spec.logged .spec-name {
 	cursor: pointer;
 }
+.example-group dl dd.spec .spec-time {
+    float: right;
+    font-size: 9px;
+    vertical-align: baseline;
+}
 
 dd.nested-group  {
 	margin: 0;
