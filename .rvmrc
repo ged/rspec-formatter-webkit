@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# This is an RVM Project .rvmrc file, used to automatically load the ruby
+# development environment upon cd'ing into the directory
+
+# First we specify our desired <ruby>[@<gemset>], the @gemset name is optional,
+# Only full ruby name is supported here, for short names use:
+#     echo "rvm use 2.0.0" > .rvmrc
+environment_id="ruby-2.0.0@rspec-formatter-webkit"
+
+if [[ -d "${rvm_path:-$HOME/.rvm}/environments"
+  && -s "${rvm_path:-$HOME/.rvm}/environments/$environment_id" ]]
+then
+  \. "${rvm_path:-$HOME/.rvm}/environments/$environment_id"
+  for __hook in "${rvm_path:-$HOME/.rvm}/hooks/after_use"*
+  do
+    if [[ -f "${__hook}" && -x "${__hook}" && -s "${__hook}" ]]
+    then \. "${__hook}" || true
+    fi
+  done
+  unset __hook
+  if (( ${rvm_use_flag:=1} >= 2 )) # display only when forced
+  then
+    if [[ $- == *i* ]] # check for interactive shells
+    then printf "%b" "Using: $(tput setaf 2 2>/dev/null)$GEM_HOME$(tput sgr0 2>/dev/null)
+" # show the user the ruby and gemset they are using in green
+    else printf "%b" "Using: $GEM_HOME
+" # don't use colors in non-interactive shells
+    fi
+  fi
+else
+  # If the environment file has not yet been created, use the RVM CLI to select.
+  rvm --create  "$environment_id" || {
+    echo "Failed to create RVM environment '${environment_id}'."
+    return 1
+  }
+fi
+
