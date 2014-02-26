@@ -1,6 +1,6 @@
 == v2.4.0 [2014-02-24] Michael Granger <ged@FaerieMUD.org>
 
-- Fix backtrace links for newer RSpecs
+- Fix backtrace links for newer 2.x RSpecs
 - Add execution time to examples
 - Change the way the status labels toggle examples to be more useful
 
