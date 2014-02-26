@@ -47,52 +47,30 @@ example line:
 
     Thread.current['logger-output'] << %{<p>Some stuff happened.</p>}
 
-Each line that has such logging appended will appear with
-an asterisk after it in the output.
+Each line that has such logging appended will appear with an asterisk after it
+in the output.
 
 ==== Loggability
 
-If you're using Loggability for logging, the WebKit formatter has CSS rules
-for the output of its HTML formatter. You can inject logs into the spec output
-with the following helper methods:
+If you're using Loggability for logging, the WebKit formatter has CSS rules for
+the output of its HTML formatter, and includes a helper for injecting the logs
+generated for an example into the output. Just include the Loggability spec
+helper in your RSpec config:
 
-	### Reset the logging subsystem to its default state.
-	def reset_logging
-		Loggability.format_as( :color )
-		Loggability.output_to( $stderr )
-		Loggability.level = :fatal
-	end
+    require 'rspec'
+    require 'loggability/spechelpers'
 
-
-	### Alter the output of the default log formatter to be pretty in SpecMate output
-	def setup_logging( level=:fatal )
-
-		# Only do this when executing from a spec in TextMate or when
-		# HTML_LOGGING=1 is set in the environment
-		if ENV['HTML_LOGGING'] ||
-		  (ENV['TM_FILENAME'] && ENV['TM_FILENAME'] =~ /_spec\.rb/)
-			logarray = []
-			Thread.current['logger-output'] = logarray
-			Loggability.output_to( logarray )
-			Loggability.format_as( :html )
-			Loggability.level = :debug
-		else
-			Loggability.level = level
-		end
-	end
-
-Then, in your examples:
-
-    before( :all ) { setup_logging }
-    after( :all )  { reset_logging }
+    RSpec.configure do |config|
+        config.include( Loggability::SpecHelpers )
+    end
 
 
 == Miscellaneous
 
-It's also usable anywhere else the standard HTML formatter is, of course.
-Also, while it's specifically intended to be used under the Textmate HTML
-viewer that the RSpec bundle uses, the output should work fine under recent
-Gecko/Firefox-based viewers, as well.
+This formatter is also usable anywhere else the standard HTML formatter is, of
+course. Also, while it's specifically intended to be used under the Textmate
+HTML viewer that the RSpec bundle uses, the output should work fine under
+recent Gecko/Firefox-based viewers, as well. 
 
 Patches/suggestions welcomed.
 
@@ -112,7 +90,7 @@ This task will install any missing dependencies and generate the API documentati
 
 == License
 
-Copyright (c) 2009-2012, Michael Granger
+Copyright (c) 2009-2014, Michael Granger
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
