@@ -72,14 +72,29 @@ pre, code {
 	margin-top: 120px;
 }
 
-#summary {
+#summary, #deprecation-warnings {
 	margin: 0;
 	padding: 1em 3em;
 	background-color: rgb(101, 111, 130);
 	color: white;
 }
-#summary p {
+#summary p, #deprecation-warnings p {
 	margin: 0;
+}
+
+#seed {
+    position: absolute;
+    top: 1.5em;
+    right: 4em;
+    color: white;
+    text-shadow: black 0 1px 3px;
+}
+
+#error {
+    margin: 2em;
+    background: #ffeeee;
+    border: 1px solid black;
+    padding: 1em;
 }
 
 .rspec-graph-legend-item {
@@ -343,3 +358,30 @@ div.log-message.fatal .log-name,
 div.fatal-log-message .log-name {
 	color:  white;
 }
+
+
+/* Deprecations */
+
+dl.deprecations a {
+}
+
+dl.deprecations dt,
+dl.deprecations dd {
+    background: #ccc;
+    padding: 2px 20px;
+}
+dl.deprecations dt {
+    background-image: url(../images/ticket.png);
+    background-repeat: no-repeat;
+    background-position: 2px 2px;
+    color: #333;
+    border-top: 1px solid #ACACAC;
+}
+dl.deprecations dd {
+    font-size: 80%;
+    background: #ccc;
+    color: #666;
+    margin: 0;
+}
+
+

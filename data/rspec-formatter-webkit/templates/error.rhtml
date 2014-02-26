@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"> 
+<head> 
+    <title>RSpec results</title> 
+
+    <meta charset="utf-8">
+    <meta http-equiv="Expires" content="-1"> 
+    <meta http-equiv="Pragma" content="no-cache"> 
+
+    <base href="<%= BASE_HREF %>">
+
+    <link rel="stylesheet" href="css/textmate-rspec.css">
+</head> 
+<body> 
+
+    <div id="error">
+        <h1>Internal Error</h1>
+    
+        <p>Sorry, there was a problem running RSpec.</p>
+    
+        <div class="error-details">
+        <%= message.split($/).map {|line| h line }.join('<br>') %>
+        </div>
+    </div>
+
+</body>
+</html>

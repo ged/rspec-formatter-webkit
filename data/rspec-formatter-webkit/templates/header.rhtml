@@ -1,29 +1,31 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"> 
+<!DOCTYPE html>
+<html lang="en"> 
 <head> 
 	<title>RSpec results</title> 
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+
+  <meta charset="utf-8">
 	<meta http-equiv="Expires" content="-1" /> 
 	<meta http-equiv="Pragma" content="no-cache" /> 
 
 	<base href="<%= BASE_HREF %>" />
 
 	<link rel="stylesheet" href="css/textmate-rspec.css" type="text/css" media="screen" 
-		title="no title" charset="utf-8" />
+		charset="utf-8" />
 
 	<script type="text/javascript" charset="utf-8" src="js/jquery-2.1.0.min.js"></script>
-	<script defer="defer" type="text/javascript" charset="utf-8" src="js/textmate-rspec.js"></script> 
+	<script type="text/javascript" charset="utf-8" src="js/textmate-rspec.js"></script> 
 </head> 
 <body> 
 	<div class="rspec-report"> 
  
+ 	 <!-- RSpec version: <%= RSpec::Core::Version::STRING %> -->
+ 
 		<div id="rspec-header"> 
 			<div id="rspec-title-section">
 		    <h1>RSpec Results:</h1> 
-				<span id="rspec-summary-stats">Running (<span id="spec-count"><%= example_count %></span> 
-					examples)...</span>
+				<span id="rspec-summary-stats">
+					Running (<span id="spec-count"><%= notification.count %></span> examples)...
+				</span>
 			</div>
 			
 		  <div id="rspec-summary"> 

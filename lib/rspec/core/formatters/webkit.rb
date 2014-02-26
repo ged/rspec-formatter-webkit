@@ -3,14 +3,16 @@
 require 'pp'
 require 'erb'
 require 'pathname'
+require 'set'
+
+gem 'rspec', '> 2.99'
 
 require 'rspec'
 require 'rspec/core/formatters/base_text_formatter'
 require 'rspec/core/formatters/snippet_extractor'
 require 'rspec/core/pending'
 
-
-class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatter
+class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseFormatter
 	include ERB::Util
 
 	# Version constant
@@ -36,7 +38,11 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	FAILED_EXAMPLE_TEMPLATE  = TEMPLATE_DIR + 'failed.rhtml'
 	PENDING_EXAMPLE_TEMPLATE = TEMPLATE_DIR + 'pending.rhtml'
 	PENDFIX_EXAMPLE_TEMPLATE = TEMPLATE_DIR + 'pending-fixed.rhtml'
+	SUMMARY_TEMPLATE         = TEMPLATE_DIR + 'summary.rhtml'
+	DEPRECATIONS_TEMPLATE    = TEMPLATE_DIR + 'deprecations.rhtml'
+	SEED_TEMPLATE            = TEMPLATE_DIR + 'seed.rhtml'
 	FOOTER_TEMPLATE          = TEMPLATE_DIR + 'footer.rhtml'
+
 
 	# Pattern to match for excluding lines from backtraces
 	BACKTRACE_EXCLUDE_PATTERN = %r{spec/mate|textmate-command|rspec(-(core|expectations|mocks))?/}
@@ -49,11 +55,26 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	end
 
 
+	# Register this formatter with RSpec
+	RSpec::Core::Formatters.register self,
+		:start,
+		:example_group_started,
+		:start_dump,
+		:example_started,
+		:example_passed,
+		:example_failed,
+		:example_pending,
+		:dump_summary,
+		:deprecation,
+		:deprecation_summary,
+		:seed,
+		:close
+
+
 	### Create a new formatter
 	def initialize( output ) # :notnew:
 		super
 		@previous_nesting_depth = 0
-		@example_number = 0
 		@failcounter = 0
 		@snippet_extractor = RSpec::Core::Formatters::SnippetExtractor.new
 		@example_templates = {
@@ -62,6 +83,11 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 			:pending       => self.load_template(PENDING_EXAMPLE_TEMPLATE),
 			:pending_fixed => self.load_template(PENDFIX_EXAMPLE_TEMPLATE),
 		}
+
+		@deprecation_stream = []
+		@summary_stream     = []
+
+		@deprecations = Set.new
 
 		Thread.current['logger-output'] = []
 	end
@@ -72,22 +98,37 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	######
 
 	# Attributes made readable for ERb
-	attr_reader :example_group_number, :example_number, :example_count
+	attr_reader :example_count
 
 	# The counter for failed example IDs
 	attr_accessor :failcounter
 
+	# The Set of deprecation notifications
+	attr_reader :deprecations
+
+
+	### Fetch any log messages added to the thread-local Array
+	def log_messages
+		return Thread.current[ 'logger-output' ] ||= []
+	end
+
+
+	#
+	# Formatter notification callbacks
+	#
 
 	### Start the page by rendering the header.
-	def start( example_count )
-		@output.puts self.render_header( example_count )
+	def start( notification )
+		super
+		@output.puts self.render_header( notification )
 		@output.flush
 	end
 
 
 	### Callback called by each example group when it's entered --
-	def example_group_started( example_group )
+	def example_group_started( notification )
 		super
+		example_group = notification.group
 		nesting_depth = example_group.ancestors.length
 
 		# Close the previous example groups if this one isn't a
@@ -115,17 +156,10 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 			]
 		@output.flush
 	end
-	alias_method :add_example_group, :example_group_started
-
-
-	### Fetch any log messages added to the thread-local Array
-	def log_messages
-		return Thread.current[ 'logger-output' ] || []
-	end
 
 
 	### Callback -- called when the examples are finished.
-	def start_dump
+	def start_dump( notification )
 		@previous_nesting_depth.downto( 1 ) do |i|
 			@output.puts "  </dl>",
 			             "</section>"
@@ -137,15 +171,15 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 
 
 	### Callback -- called when an example is entered
-	def example_started( example )
-		@example_number += 1
-		Thread.current[ 'logger-output' ] ||= []
-		Thread.current[ 'logger-output' ].clear
+	def example_started( notification )
+		super
+		self.log_messages.clear
 	end
 
 
 	### Callback -- called when an example is exited with no failures.
-	def example_passed( example )
+	def example_passed( notification )
+		example = notification.example
 		status = 'passed'
 		@output.puts( @example_templates[:passed].result(binding()) )
 		@output.flush
@@ -153,10 +187,11 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 
 
 	### Callback -- called when an example is exited with a failure.
-	def example_failed( example )
+	def example_failed( notification )
 		super
 
-		counter   = self.failcounter += 1
+		example   = notification.example
+		counter   = self.failed_examples.size
 		exception = example.metadata[:execution_result][:exception]
 		extra     = self.extra_failure_content( exception )
 		template  = if exception.is_a?( PENDING_FIXED_EXCEPTION )
@@ -170,22 +205,75 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 
 
 	### Callback -- called when an example is exited via a 'pending'.
-	def example_pending( example )
+	def example_pending( notification )
+		super
+
+		example = notification.example
 		status = 'pending'
 		@output.puts( @example_templates[:pending].result(binding()) )
 		@output.flush
 	end
 
 
-	### Format backtrace lines to include a textmate link to the file/line in question.
-	def backtrace_line( line )
-		return nil unless line = super
-		return nil if line =~ BACKTRACE_EXCLUDE_PATTERN
-		return line.strip.gsub( /(?<filename>[^:]*\.rb):(?<line>\d*)/ ) do
+	### Output the content generated at the end of the run.
+	def dump_summary( summary )
+		html = self.render_summary( summary )
+		@output.puts( html )
+		@output.flush
+	end
+
+
+	### Callback -- Add a deprecation warning.
+	def deprecation( notification )
+		@deprecations.add( notification )
+	end
+
+
+	### Callback -- Called at the end with a summary of any deprecations encountered
+	### during the run.
+	def deprecation_summary( notification )
+		html = self.render_deprecations
+		@output.puts( html )
+		@output.flush
+	end
+
+
+	### Callback -- called with the random seed if the test suite is run with random ordering.
+	def seed( notification )
+		return unless notification.seed_used?
+		html = self.render_seed( notification )
+		@output.puts( html )
+	end
+
+
+	### Callback -- called at the very end.
+	def close( notification )
+		footer = self.render_footer( notification )
+		@output.puts( footer )
+		@output.flush
+	end
+
+
+	#
+	# Utility methods
+	#
+
+	### Overriden to add txmt: links to the file paths in the backtrace.
+	def format_backtrace(backtrace, example)
+		lines = super
+		return lines.map do |line|
+			link_backtrace_line( line )
+		end
+	end
+
+
+	### Link the filename and line number in the given +line+ from a backtrace.
+	def link_backtrace_line( line )
+		return line.strip.sub( /(?<filename>[^:]*\.rb):(?<line>\d*)(?<rest>.*)/ ) do
 			match = $~
 			fullpath = File.expand_path( match[:filename] )
-			%|<a href="txmt://open?url=file://%s&amp;line=%s">%s:%s</a>| %
-				[ fullpath, match[:line], match[:filename], match[:line] ]
+			%|<a href="txmt://open?url=file://%s&amp;line=%s">%s:%s</a>%s| %
+				[ fullpath, match[:line], match[:filename], match[:line], h(match[:rest]) ]
 		end
 	end
 
@@ -195,35 +283,57 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseTextFormatt
 	### failure.
 	def extra_failure_content( exception )
 		return '' unless exception
-		backtrace = exception.backtrace.find {|line| line !~ BACKTRACE_EXCLUDE_PATTERN }
-		# $stderr.puts "Using backtrace line %p to extract snippet" % [ backtrace ]
-		snippet = @snippet_extractor.snippet([ backtrace ])
+
+		backtrace = exception.backtrace.map do |line|
+			configuration.backtrace_formatter.backtrace_line( line )
+		end.compact
+
+		snippet = @snippet_extractor.snippet( backtrace )
 		return "    <pre class=\"ruby\"><code>#{snippet}</code></pre>"
 	end
 
 
-	### Returns content to be output when a failure occurs during the run; overridden to
-	### do nothing, as failures are handled by #example_failed.
-	def dump_failures( *unused )
+	### Find the innermost shared example group for the given +example+.
+	def find_shared_group( example )
+		groups = example.example_group.parent_groups + [example.example_group]
+		return groups.find {|group| group.metadata[:shared_group_name]}
 	end
 
 
-	### Output the content generated at the end of the run.
-	def dump_summary( duration, example_count, failure_count, pending_count )
-		@output.puts self.render_footer( duration, example_count, failure_count, pending_count )
-		@output.flush
-	end
-
+	#
+	# Template methods
+	#
 
 	### Render the header template in the context of the receiver.
-	def render_header( example_count )
+	def render_header( notification )
 		template = self.load_template( HEADER_TEMPLATE )
 		return template.result( binding() )
 	end
 
 
+	### Render the summary template in the context of the receiver.
+	def render_summary( summary )
+		template = self.load_template( SUMMARY_TEMPLATE )
+		return template.result( binding() )
+	end
+
+
+	### Render the deprecation summary template in the context of the receiver.
+	def render_deprecations
+		template = self.load_template( DEPRECATIONS_TEMPLATE )
+		return template.result( binding() )
+	end
+
+
+	### Render the seed template in the context of the receiver.
+	def render_seed( notification )
+		template = self.load_template( SEED_TEMPLATE )
+		return template.result( binding() )
+	end
+
+
 	### Render the footer template in the context of the receiver.
-	def render_footer( duration, example_count, failure_count, pending_count )
+	def render_footer( notification )
 		template = self.load_template( FOOTER_TEMPLATE )
 		return template.result( binding() )
 	end

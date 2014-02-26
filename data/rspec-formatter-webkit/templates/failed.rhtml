@@ -9,10 +9,6 @@
 %        exception.message.split("\n").each do |line|
                 <%= h line %><br />
 %        end
-%        if group = find_shared_group( example )
-                Shared Example Group: "<%= h group.metadata[:shared_group_name] %>" called from 
-                "<%= backtrace_line(group.metadata[:example_group][:location]) %>
-%        end
             </code>
         </div>
 

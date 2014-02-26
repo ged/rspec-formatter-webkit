@@ -1,0 +1,19 @@
+    <div id="deprecation-warnings">
+        <p><strong><%= deprecations.size %> Deprecation Warnings</strong></p>
+        <dl class="deprecations">
+% deprecations.each do |dep|
+%   if dep.deprecated
+            <dt><%= h dep.message || dep.deprecated %></dt> 
+%     if dep.replacement
+            <dd class="replacement">Use <%= h dep.replacement %> instead.</dd>
+%     end
+            <dd class="call-site">at <%= link_backtrace_line dep.call_site %></dd>
+%   elsif dep.message =~ /^-+\n(.*?)\(Used from (.*)\)\n-+/m
+%     desc, call_site = $1, $2
+            <dt><%= h desc.gsub(/\n/, ' ') %></dt>
+            <dd class="call-site">at <%= link_backtrace_line call_site %></dd>
+%   end
+% end
+
+        </dl>
+    </div>
