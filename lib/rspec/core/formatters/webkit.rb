@@ -86,6 +86,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseFormatter
 
 		@deprecation_stream = []
 		@summary_stream     = []
+		@failed_examples    = []
 
 		@deprecations = Set.new
 
@@ -105,6 +106,9 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseFormatter
 
 	# The Set of deprecation notifications
 	attr_reader :deprecations
+
+	# The Array of failed examples
+	attr_reader :failed_examples
 
 
 	### Fetch any log messages added to the thread-local Array
@@ -172,7 +176,6 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseFormatter
 
 	### Callback -- called when an example is entered
 	def example_started( notification )
-		super
 		self.log_messages.clear
 	end
 
@@ -188,11 +191,12 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseFormatter
 
 	### Callback -- called when an example is exited with a failure.
 	def example_failed( notification )
-		super
-
 		example   = notification.example
+
+		self.failed_examples << example
 		counter   = self.failed_examples.size
-		exception = example.metadata[:execution_result][:exception]
+
+		exception = notification.exception
 		extra     = self.extra_failure_content( exception )
 		template  = if exception.is_a?( PENDING_FIXED_EXCEPTION )
 			then @example_templates[:pending_fixed]
@@ -206,8 +210,6 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseFormatter
 
 	### Callback -- called when an example is exited via a 'pending'.
 	def example_pending( notification )
-		super
-
 		example = notification.example
 		status = 'pending'
 		@output.puts( @example_templates[:pending].result(binding()) )
@@ -259,8 +261,8 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseFormatter
 	#
 
 	### Overriden to add txmt: links to the file paths in the backtrace.
-	def format_backtrace(backtrace, example)
-		lines = super
+	def format_backtrace( notification )
+		lines = notification.formatted_backtrace
 		return lines.map do |line|
 			link_backtrace_line( line )
 		end
@@ -285,7 +287,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseFormatter
 		return '' unless exception
 
 		backtrace = exception.backtrace.map do |line|
-			configuration.backtrace_formatter.backtrace_line( line )
+			RSpec.configuration.backtrace_formatter.backtrace_line( line )
 		end.compact
 
 		snippet = @snippet_extractor.snippet( backtrace )
