@@ -2,9 +2,9 @@
 <dd class="spec pending">
     <span class="spec-name"><%= h(example.description) %></span>
     <span class="pending-message">
-        (Pending <%= example.execution_result[:pending_message] %>)
+        (Pending <%= example.execution_result.pending_message %>)
     </span>
-    <span class="spec-time"><%= h("%0.5fs" % [example.execution_result[:run_time]]) %></span>
+    <span class="spec-time"><%= h("%0.5fs" % [example.execution_result.run_time]) %></span>
 
 % unless log_messages.nil? || log_messages.empty?
     <div class="log-messages">

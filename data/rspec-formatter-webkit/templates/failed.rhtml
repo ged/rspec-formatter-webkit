@@ -1,19 +1,17 @@
 
 <dd class="spec failed">
     <span class="spec-name"><%= h(example.description) %></span>
-    <span class="spec-time"><%= h("%0.5fs" % [example.execution_result[:run_time]]) %></span>
+    <span class="spec-time"><%= h("%0.5fs" % [example.execution_result.run_time]) %></span>
     <div class="failure" id="failure-<%= counter %>">
 
-        <div class="message">Failure/Error: 
-            <code><%= h read_failed_line(exception, example).strip.gsub(/\n/, '<br />') %><br />
-%        exception.message.split("\n").each do |line|
-                <%= h line %><br />
-%        end
-            </code>
-        </div>
+        <div class="message"><code>
+%     notification.message_lines.each do |line|
+           <%= h line %><br />
+%     end
+        </code></div>
 
         <div class="backtrace"><p><code>
-%     format_backtrace(exception.backtrace, example).each do |backtrace_info|
+%     format_backtrace(notification).each do |backtrace_info|
             <span class="backtrace-frame"><%= backtrace_info %></span><br />
 %     end
         </code></p></div>

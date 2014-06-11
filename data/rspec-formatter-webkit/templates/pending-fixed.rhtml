@@ -1,12 +1,12 @@
 
 <dd class="spec pending-fixed">
     <span class="spec-name"><%= h(example.description) %></span>
-    <span class="spec-time"><%= h("%0.5fs" % [example.execution_result[:run_time]]) %></span>
+    <span class="spec-time"><%= h("%0.5fs" % [example.execution_result.run_time]) %></span>
 
     <div class="failure" id="failure-<%= counter %>">
 
         <div class="message">Expected pending 
-            <code><%= h(example.metadata[:execution_result][:pending_message]) %></code>
+            <code><%= h(example.metadata.execution_result.pending_message) %></code>
             to fail. No Error was raised.
         </div>
 
