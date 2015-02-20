@@ -12,6 +12,15 @@ require 'rspec/core/formatters/base_text_formatter'
 require 'rspec/core/formatters/snippet_extractor'
 require 'rspec/core/pending'
 
+# Work around a bug in the null colorizer.
+module NullColorizerFix
+	def wrap( line, _ )
+		line
+	end
+end
+RSpec::Core::Notifications::NullColorizer.extend( NullColorizerFix )
+
+
 class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseFormatter
 	include ERB::Util
 
