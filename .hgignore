@@ -6,4 +6,3 @@
 legacy/pkg/
 doc/
 \.lock$
-\.gemspec$

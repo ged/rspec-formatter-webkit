@@ -12,7 +12,6 @@ require 'rake/clean'
 
 Hoe.plugin :mercurial
 Hoe.plugin :signing
-Hoe.plugin :bundler
 
 Hoe.plugins.delete :rubyforge
 
@@ -57,13 +56,9 @@ end
 CLEAN.include( 'legacy/pkg' )
 
 
-file 'Gemfile'
-task 'Gemfile' => ['bundler:gemfile']
-
-
 task :gemspec => GEMSPEC
 
-desc "generate a gemspec from your Hoe.spec"
+desc "Refresh the .gemspec"
 file GEMSPEC => 'Rakefile' do |task|
 	spec = hoespec.spec.dup
 	spec.files.delete( '.gemtest' )
@@ -73,5 +68,5 @@ file GEMSPEC => 'Rakefile' do |task|
 		fh.write( spec.to_ruby )
 	end
 end
-
+CLEAN.include( '*.gemspec' )
 
