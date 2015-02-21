@@ -36,6 +36,8 @@ data/rspec-formatter-webkit/images/ticket_plus.png
 data/rspec-formatter-webkit/images/ticket_small.png
 data/rspec-formatter-webkit/js/jquery-2.1.0.min.js
 data/rspec-formatter-webkit/js/textmate-rspec.js
+data/rspec-formatter-webkit/templates/deprecations.rhtml
+data/rspec-formatter-webkit/templates/error.rhtml
 data/rspec-formatter-webkit/templates/failed.rhtml
 data/rspec-formatter-webkit/templates/footer.rhtml
 data/rspec-formatter-webkit/templates/header.rhtml
@@ -43,6 +45,8 @@ data/rspec-formatter-webkit/templates/page.rhtml
 data/rspec-formatter-webkit/templates/passed.rhtml
 data/rspec-formatter-webkit/templates/pending-fixed.rhtml
 data/rspec-formatter-webkit/templates/pending.rhtml
+data/rspec-formatter-webkit/templates/seed.rhtml
+data/rspec-formatter-webkit/templates/summary.rhtml
 docs/tmrspec-example.png
 docs/tmrspecopts-shellvar.png
 lib/rspec/core/formatters/web_kit.rb
