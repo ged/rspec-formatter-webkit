@@ -25,7 +25,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseFormatter
 	include ERB::Util
 
 	# Version constant
-	VERSION = '2.4.0'
+	VERSION = '2.5.0'
 
 	# Look up the datadir falling back to a relative path (mostly for prerelease testing)
 	DATADIR = begin
