@@ -20,11 +20,12 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 	self.readme_file = 'README.rdoc'
 	self.history_file = 'History.rdoc'
 	self.extra_rdoc_files = Rake::FileList[ '*.rdoc' ]
+	self.license 'BSD'
 
 	self.developer 'Michael Granger', 'ged@FaerieMUD.org'
 	self.license 'Ruby'
 
-	self.dependency 'rspec-core', '~> 3.0'
+	self.dependency 'rspec-core', '~> 3.2'
 	self.dependency 'hoe-bundler', '~> 1.2', :development
 
 	self.spec_extras[:post_install_message] = %{

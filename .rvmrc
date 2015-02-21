@@ -6,33 +6,39 @@
 # First we specify our desired <ruby>[@<gemset>], the @gemset name is optional,
 # Only full ruby name is supported here, for short names use:
 #     echo "rvm use 2.0.0" > .rvmrc
-environment_id="ruby-2.0.0@rspec-formatter-webkit"
+local environment_id="ruby-2.2.0@rspec-formatter-webkit"
+local rvmdir=${rvm_path:-$HOME/.rvm}
+local gemset_file=".rvm.gems"
 
-if [[ -d "${rvm_path:-$HOME/.rvm}/environments"
-  && -s "${rvm_path:-$HOME/.rvm}/environments/$environment_id" ]]
-then
-  \. "${rvm_path:-$HOME/.rvm}/environments/$environment_id"
-  for __hook in "${rvm_path:-$HOME/.rvm}/hooks/after_use"*
-  do
-    if [[ -f "${__hook}" && -x "${__hook}" && -s "${__hook}" ]]
-    then \. "${__hook}" || true
-    fi
-  done
-  unset __hook
-  if (( ${rvm_use_flag:=1} >= 2 )) # display only when forced
-  then
-    if [[ $- == *i* ]] # check for interactive shells
-    then printf "%b" "Using: $(tput setaf 2 2>/dev/null)$GEM_HOME$(tput sgr0 2>/dev/null)
-" # show the user the ruby and gemset they are using in green
-    else printf "%b" "Using: $GEM_HOME
-" # don't use colors in non-interactive shells
-    fi
-  fi
+if [[ -d "${rvmdir}/environments" && -s "${rvmdir}/environments/$environment_id" ]]; then
+	echo "Using ${environment_id}"
+	\. "${rvmdir}/environments/$environment_id"
+
+	for __hook in "${rvmdir}/hooks/after_use"*
+	do
+		if [[ -f "${__hook}" && -x "${__hook}" && -s "${__hook}" ]]
+		then \. "${__hook}" || true
+		fi
+	done
+	unset __hook
+
+	if (( ${rvm_use_flag:=1} >= 2 )) # display only when forced
+	then
+		if [[ $- == *i* ]] # check for interactive shells
+		then printf "%b" "Using: $(tput setaf 2 2>/dev/null)$GEM_HOME$(tput sgr0 2>/dev/null)
+			" # show the user the ruby and gemset they are using in green
+		else printf "%b" "Using: $GEM_HOME
+			" # don't use colors in non-interactive shells
+		fi
+	fi
 else
-  # If the environment file has not yet been created, use the RVM CLI to select.
-  rvm --create  "$environment_id" || {
-    echo "Failed to create RVM environment '${environment_id}'."
-    return 1
-  }
+	# If the environment file has not yet been created, use the RVM CLI to select.
+	rvm --create  "$environment_id" || {
+		echo "Failed to create RVM environment '${environment_id}'."
+		return 1
+	}
 fi
 
+if [[ -s "$gemset_file" ]]; then
+	rvm gemset import "$gemset_file"
+fi
