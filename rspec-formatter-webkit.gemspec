@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-# stub: rspec-formatter-webkit 2.5.0.pre.20151116130016 ruby lib
+# stub: rspec-formatter-webkit 2.6.0.pre.20151116130357 ruby lib
 
 Gem::Specification.new do |s|
   s.name = "rspec-formatter-webkit"
-  s.version = "2.5.0.pre.20151116130016"
+  s.version = "2.6.0.pre.20151116130357"
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]

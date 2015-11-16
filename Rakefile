@@ -46,7 +46,7 @@ end
 ENV['VERSION'] ||= hoespec.spec.version.to_s
 
 # Ensure history is updated before checking in
-task 'hg:precheckin' => [ :check_history, :gemspec ]
+task 'hg:precheckin' => [ :check_history, :check_manifest, :gemspec ]
 
 task :legacy_gem do
 	Dir.chdir( 'legacy' ) do
