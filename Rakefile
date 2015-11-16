@@ -24,7 +24,7 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 	self.developer 'Michael Granger', 'ged@FaerieMUD.org'
 	self.license 'Ruby'
 
-	self.dependency 'rspec-core', '~> 3.2'
+	self.dependency 'rspec-core', '~> 3.4'
 	self.dependency 'hoe-bundler', '~> 1.2', :development
 
 	self.spec_extras[:post_install_message] = %{
@@ -38,7 +38,7 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 
 	}.gsub( /^\t+/m, '' )
 
-	self.require_ruby_version( '>=2.0.0' )
+	self.require_ruby_version( '>=2.2.0' )
 	self.hg_sign_tags = true if self.respond_to?( :hg_sign_tags )
 	self.rdoc_locations << "deveiate:/usr/local/www/public/code/#{remote_rdoc_dir}"
 end

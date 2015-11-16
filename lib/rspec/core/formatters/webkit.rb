@@ -5,11 +5,11 @@ require 'erb'
 require 'pathname'
 require 'set'
 
-gem 'rspec', '> 2.99'
+gem 'rspec', '~> 3.4.0'
 
 require 'rspec'
 require 'rspec/core/formatters/base_text_formatter'
-require 'rspec/core/formatters/snippet_extractor'
+require 'rspec/core/formatters/html_snippet_extractor'
 require 'rspec/core/pending'
 
 # Work around a bug in the null colorizer.
@@ -85,7 +85,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseFormatter
 		super
 		@previous_nesting_depth = 0
 		@failcounter = 0
-		@snippet_extractor = RSpec::Core::Formatters::SnippetExtractor.new
+		@snippet_extractor = RSpec::Core::Formatters::HtmlSnippetExtractor.new
 		@example_templates = {
 			:passed        => self.load_template(PASSED_EXAMPLE_TEMPLATE),
 			:failed        => self.load_template(FAILED_EXAMPLE_TEMPLATE),
@@ -295,7 +295,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseFormatter
 	def extra_failure_content( exception )
 		return '' unless exception
 
-		backtrace = exception.backtrace.map do |line|
+		backtrace = ( exception.backtrace || [] ).map do |line|
 			RSpec.configuration.backtrace_formatter.backtrace_line( line )
 		end.compact
 
