@@ -24,8 +24,7 @@ hoespec = Hoe.spec 'rspec-formatter-webkit' do
 	self.developer 'Michael Granger', 'ged@FaerieMUD.org'
 	self.license 'Ruby'
 
-	self.dependency 'rspec-core', '~> 3.4'
-	self.dependency 'hoe-bundler', '~> 1.2', :development
+	self.dependency 'rspec-core', '~> 3.7'
 
 	self.spec_extras[:post_install_message] = %{
 
