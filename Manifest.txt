@@ -51,3 +51,5 @@ docs/tmrspec-example.png
 docs/tmrspecopts-shellvar.png
 lib/rspec/core/formatters/web_kit.rb
 lib/rspec/core/formatters/webkit.rb
+spec/rspec/core/formatters/webkit_spec.rb
+spec/spec_helper.rb
