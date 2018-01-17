@@ -6,3 +6,4 @@
 legacy/pkg/
 doc/
 \.lock$
+spec/.status

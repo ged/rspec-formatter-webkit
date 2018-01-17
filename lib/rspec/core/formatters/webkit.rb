@@ -5,7 +5,7 @@ require 'erb'
 require 'pathname'
 require 'set'
 
-gem 'rspec', '~> 3.4.0'
+gem 'rspec', '~> 3.7'
 
 require 'rspec'
 require 'rspec/core/formatters/base_text_formatter'
@@ -29,8 +29,7 @@ class RSpec::Core::Formatters::WebKit < RSpec::Core::Formatters::BaseFormatter
 
 	# Look up the datadir falling back to a relative path (mostly for prerelease testing)
 	DATADIR = begin
-		dir = Gem.datadir('rspec-formatter-webkit') ||
-		      Pathname( __FILE__ ).dirname.parent.parent.parent.parent +
+		dir = Pathname( __FILE__ ).dirname.parent.parent.parent.parent +
 		           'data/rspec-formatter-webkit'
 		Pathname( dir )
 	end
