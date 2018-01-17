@@ -1,3 +1,11 @@
+==  v2.7.0 [2018-01-17] Michael Granger <ged@FaerieMUD.org>
+
+Enhancements:
+
+- Remove use of deprecated Gem.datadir
+- Update for Ruby 2.5, RSpec 3.7
+
+
 == v2.6.0 [2015-11-16] Michael Granger <ged@FaerieMUD.org>
 
 - Updated for RSpec 3.4.
